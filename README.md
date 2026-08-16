@@ -1,90 +1,45 @@
 # web-ui-knowledge-base
 
-> 本项目由 `ai-project-template` 派生。请在初始化阶段把本文件改写为项目说明，而不是保留模板仓库说明。
+> 本项目由 `ai-project-template` 派生。它的「产品」是一个持续建设的 Web UI/UX 设计知识库。
 
 ## 项目简介
 
-（用 2-3 句话说明本项目要解决的问题、目标用户与当前阶段范围。）
+持续收集、登记、抽取、评审公开 Web UI/UX 设计知识（规范 / 设计系统 / 研究文章 / 产品案例 / 开源语料），以可追溯、许可干净、分级明确的知识记录（Source / Principle / Pattern / Case + A–D 证据分级）供各项目做前端参考分析时消费。
 
 ## 当前阶段
 
-- 当前阶段：Phase1（待确认）
-- 交付物形态：Demo / MVP / 产品（待确认；Phase1 不默认等于 MVP）
-- 阶段目标：（说明当前阶段要演示、上线或生产化到什么程度）
-- 非目标：（说明当前阶段明确不做什么）
+- 当前阶段：Phase1（知识库建设期）
+- 交付物形态：文档仓（无运行时）
+- 阶段目标：建全收集 SOP 与知识记录体系；完成首批来源登记与案例导入；建立评审节奏
+- 非目标：不做 Web 应用 / 组件库；不替代任何项目的需求或设计决定；不镜像第三方截图与品牌资产
 
 ## 它能做什么
 
-- （列出当前 Phase 已确认要实现的核心能力——本项目自己的能力，不照搬模板通用能力）
+- `knowledge/`：核心产出区——来源登记、原则 / 视觉 / 交互模式、案例观察、MIT 语料镜像（含来源声明）
+- `knowledge/SOP-collect.md`：收集 SOP——新来源五步进库（登记 → 许可核验 → 抽取 → 分级 → 评审）
+- 与母模板 `template-docs/ui-knowledge/` 核心层形成「收集层 ↔ 核心层」分工：本仓承接全部收集量，跨 ≥2 项目实证的模式经提案回流母模板
 
 ## 快速开始
 
-1. 若尚未确认机器环境，先看 `template-docs/env-setup.md`，运行 `powershell -ExecutionPolicy Bypass -File scripts/check-prereqs.ps1`；缺必备工具时再执行 `scripts/bootstrap-dev-env.ps1` 或手工安装。
-2. 运行 `powershell -ExecutionPolicy Bypass -File scripts/collect-env.ps1` 生成 `docs/env/local-env.md`，补齐本机必须跑通的功能、允许降级 / Mock 项与服务器预案。
-3. 准备可审计上游输入：把产品愿景草稿、小工具 brief、PRD / SRS、任务单、现有系统说明等原始材料统一先放入 `docs/inputs/`；若已经有成熟 `docs/vision/product-vision.md`，后续也要用输入评审复核来源和缺口。
-4. 初填 `ai/project-rules.md` 的项目名称、Phase1 目标、技术栈倾向、运行环境约束与项目形态裁剪；不确定项标“待确认”。
-5. 在 AI CLI 中说“评审输入材料”（或 `/run review-inputs`），让 AI 评估 Product Vision 就绪度；不足时先按 `docs/inputs/input-review-report.md` 和最小补充清单补齐，复评通过后再说“生成文档体系”（或 `/run generate-docs`），先生成 / 更新 `docs/vision/product-vision.md`，再多入口生成 / 补齐 `docs/00-09`、必要的 `docs/design/` 详细设计、项目 README 与 Sprint1；底层 Prompt 见 `ai/prompts/docs/00-generate-or-complete-docs.md`。
-6. 人工确认 `docs/03-prd.md` §3 阶段路线图、交付物形态和 `docs/05-tech-spec.md` 的本机 Demo 可行性；确认后再说“执行当前 Sprint”（或 `/run run-dev-task`）。
+本仓为纯文档仓：git + Markdown 编辑即可，无环境安装要求。方法论与规则入口见 `ai/index.md`。
 
-> 纯本地烟测可以暂时不安装 AI CLI；真正开始 AI 协作开发前，至少准备并登录一种 AI CLI，安装顺序见 `template-docs/ai-cli-setup.md`。
-
-### 推荐：打开 AI CLI 后让 AI 带你继续
-
-> Keyword for template checks: newbie AI CLI onboarding path.
-
-如果已经安装并登录 `Claude CLI` 或 `Codex CLI`，在本项目根目录打开 AI CLI，不用记具体步骤——直接说一个具体场景（如「帮我准备输入材料」「帮我生成文档体系」），或 `/run scenario`。AI 会读取 `template-docs/scenario-guides.md`，先给你「做什么 + 为什么」的引导计划，确认后再执行。
-
-### `ai/project-rules.md` 首次必填 checklist
-
-生成 `docs/03-09` 前，至少确认以下项目不再保留模板占位：
-
-- 项目名称与代号 / 缩写。
-- Phase1 允许事项、禁止事项与 Phase2 预告。
-- 已确定或待确认的前端 / 后端 / 数据库 / AI 模型等技术栈。
-- 本机 Demo 必须运行的部分、允许降级 / Mock 的部分、是否需要服务器。
-- 是否有持久化存储、是否有对外接口、演示形态。
-- `docs/06-db-design.md` 与 `docs/07-api-spec.md` 的保留 / 省略决策。
-- 需要保留的代码目录；不用的目录后续再删除，不要先删再补依据。
-- 项目版本规则：默认从 `v0.1.0` 起步；确认 `ai/project-rules.md` 的项目版本管理规则是否适用。
+消费方式：各项目在自己的前端参考分析（`docs/research/*frontend-ui-reference-analysis.md`）中按 scope 查询本仓 `knowledge/`，引用 `SRC-*` / `PAT-*` / `PRN-*` / `CASE-*` ID；采纳 / 排除决定写在项目自己的 RA，不回写本仓。
 
 ## 文档入口
 
-- `docs/00-scenario.md`：场景
-- `docs/inputs/`：原始输入统一入口，可放愿景草稿、PRD / SRS、brief、任务说明、现有系统说明和评估报告
-- `docs/vision/product-vision.md`：由输入评审通过后生成 / 更新的产品愿景叙事源文档
-- `docs/01-user-requirements.md`：用户需求
-- `docs/02-srs.md`：软件需求规格
-- `docs/03-prd.md`：产品需求与阶段路线图
-- `docs/README.md`：文档分区规则，新增文档前先看这里
-- `docs/env/local-env.md`：本机运行环境与资源约束
-- `docs/design/`：子系统 / 模块详细设计
-- `docs/08-dev-plan.md`：开发计划
-- `docs/09-verification.md`：验证计划
+- `knowledge/README.md`：知识库定位、模型与使用方式（先看这个）
+- `docs/00-09`：项目自身文档链（愿景 / 需求 / 计划；按文档剖面裁剪，`docs/06`/`07` 已省略）
+- `ai/project-rules.md`：项目专属规则（Phase 边界 / 裁剪决策 / 禁区）
 
 ## 运行环境
 
-- 本机环境记录：`docs/env/local-env.md`
-- 本机 Demo 可行性：（待确认）
-- 降级 / Mock 策略：（待确认）
-
-## 开发计划
-
-- 当前 Sprint：见 `docs/08-dev-plan.md`
-- 执行单个任务时使用 `ai/prompts/dev/02-run-task.md`
-
-## 验证方式
-
-- 验证计划：见 `docs/09-verification.md`
-- 本机资源验证：见 `docs/09-verification.md` 的资源验证项
+- 纯文档仓，无运行时依赖；版本语义见 `ai/project-rules.md` §2.4
 
 ## 模板关系
 
-- 通用方法论来自 `ai-project-template`。
-- 项目自身版本记录在 `VERSION`；继承 / 当前同步到的模板版本记录在 `TEMPLATE-BASE.md`。
-- 新建项目默认以 `v0.1.0` 作为项目自有版本起点，`CHANGELOG.md` / `CHANGELOG-PLAIN.md` 顶部项目版本应与 `VERSION` 保持一致。
-- 文档生成、追溯链、变更传播与多入口规则见 `ai/document-lifecycle-rules.md`；可复制 Prompt 见 `INIT-PROMPT.md` 索引与 `ai/prompts/`。
-- 根 `README.md` 是项目专属文档，不参与模板下行同步。
-- 模板方法论文件由 `template-sync.json` 定义，执行 `scripts/sync-template.*` 时可能被覆盖。
-- 项目专属规则写在 `ai/project-rules.md`。
-- 项目事实文档写在 `docs/`，但新增文档必须遵守 `docs/README.md` 的分区规则，不要直接堆到 `docs/` 根目录。
-- 如发现可通用的模板优化，先在 `_proposals/` 起草提案，再回流到模板仓库。
+- 通用方法论来自 `ai-project-template`（继承版本见 `TEMPLATE-BASE.md`）。
+- 项目自身版本记录在 `VERSION`（当前 `v0.1.0`）；知识批次入库记 MINOR，单条修正记 PATCH。
+- `knowledge/` 为项目自有目录，不参与模板同步；`template-docs/ui-knowledge/` 为母模板核心层镜像，其内容经同步维护，不在本仓直接改语义。
+- 如发现可通用的模板优化，先在 `_proposals/` 起草提案，再回流模板仓库。
+
+> 仓库可见性说明：本仓当前为 public（2026-08-16 创建）；计划 2026 年 9 月后评估转回 private。

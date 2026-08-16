@@ -26,95 +26,98 @@
 
 ## 0. 项目标识
 
-项目名称：（如 DigitalCustomerService_Demo）
-代号/缩写：（用于数据库表前缀、包名等，如 cs_sessions）
+项目名称：web-ui-knowledge-base（Web UI 设计知识库）
+代号/缩写：wuikb
 
 ## 1. Phase边界
 
-当前阶段：Phase1
+当前阶段：Phase1（知识库建设期）
 
 允许：
-- （本项目当前阶段允许使用的技术/功能）
+- 收集、登记、抽取、评审公开 Web UI/UX 设计知识（规范 / 设计系统 / 研究文章 / 产品案例 / 开源仓库）
+- 在本仓 `knowledge/` 下维护 Source / Principle / Pattern / Case 四类记录与证据分级（A–D）
+- 镜像许可证明确允许的第三方文本语料（如 MIT 仓的 DESIGN.md），须带署名 + 来源 + 许可证标注
+- 维护「收集 SOP」并按 SOP 持续收集新来源
 
 禁止：
-- （本项目当前阶段禁止使用的技术/功能）
+- 不收集第三方截图、设计稿、字体、图标、品牌资产（无论许可状态，一律只存链接 + 自有摘要）
+- 不把知识记录写成任何项目的需求、接口或验收事实（本仓只产知识，不产项目决定）
+- 不把 D 级（灵感 / 单案例）素材表述为成熟交互经验或可用性证据
+- 不在本仓实现 Web 应用 / 组件库 / 设计系统代码（知识库是文档仓，`frontend/` 不启用）
 
 下一阶段预告：
-- （Phase2大致会开放什么）
+- Phase2：模式扩充 + 人工评审节奏 + 与母模板 `template-docs/ui-knowledge/` 核心层的晋升通道（candidate → reviewed → 跨 ≥2 项目实证 → 晋升提案回流母模板）
 
 ## 2. 技术栈与项目约束
 
-（本项目确定使用的前端/后端/数据库/AI模型等，及禁止引入的替代品）
+纯文档仓：Markdown + Git。无前端 / 后端 / 数据库 / AI 模型运行时。脚本仅用模板自带 `scripts/`（check / sync 类），不新增运行时依赖。
 
 ## 2.1 运行环境与资源约束
 
 > 字段规范见 `ai/doc-standards/project-rules.md` §4 §2.1（约束架构与技术方案选择；Demo / MVP 优先本机可运行，资源不足须在 `docs/05-tech-spec.md` 写降级策略或服务器预案；`docs/env/local-env.md` 只记录本机事实，不等于技术路线已被环境支撑）。
 
 - 本机环境文档：`docs/env/local-env.md`（由 `scripts/collect-env.ps1` 生成，人工补充确认项）
-- 技术环境评估报告：需要 / 不需要 / 豁免（若需要，推荐 `docs/research/YYYY-MM-DD-tech-env-evaluation-<scope>.md`；若豁免，说明原因、风险和补做时点）
-- Demo 阶段必须能在本机运行的部分：待确认
-- 允许降级 / Mock / 远程运行的部分：待确认
-- 禁止在本机运行的重资源部分：待确认
-- 是否允许使用公司服务器：待确认
-- 若需服务器，资源申请口径：待确认
+- 技术环境评估报告：豁免（纯文档仓，无真实运行依赖；若未来加渲染 / 检查脚本再补做）
+- Demo 阶段必须能在本机运行的部分：无运行时要求；git + Markdown 编辑即可
+- 允许降级 / Mock / 远程运行的部分：不适用
+- 禁止在本机运行的重资源部分：无
+- 是否允许使用公司服务器：不适用
+- 若需服务器，资源申请口径：不适用
 
 ## 2.2 图表格式偏好
 
 > 字段规范见 `ai/doc-standards/project-rules.md` §4 §2.2；图表格式规范见 `ai/document-lifecycle-rules.md` §13，场景引导见 `template-docs/scenario-guides.md` §7。
 
 - 图表格式：`mermaid`（默认）/ `plantuml`
-- 若选 mermaid 以外格式，说明原因（如团队工具链、渲染环境）
+- 若选 mermaid 以外格式，说明原因（如团队工具链、渲染环境）：用默认 mermaid
 
-## 2.3 UI 原型策略（如适用）
-
-> 字段规范与触发边界见 `ai/doc-standards/project-rules.md` §4 §2.3（触发与边界见 `ai/document-lifecycle-rules.md` §5.3；原型只作为已授权需求的可视化证据，不是需求权威源）。
-
-- 是否涉及可点击 UI：是 / 否
-- 是否需要开发前可视化原型：需要 / 不需要 / 豁免
-- 原型形式：Figma / Penpot / Balsamiq / Axure / Storybook / 代码原型 / 截图标注 / 其他
-- 原型权威位置：链接或仓库路径（如设计文件、Storybook、代码原型入口、截图目录）
-- 原型覆盖范围：主流程 / 页面状态 / 响应式范围 / 权限与降级状态
-- 原型与文档关系：承接 `docs/design/frontend-interaction.md`，并映射到 `docs/08-dev-plan.md` Sprint 与 `docs/09-verification.md` 验收用例；不得新增未授权需求、接口或验收目标
-- 豁免理由：仅当不需要原型或暂不补原型时填写，并说明风险、影响范围和补做时点
+- 是否涉及可点击 UI：否（知识库为纯文档仓）
+- 是否需要开发前可视化原型：豁免（无 UI 交付；风险 = 无）
 
 ## 2.4 项目版本管理
 
 默认从 `v0.1.0` 起步，并保持 `VERSION` 与 `CHANGELOG.md` 顶部项目版本一致；`VERSION` / `CHANGELOG.md` / `TEMPLATE-BASE.md` 关系与 `PATCH` / `MINOR` / `MAJOR` 规则见 `ai/doc-standards/project-rules.md` §4 §2.4。可按项目交付节奏覆盖默认规则，但必须在本节写明；是否使用 git tag / GitHub Release：（待确认；默认不强制）。
 
+本项目覆盖口径：知识内容批量导入 / 新来源批次入库记 MINOR；单条记录修正、链接核验更新记 PATCH；知识模型（四类记录 / 字段 / 生命周期）变更记 MAJOR。
+
 ## 2.5 运行时版本锁定
 
 > 字段规范见 `ai/doc-standards/project-rules.md` §4 §2.5（与 §2.1 运行环境与资源约束正交：§2.1 管硬件资源，§2.5 管运行时版本与切换工具；工具推荐见 `template-docs/env-setup.md`「运行时版本管理」；声明落点 `docs/05-tech-spec.md` §1）。
 
-- 是否启用运行时版本锁定：是 / 否 / 豁免
-- 锁定的运行时与版本：（如 Node 16.13.0 / Python 3.11 / 多运行时）
-- 版本声明文件：（如 `package.json` 的 `volta` 字段 / `.node-version` / `.python-version` / `.tool-versions` / `package.json#engines` / `pyproject.toml#requires-python`）
-- 切换工具：（如 Volta / fnm / pyenv-win / asdf / Dev Container / 无）
-- CI 校验方式：（如 `volta run` / `pyenv local` / Dev Container 自动切 / CI 显式断言 / 无）
-- 锁定原因：（为什么必须锁这个版本，如“米家插件运行时要求 Node 16.x”）
-- 豁免理由：仅当不启用或暂不补声明时填写，并说明风险、影响范围和补做时点
+- 是否启用运行时版本锁定：豁免（纯文档仓，无运行时）
+- 锁定的运行时与版本：不适用
+- 版本声明文件：无
+- 切换工具：无
+- CI 校验方式：无
+- 锁定原因：不适用
+- 豁免理由：零运行时依赖；风险 = 无；若未来新增检查 / 渲染脚本，再按规范补声明
 
 ## 3. 项目形态与文档裁剪
 
 > 本节用于初始化阶段，决定 docs/06、07 是否保留，以及 frontend/backend/tests/scripts/docker
 > 哪些目录真正需要。此节应在生成 docs/03-09 之前先填好。
 
-- 是否有持久化存储：（如有数据库 / 文件存储 / 无）
-- 是否有对外接口：（如 REST API / SDK / CLI / 无）
-- 演示形态：[消息通道内交互 / 独立 Web 页面 / 移动端 / CLI / 不需演示]（决定 `frontend/` 是否启用、`docs/04-05` 是否体现前端架构）
-- 前端交互设计：需要 / 不需要 / 豁免（若需要，推荐 `docs/design/frontend-interaction.md`；若豁免，说明原因）
-- UI 原型策略：需要 / 不需要 / 豁免（若需要，在 §2.3 记录原型形式、位置、覆盖范围和追溯；若豁免，说明原因）
-- 通用详细设计：需要 / 不需要 / 豁免（若存在非平凡子系统、复杂权限 / 安全、AI / 外部服务、导入 / 异步任务、跨模块状态机、Mock / 降级差异或高风险愿景能力，推荐 `docs/design/<subsystem>.md`；若豁免，说明原因、风险和补做时点）
-- System Skeleton Gate：需要 / 不需要 / 豁免（non-trivial 项目——多模块 / 有对外接口 / 有运行依赖——默认需要，首个业务 Sprint 前在 `docs/08-dev-plan.md` Sprint 0 + `docs/09-verification.md` 系统框架测试大纲落地框架验收；quick-script / 纯计算库 / 单文件工具可豁免，须说明原因、风险和补做时点；规则见 `ai/implementation-lifecycle-rules.md` §3）
-- docs/06-db-design.md：保留 / 省略
-- docs/07-api-spec.md：保留 / 省略
-- 需要保留的代码目录：（如 frontend/ backend/ tests/ scripts/ docker/；不用的目录可删除）
+- 是否有持久化存储：无（知识记录即 Markdown 文件）
+- 是否有对外接口：无（消费方式 = 各项目按 scope 读取本仓文件）
+- 演示形态：不需演示（`frontend/` 不启用）
+- 前端交互设计：豁免（纯文档知识库，无 UI 交付）
+- UI 原型策略：豁免（同上）
+- 通用详细设计：豁免（无非平凡子系统 / 外部服务 / 状态机；知识治理流程属内容运营，不是子系统设计）
+- System Skeleton Gate：豁免（纯文档仓，无系统框架可验收；风险 = 无，补做时点 = 若未来加渲染 / 检查脚本再评估）
+- docs/06-db-design.md：省略（无数据库）
+- docs/07-api-spec.md：省略（无接口）
+- 需要保留的代码目录：scripts/（模板 check / sync 脚本）；frontend/ backend/ tests/ docker/ 不启用
 
 按项目形态裁剪规则（docs/06 / 07 何时省略、`frontend/` 启用条件、详细设计 / 前端交互 / UI 原型触发条件、目录裁剪等）见 `ai/doc-standards/project-rules.md` §4 §3；本节裁剪决策须与 `docs/00-09` 实际结构一致，省略项留下说明，不适用的裁剪行可删除。
 
 ## 4. 目录规范的项目特例
 
-（如本项目目录结构与 global-rules.md 的通用骨架有差异，在此说明；
- 没有差异则写"无，遵循global-rules通用目录标准"）
+（本项目目录结构与 global-rules.md 的通用骨架有差异，特例说明如下）
+
+- 新增 `knowledge/` 目录：本项目的核心产出区（Source / Principle / Pattern / Case 四类知识记录 + 证据分级）。这是项目自有目录，不参与模板同步。
+- `knowledge/corpora/`：许可证允许镜像的第三方文本语料（如 MIT 仓的 DESIGN.md），每份带 `SOURCE.md`（出处 / 许可证 / 镜像日期）。
+- `template-docs/ui-knowledge/`：随模板同步维护的核心层镜像（小而精）；本项目知识晋升到该层走 `_proposals/` 提案回流母模板，不在本仓直接改语义（同步会覆盖）。
+- 省略 `docs/06` / `docs/07`（见 §3）；`frontend/` / `backend/` / `tests/` / `docker/` 不创建。
 
 ## 5. 编码约定与禁区
 
@@ -122,16 +125,16 @@
 > 每条尽量具体可执行；没有则写“无”，不要留空占位。
 
 ### 5.1 既有约定（新代码必须向其看齐）
-- 命名：（如后端 snake_case、前端 camelCase、组件 PascalCase）
-- 分层与目录：（如 backend 分 api / service / model 三层，接口只进 api 层）
-- 既有模式：（如统一用某基类 / 统一走某中间件鉴权，新代码沿用，勿另起炉灶）
-- 错误处理 / 日志：（如统一异常类型、统一日志格式）
+- 命名：知识记录 ID 沿用母模板前缀体系（`SRC-*` / `PRN-*` / `PAT-VIS-*` / `PAT-INT-*` / `CASE-*`）；文件名 kebab-case。
+- 分层与目录：知识内容只进 `knowledge/`；随模板同步的 `template-docs/ui-knowledge/` 不写项目内容。
+- 既有模式：四类记录 + A–D 证据分级 + candidate/reviewed/core 生命周期，字段口径与母模板 `template-docs/ui-knowledge/README.md` §2/§4 保持一致（同源模型，本仓是其扩展层）。
+- 错误处理 / 日志：不适用（纯文档仓）。
 
 ### 5.2 禁区（未经人工确认不得触碰）
-- 不得擅改的文件 / 模块：（如鉴权模块、数据库迁移脚本、公共配置）
-- 不得擅自引入的依赖：（列出，或写“任何新依赖须先确认”）
-- 不得自行实现的功能：（点名为禁区，与 §1 互为补充）
-- 愿景 / 01 中的功能点不等于已批准实现；阶段归属以 `docs/03-prd.md` §3 路线图为准，编码以 §1 当前阶段为准
+- 不得擅改的文件 / 模块：`template-sync.json`（同步清单）、`scripts/`（同步脚本）、`TEMPLATE-BASE.md`。
+- 不得擅自引入的依赖：任何新依赖（本仓零运行时依赖）。
+- 不得自行实现的功能：镜像第三方截图 / 品牌资产（永久禁区，见 §1）；把本仓知识记录写成项目需求或验收事实。
+- 愿景 / 01 中的功能点不等于已批准实现；阶段归属以 `docs/03-prd.md` §3 路线图为准，编码以 §1 当前阶段为准。
 
 ## 6. AI修改确认规则
 
