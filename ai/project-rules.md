@@ -116,6 +116,7 @@
 
 - 新增 `knowledge/` 目录：本项目的核心产出区（Source / Principle / Pattern / Case 四类知识记录 + 证据分级）。这是项目自有目录，不参与模板同步。
 - `knowledge/corpora/`：许可证允许镜像的第三方文本语料（如 MIT 仓的 DESIGN.md），每份带 `SOURCE.md`（出处 / 许可证 / 镜像日期）。
+- `knowledge/scenarios.md`：**项目特有场景手册**（K1 收集 / K2 上游同步 / K3 晋升提名等）。母模板 `template-docs/scenario-guides.md` 在同步清单内会被覆盖，项目特有场景一律写本文件，编号用 K 前缀与母模板 A/C/M 空间隔离。
 - `template-docs/ui-knowledge/`：随模板同步维护的核心层镜像（小而精）；本项目知识晋升到该层走 `_proposals/` 提案回流母模板，不在本仓直接改语义（同步会覆盖）。
 - 省略 `docs/06` / `docs/07`（见 §3）；`frontend/` / `backend/` / `tests/` / `docker/` 不创建。
 
