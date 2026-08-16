@@ -119,6 +119,7 @@
 - `knowledge/scenarios.md`：**项目特有场景手册**（K1 收集 / K2 上游同步 / K3 晋升提名等）。母模板 `template-docs/scenario-guides.md` 在同步清单内会被覆盖，项目特有场景一律写本文件，编号用 K 前缀与母模板 A/C/M 空间隔离。
 - `template-docs/ui-knowledge/`：随模板同步维护的核心层镜像（小而精）；本项目知识晋升到该层走 `_proposals/` 提案回流母模板，不在本仓直接改语义（同步会覆盖）。
 - 省略 `docs/06` / `docs/07`（见 §3）；`frontend/` / `backend/` / `tests/` / `docker/` 不创建。
+- 裁剪已执行（v0.1.1）：`frontend/` / `backend/` / `tests/` / `docker/` 四个占位目录与 `docs/06-db-design.md` / `docs/07-api-spec.md` 两份未填写骨架已于 2026-08-16 删除，与 §3 决策对齐；若未来 Phase 变更启用任一形态，按 `ai/doc-standards/project-rules.md` §4 §3 重新创建并回填 §3。
 
 ## 5. 编码约定与禁区
 
