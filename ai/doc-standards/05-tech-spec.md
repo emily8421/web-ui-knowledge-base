@@ -1,7 +1,7 @@
 # 05 Technical Specification Standard（技术方案规范镜像）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 本文件是 `docs/05-tech-spec.md` 的规范镜像，用于 AI 生成、修订、审计和评估项目技术方案。它不是项目事实文档，派生项目的实际技术事实仍写入 `docs/05-tech-spec.md`。
 
@@ -18,7 +18,8 @@
 
 | 能力 | 最低字段 / 结构 |
 |---|---|
-| 技术栈与版本 | 类别、技术 / 版本、状态、用途、约束来源、替代品禁令 / 备注；如启用运行时版本锁定（见 `ai/doc-standards/project-rules.md` §2.5），另列：锁定运行时 / 版本 / 版本声明文件 / 切换工具 / 锁定原因 |
+| 文档元信息 | 输入来源、覆盖架构组件、当前状态、最后更新；「当前状态」一句话状态即可，实现历史 / 演进叙事归 `09` 验收记录与 CHANGELOG，不塞元信息（需要时留历史指针） |
+| 技术栈与版本 | 类别、技术 / 版本、状态、用途、约束来源、替代品禁令 / 备注；如启用运行时版本锁定（见 `ai/doc-standards/project-rules.md` §2.5），另列：锁定运行时 / 版本、版本声明文件、切换工具、锁定原因 |
 | 关键技术决策 | 决策 ID、决策、理由、替代方案、影响范围、权威源、验证状态 |
 | 依赖与配置 | 类型、名称、用途、启用阶段、当前状态、配置来源、密钥 / 敏感性、验证方式 |
 | 运行环境与资源评估 | 运行项、本机要求、当前本机是否满足、验证证据、降级 / Mock、服务器预案 |
@@ -62,12 +63,12 @@
 | Gate | 适用对象 | 进入标准 | 必需证据 | 状态 | 阻塞项 / 下一步 |
 |---|---|---|---|---|---|
 | RG-001 | 外部 API / 数据库 / LLM / Docker / 部署 |  | `docs/research/*tech-env-evaluation*.md` / 命令输出 / TC | Go / Conditional Go / No-Go / 待评估 |  |
-| WSG-001 | Web App Structure Profile + Walking Skeleton Gate | App Shell、目录边界、vertical slice、文件膨胀阈值、API / browser smoke 已定义 | `template-docs/web-fullstack-profile.md`、04/05/08/09、smoke 命令或人工步骤 | Go / Conditional Go / No-Go / 豁免 |  |
+| WSG-001 | Web App Structure Profile + Walking Skeleton Gate | App Shell、目录边界、vertical slice、文件膨胀阈值、API / browser smoke 已定义 | `template-docs/profiles/web-fullstack-profile.md`、04/05/08/09、smoke 命令或人工步骤 | Go / Conditional Go / No-Go / 豁免 |  |
 
 触发条件：
 
-- 项目涉及真实运行依赖，如 `backend/`、`frontend/`、`docker/`、数据库、本机模型、外部 API、重型 SDK。
-- 项目同时启用 `frontend/` 与 `backend/`，需要浏览器演示、多页面 / 多状态 / 多角色 / 数据密集界面，或首个前端 Sprint 可能堆入单个主应用文件。
+- 项目涉及真实运行依赖，如 `project/backend/`、`project/frontend/`、`project/docker/`、数据库、本机模型、外部 API、重型 SDK。
+- 项目同时启用 `project/frontend/` 与 `project/backend/`，需要浏览器演示、多页面 / 多状态 / 多角色 / 数据密集界面，或首个前端 Sprint 可能堆入单个主应用文件。
 - Phase 升级、Sprint 开始或用户要求从 Mock / 降级切换到真实能力。
 - 技术环境、密钥、网络、资源、合规、权限或部署条件尚未验证。
 

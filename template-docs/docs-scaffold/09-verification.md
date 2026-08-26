@@ -1,7 +1,7 @@
 # 09 验证计划（Verification Plan）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 
 > **文档定位**：定义需求如何验证、用例如何覆盖、资源如何确认、验收结果如何记录。本文回答“怎么算对”。
@@ -14,10 +14,10 @@
 
 ## 0. 文档元信息
 
-【撰写提要：记录本文输入来源、覆盖范围、当前状态和最后更新时间；不得把模板占位内容当作项目事实。】
+【撰写提要：记录本文输入来源、覆盖范围、当前状态和最后更新时间；不得把模板占位内容当作项目事实。「当前 Phase / 验证状态」写一句话状态 + 权威源指针（当前阶段权威源为 `ai/project-rules.md` §1），不整段重述演进史 / TC 收口摘要。】
 | 项 | 内容 |
 |---|---|
-| 当前 Phase | Phase1 |
+| 当前 Phase | 一句话状态；权威源：`ai/project-rules.md` §1 |
 | 交付物形态 | Demo / MVP / 产品 |
 | 覆盖 REQ | REQ-001... |
 | 当前状态 | 草稿 / 待人工确认 / 已确认 |
@@ -64,7 +64,7 @@
 
 | REQ-ID | 阶段 | 交付物形态 | TC-ID | 验证方式 | 通过标准 | 自动化 / 证据位置 | 状态 |
 |---|---|---|---|---|---|---|---|
-| REQ-001 | [P1] | Demo | TC-001 | 自动 / 手动 |  | tests/... / 验收记录 | 待设计 / 待执行 / 自动化已覆盖 / 待人工验收 / 通过 / 条件通过 / 失败 / 阻塞 / 后续阶段 |
+| REQ-001 | [P1] | Demo | TC-001 | 自动 / 手动 |  | project/tests/... / 验收记录 | 待设计 / 待执行 / 自动化已覆盖 / 待人工验收 / 通过 / 条件通过 / 失败 / 阻塞 / 后续阶段 |
 
 ## 3. 用例详情
 

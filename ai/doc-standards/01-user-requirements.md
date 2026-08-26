@@ -1,7 +1,7 @@
 # 01 User Requirements Standard（用户需求规范镜像）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 本文件是 `docs/01-user-requirements.md` 的细粒度规范标准，用于 AI 生成、精修、审计和评估用户需求文档。它不是项目事实文档，派生项目的实际用户需求仍写入 `docs/01-user-requirements.md`。
 
@@ -18,7 +18,7 @@
 
 | 能力 | 最低字段 / 结构 |
 |---|---|
-| 文档元信息 | 输入来源、覆盖场景、当前状态、最后更新 |
+| 文档元信息 | 输入来源、覆盖场景、当前状态、最后更新；「当前状态」一句话状态即可，实现历史归 `09` 与 CHANGELOG，不塞元信息 |
 | 用户需求总览 | U-ID、用户 / 角色、用户需求、来源场景、价值、初步优先级、状态 |
 | 用户操作流 | Flow ID、参与角色、前置条件、步骤、成功路径、失败 / 中断路径 |
 | 用户验收口径 | AC-ID、U-ID、用户可观察验收口径、不满足示例、备注 |

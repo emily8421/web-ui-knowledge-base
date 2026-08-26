@@ -1,7 +1,7 @@
 # 08 开发计划（Development Plan）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 
 > **文档定位**：把已确认的 Phase 范围拆成可执行 Sprint / 任务。本文回答“先做哪个小任务、改哪些文件、怎样验收”。
@@ -12,10 +12,10 @@
 
 ## 0. 文档元信息
 
-【撰写提要：记录本文输入来源、覆盖范围、当前状态和最后更新时间；不得把模板占位内容当作项目事实。】
+【撰写提要：记录本文输入来源、覆盖范围、当前状态和最后更新时间；不得把模板占位内容当作项目事实。「当前 Phase / 当前状态」写一句话状态 + 权威源指针（当前阶段权威源为 `ai/project-rules.md` §1），不整段重述演进史 / Sprint 收口摘要。】
 | 项 | 内容 |
 |---|---|
-| 当前 Phase | Phase1 |
+| 当前 Phase | 一句话状态；权威源：`ai/project-rules.md` §1 |
 | 交付物形态 | Demo / MVP / 产品 |
 | 输入基线 | 03-09 文档版本 / 日期 |
 | 当前状态 | 草稿 / 待人工确认 / 已确认 |
@@ -49,7 +49,7 @@
 |---|---|---|---|---|---|---|---|
 | Sprint-1 |  | REQ-001 / F-001 | 04/05/06/07 章节 | 1-3 个模块 | TC-001 + 验收记录 | 待开始 / 进行中 / 已完成 / 条件完成 / 阻塞 | 不拆 / `tasks/task-001-xxx.md` |
 
-non-trivial 项目（多模块 / 有对外接口 / 有运行依赖）首个业务功能 Sprint 前应安排或显式豁免 Sprint 0 / System Skeleton：模块边界、关键接口连通、至少一条纵切、错误 / 空 / 加载入口（不含完整业务逻辑）；复杂 Web / 全栈项目叠加 `template-docs/web-fullstack-profile.md` 的 App Shell、目录边界、文件膨胀阈值等 Web 特化。不得顺手实现完整业务。豁免须在 `ai/project-rules.md` §3 写明。
+non-trivial 项目（多模块 / 有对外接口 / 有运行依赖）首个业务功能 Sprint 前应安排或显式豁免 Sprint 0 / System Skeleton：模块边界、关键接口连通、至少一条纵切、错误 / 空 / 加载入口（不含完整业务逻辑）；复杂 Web / 全栈项目叠加 `template-docs/profiles/web-fullstack-profile.md` 的 App Shell、目录边界、文件膨胀阈值等 Web 特化。不得顺手实现完整业务。豁免须在 `ai/project-rules.md` §3 写明。
 
 ## 3. Sprint 详情模板
 

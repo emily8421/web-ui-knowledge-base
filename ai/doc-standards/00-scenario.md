@@ -1,7 +1,7 @@
 # 00 Scenario Standard（场景文档规范镜像）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 本文件是 `docs/00-scenario.md` 的细粒度规范标准，用于 AI 生成、精修、审计和评估场景文档。它不是项目事实文档，派生项目的实际场景事实仍写入 `docs/00-scenario.md`。
 
@@ -18,13 +18,14 @@
 
 | 能力 | 最低字段 / 结构 |
 |---|---|
-| 文档元信息 | 输入来源、入口模式、文档剖面、当前状态、最后更新 |
+| 文档元信息 | 输入来源、入口模式、文档剖面、当前状态、最后更新；「当前状态 / 当前 Phase」为一句话状态 + 权威源指针（默认指向 `ai/project-rules.md` §1），不整段重述阶段演进史 / Sprint / TC 收口摘要；演进叙事归 `09` 验收记录与 CHANGELOG，需要历史时留指针 |
 | 背景与问题 | 背景、当前痛点、业务机会、现有流程问题、来源锚点 |
 | 目标用户与角色 | 角色 ID、角色、目标、痛点、成功标准、来源锚点 |
 | 典型场景 | 场景 ID、参与角色、触发条件、场景叙事、期望结果、来源锚点 |
 | 场景边界与非目标 | 做什么、不做什么、适用阶段、原因 / 来源 |
 | 上游来源映射 | 场景 / 角色、来源文件或人工输入、来源锚点、可信度、备注 |
 | 下游影响 | 预计影响的 U-ID、REQ、设计、验证或任务入口 |
+| OO 建模 overlay（可选，Full / Standard 剖面建议） | 用例全景图 `DIAG-UC-NN`：参与者 + 用例域 + 挂需求追溯（SC-ID / U-ID）；格式见 `ai/document-lifecycle-rules.md` §13（用例图需 plantuml）。Lean 剖面可豁免并在 `ai/project-rules.md` §3 说明 |
 | 待人工确认项 | 结构化确认项表，不得只写问题列表 |
 
 ## 3. ID 与追溯规则

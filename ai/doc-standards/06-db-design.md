@@ -1,7 +1,7 @@
 # 06 DB Design Standard（数据库设计规范镜像）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 本文件是 `docs/06-db-design.md` 的细粒度标准，用于 AI 生成、修订、审计和评估数据库设计文档。它不是项目事实文档，派生项目的实际数据设计事实仍写入 `docs/06-db-design.md`。
 
@@ -20,7 +20,7 @@
 |---|---|
 | 文档元信息 | 保留 / 省略决策、决策来源、覆盖 REQ / 模块、当前状态、最后更新 |
 | 数据需求概览 | 数据对象、来源 REQ / NFR、用途、生命周期、敏感性、访问边界、下游接口 / 模块 |
-| 概念模型 / ER | 实体、描述、关联 REQ / NFR、关系、阶段、备注；核心实体关系必须有 ER 图（图 ID `DIAG-DB-ER-NN`，对齐 `document-lifecycle-rules.md` §13「应含」） |
+| 概念模型 / ER | 实体、描述、关联 REQ / NFR、关系、阶段、备注；核心实体关系必须有 ER 图（图 ID `DIAG-DB-ER-NN`，对齐 `document-lifecycle-rules.md` §13「应含」）；启用 OO overlay 的项目区分两层——概念 ERD / 领域模型（`DIAG-DOM-NN`，需求级，通常登记在 `02` 或本节概念模型）与物理 ERD（`DIAG-DB-ER-NN`，表 / 字段级，本文档）；物理表间关系图必须挂图 ID |
 | 表清单 | 表名、阶段、状态、用途、来源 REQ / NFR / 约束、数据对象、备注 |
 | 表结构字段级契约 | 字段、类型、必填、默认值、约束、说明、来源、敏感性、留存 / 删除 |
 | 索引、约束与关系 | 表、索引 / 约束、字段、类型、用途、查询 / 写入影响、阶段 |

@@ -1,7 +1,7 @@
 # 02 SRS Standard（系统需求规格规范镜像）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 本文件是 `docs/02-srs.md` 的细粒度规范标准，用于 AI 生成、精修、审计和评估系统需求规格。它不是项目事实文档，派生项目的实际系统需求仍写入 `docs/02-srs.md`。
 
@@ -18,7 +18,9 @@
 
 | 能力 | 最低字段 / 结构 |
 |---|---|
-| 文档元信息 | 输入来源、覆盖 U-ID、当前状态、最后更新 |
+| 文档元信息 | 输入来源、覆盖 U-ID、当前状态、最后更新；「当前状态」一句话状态即可，实现历史 / 演进叙事归 `09` 验收记录与 CHANGELOG，不塞元信息（需要时留历史指针） |
+| 引用式概述章（Full / Standard 剖面建议） | 引言（编写目的 / 项目背景 / 定义 / 参考资料）、任务概述（目标 / 运行环境 / 条件与限制）、数据描述（→ `06`）、性能需求（→ `05` §5）、运行需求（用户界面 / 接口 / 故障处理 → `07` 与 design）、其它需求（安全 / 可维护 / 可移植 → `05` §5.2、ADR）；每节 2-5 行 + 指向权威文档的指针，不重复内容 |
+| OO 建模 overlay（可选，Full / Standard 剖面建议） | 领域模型 / 分析级类图 `DIAG-DOM-NN`：核心实体 + 关联 + 关键属性（概念层，非物理表），作为 `06` 物理表的概念上游；挂 §3 追溯链。Lean 剖面可豁免并在 `ai/project-rules.md` §3 说明 |
 | 功能需求 | REQ-ID、系统需求、来源 U-ID、可验证口径、初步阶段、状态 |
 | 非功能需求 | NFR-ID、类型、需求描述、来源、验证方式、状态 |
 | 约束与假设 | 编号、类型、内容、状态、影响范围 |
@@ -43,6 +45,7 @@
 | NFR 有来源 | NFR 写明来源和验证方式 | 性能 / 安全要求凭空生成 |
 | 状态准确 | 候选 / 待验证 / 已确认不混用 | 候选能力写成已确认 |
 | 异常覆盖 | 边界和异常能导向设计 / 测试 | 只写成功路径 |
+| 概述章为引用式（如启用） | 概述章只做指针（每节 2-5 行 + 权威文档定位），不复制下游文档内容 | 概述章重复 `05/06/07` 内容形成第二权威源；或缺失概述章导致读者需自行拼装跨文档信息 |
 
 ## 5. 下游影响
 

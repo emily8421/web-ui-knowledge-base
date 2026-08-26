@@ -1,7 +1,7 @@
 # Docs Scaffold（项目文档结构模板库）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 本目录保存项目文档的长期结构模板副本，用于派生项目在 `docs/vision/*`、`docs/inputs/*`、`docs/00-09`、`docs/design/*`、`docs/decisions/*` 或 `docs/research/*` 已被项目事实内容覆盖后，仍能查到模板原始大纲、占位表格和 `【撰写提要：...】`。
 
@@ -19,6 +19,18 @@
 | `ai/doc-standards/00-09` | AI 规则 / 审计基线：每类文档必须满足的标准 | 否 | 是 |
 
 > 边界：`tasks/` 是执行任务单目录，不属于 `docs/` 项目事实链；若后续新增 Task 文件模板，应落位 `template-docs/task-template.md`，复制目标为 `tasks/task-00X-*.md`，不新增 `template-docs/docs-scaffold/tasks/`。
+
+## 三核心节点定位（评审与阅读入口）
+
+按「需求规格说明 → 概要设计说明 → 详细设计说明」三个核心节点读文档体系：
+
+| 核心节点 | 本体系承载 | 回答什么 |
+|---|---|---|
+| 需求规格说明 | `docs/02-srs.md`（背景见 `00/01`，范围与阶段见 `03`） | 系统必须实现什么（逐条 REQ + 可验证口径） |
+| 概要设计说明 | `docs/04-architecture.md` + `docs/05-tech-spec.md` | 系统如何组织（总体设计 / 接口 / 数据结构 / 安全 / 维护概述） |
+| 详细设计说明 | `docs/06-db-design.md` + `docs/07-api-spec.md` + `docs/design/*` | 数据契约 / 接口契约 / 子系统内部逻辑 |
+
+> 项目若需对照特定行业 / 企业文档模板谱系（如国标式软件文档编制规范），在项目自己的 `docs/README.md` 登记节点级映射与偏差；模板不预设特定外部模板为依赖。
 
 ## 使用方式
 
@@ -61,8 +73,8 @@
 | `research/ui-prototype-exploration.md` | `docs/research/YYYY-MM-DD-ui-prototype-exploration.md` | `ai/document-lifecycle-rules.md` §10.2 |
 | `research/tech-env-evaluation.md` | `docs/research/YYYY-MM-DD-tech-env-evaluation-<scope>.md` | `ai/prompts/review/20-tech-env-evaluation.md` |
 
-> 兼容入口：`template-docs/ui-prototype-strategy-template.md` 与 `template-docs/ui-prototype-exploration-template.md` 暂时保留，内容定位与本目录对应模板一致，避免破坏既有链接。
-> `template-docs/docs-open-items.example.md` 暂时保留为填充示例；正式结构模板见 `template-docs/docs-scaffold/research/docs-open-items.md`。
+> 兼容入口：`template-docs/templates/ui-prototype-strategy-template.md` 与 `template-docs/templates/ui-prototype-exploration-template.md` 暂时保留，内容定位与本目录对应模板一致，避免破坏既有链接。
+> `template-docs/templates/docs-open-items.example.md` 暂时保留为填充示例；正式结构模板见 `template-docs/docs-scaffold/research/docs-open-items.md`。
 
 ## 维护要求
 

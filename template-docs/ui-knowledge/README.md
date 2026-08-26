@@ -1,7 +1,7 @@
 # UI Knowledge（Web UI/UX 设计知识核心层）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 > 定位：母模板内的轻量设计知识核心层。它保存 Web UI/UX 的方法、记录模型、少量精选模式和来源索引，供派生项目做前端参考分析时按 scope 查询。它不是设计素材下载器，不是截图仓，不是第三方资料镜像，也不替代项目自己的 `frontend-ui-reference-analysis`、前端交互设计或验收记录。
 
@@ -85,7 +85,8 @@
 | 来源 URL | 可核验的权威链接 |
 | 证据范围 | 该来源能支撑的证据等级上限（A/B/C/D） |
 | 许可与保存策略 | 可保存摘要 / 可保存代码 / 只保存链接 / 待确认 |
-| 最后核验 | 日期 + 链接状态 |
+| 最后核验 | 日期 + 核验范围 |
+| 链接核验状态 | 已核验：可访问 / 暂时不可用（独立于生命周期） |
 | 状态 | candidate / reviewed / core / deprecated / retired |
 
 ### 4.2 Pattern / Principle 记录（见 `visual-patterns.md` / `interaction-patterns.md`）
@@ -111,7 +112,7 @@ AI 做参考分析时**不加载全部知识**，按 scope 选取：
 1. 从 UI brief / 输入材料确定：产品类型、用户任务、页面类型、设备范围、关键状态。
 2. 按 scope 命中相关维度（§3）和模式文件（visual / interaction）。
 3. 只读取命中记录，每条核对适用 / 不适用条件。
-4. 输出证据分级 + 采纳 / 调整 / 排除矩阵（见 `template-docs/frontend-ui-reference-analysis-template.md`）。
+4. 输出证据分级 + 采纳 / 调整 / 排除矩阵（见 `template-docs/templates/frontend-ui-reference-analysis-template.md`）。
 5. 视觉案例（D 级）只作发散，不得推导为成熟交互结论。
 
 简单页面或无参考输入时，可在参考分析或上游文档中写明豁免理由，不做长分析。
@@ -138,7 +139,8 @@ AI 做参考分析时**不加载全部知识**，按 scope 选取：
 - 第三方截图、设计稿、字体、图标、品牌素材和大段原文**不进入模板仓**。
 - 仓库级开源许可证不自动覆盖其中引用的第三方网站素材；需按资产级权利判断。
 - 允许保存代码片段时仍记录许可证、出处和 NOTICE 条件。
-- 来源无法确认许可、链接失效或内容无法复核时，状态记 candidate / unavailable，不进 core。
+- 来源无法确认许可、链接失效或内容无法复核时，链接核验状态记为「暂时不可用」；这不等同于生命周期状态变更。
+- 仅依赖「暂时不可用」来源的 Pattern / Principle 必须降为 `candidate`，不得保持 `reviewed` 或 `core`。
 - 对公开产品的观察写成「观察到的界面表现」，不得推断为产品团队已验证的内部结论。
 
 首批来源组合见 `source-registry.md`（W3C WAI-ARIA APG / GOV.UK Design System / USWDS / Microsoft HAX Toolkit / awesome-design-md 视觉种子）。
@@ -154,7 +156,7 @@ AI 做参考分析时**不加载全部知识**，按 scope 选取：
 
 - 升级（摘要 → 代码）必须有明确的资产级许可证据。
 - 来源许可变更、链接失效或内容下架时，降级为「只保存链接」或标 retired。
-- 状态变化记录在 Source 记录的「最后核验」字段。
+- 许可策略或链接可用性变化记录在 Source 记录的「最后核验」与「链接核验状态」字段。
 
 ## 9. 维护与评审升级路径
 
@@ -163,12 +165,12 @@ AI 做参考分析时**不加载全部知识**，按 scope 选取：
 | 状态 | 含义 | 进入条件 |
 |---|---|---|
 | candidate | AI 起草或新登记，未经人工评审 | 首批默认状态 |
-| reviewed | 经维护者逐条人工评审，来源与证据已核验 | 维护者确认来源有效、证据等级准确、适用边界合理 |
+| reviewed | 经维护者逐条人工评审，来源与证据已核验 | 维护者确认所引来源可访问、证据等级准确、适用边界合理 |
 | core | 跨 ≥2 项目验证稳定，进入推荐核心集 | 有项目实证 + 评审通过 |
 | deprecated | 不再推荐但保留可追溯 | 有更好替代或来源失效 |
 | retired | 移出核心，仅留链接 | 内容过时或被替代 |
 
-**首批说明（v1.62.0）**：首批 13 条模式中 12 条经维护者逐条评审升 `reviewed`（2026-08-13，PR #348）；`PAT-VIS-004`（D 级视觉启发）维持 `candidate`，待项目实证后再定升降。6 条来源（Source）记录维持 `candidate`（外部链接有效性待联网复核）。core 晋升（需跨 ≥2 项目实证）、证据升级 / 降级、重复模式合并和链接失效检查属 Batch 2（质量治理）。
+**首批说明（v1.62.0；Batch 2A 于 2026-08-14 复核）**：首批 13 条模式中 11 条经维护者逐条评审保持 `reviewed`（2026-08-13，PR #348）；`PAT-VIS-004`（D 级视觉启发）维持 `candidate`；`PAT-INT-006` 的唯一来源 Microsoft HAX Toolkit 暂时不可用，降为 `candidate`，待链接恢复并复核后再评审。6 条来源（Source）生命周期仍为 `candidate`；其中 5 条链接已核验可访问，Microsoft HAX Toolkit 标为暂时不可用。core 晋升（需跨 ≥2 项目实证）、证据升级 / 降级、重复模式合并和链接失效检查属 Batch 2（质量治理）。
 
 维护分期：
 
@@ -189,4 +191,4 @@ AI 做参考分析时**不加载全部知识**，按 scope 选取：
 | 前端交互设计（`ai/doc-standards/frontend-interaction.md`） | 互补不重复：本层提供可引用模式及适用边界，不替代项目交互设计 |
 | 知识记录机制（`capability-packages.md` MECH-KNOW-001） | 合并入：来源登记与抽取记录复用现有知识治理，不另建平行生命周期 |
 
-详细提案：`_proposals/TEMPLATE-UPGRADE-web-ui-design-knowledge-base.md`。
+详细提案：`_governance/_proposals/TEMPLATE-UPGRADE-web-ui-design-knowledge-base.md`。

@@ -1,7 +1,7 @@
 # 04 系统架构（Architecture）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 
 > **文档定位**：定义系统边界、架构视图、模块职责、关键流程、运行拓扑和架构决策。本文回答“系统如何组织”，不写具体依赖版本、表字段、接口字段或 Sprint 实施步骤。
@@ -12,13 +12,23 @@
 
 ## 0. 文档元信息
 
-【撰写提要：记录本文输入来源、覆盖范围、当前状态和最后更新时间；不得把模板占位内容当作项目事实。】
+【撰写提要：记录本文输入来源、覆盖范围、当前状态和最后更新时间；不得把模板占位内容当作项目事实。「当前状态」一句话状态即可，实现历史 / 演进叙事归 `09` 验收记录与 CHANGELOG，不塞元信息（需要时留历史指针）。】
 | 项 | 内容 |
 |---|---|
 | 输入来源 |  |
 | 覆盖功能 / REQ | F-001 / REQ-001... |
 | 当前状态 | 草稿 / 待人工确认 / 已确认 |
 | 最后更新 | YYYY-MM-DD |
+
+## 0.1 概述（概要级，Full / Standard 剖面建议启用）
+
+【撰写提要：概要级概述让读者不翻 05-07 即可建立系统全貌。每域 2-5 行 + 指向权威文档的指针，不重复字段级内容。Lean 剖面可整体省略本节并在 `ai/project-rules.md` §3 说明。章节可原位增补，不重排既有编号。】
+
+- **需求概述**：罗列系统向用户提供的主要功能（层次化组织）。（→ `docs/00-scenario.md`、`docs/03-prd.md` §3、`docs/02-srs.md` §1）
+- **接口设计概述**：外部 / 内部接口域划分与职责。（→ `docs/07-api-spec.md`，无对外接口时写省略口径）
+- **系统数据结构设计概述**：逻辑结构 / 概念模型入口。（→ `docs/06-db-design.md` 概念模型；无持久化时写省略口径）
+- **安全保密设计**：信任边界 / 凭证 / 数据外发要点。（→ `docs/05-tech-spec.md` 安全隐私、本文系统上下文图信任边界列）
+- **维护设计**：部署 / 备份要点。（→ `docs/env/*`、部署相关文档）
 
 ## 1. 架构目标与约束
 
@@ -65,7 +75,7 @@ flowchart LR
 
 【撰写提要：每个模块职责要清晰，避免把无关能力塞入当前 Phase。非平凡模块应指向 `docs/design/<子系统>.md`；页面型系统应标出前端入口 / 页面模块，并指向 `docs/design/frontend-interaction.md` 或对应 `docs/design/*interaction*.md`。】
 
-复杂 Web / 全栈交互项目还应说明是否触发 `template-docs/web-fullstack-profile.md`，并标出 App Shell、页面 / feature 边界、前后端组件协作和最小 vertical slice；不触发时写明豁免理由。
+复杂 Web / 全栈交互项目还应说明是否触发 `template-docs/profiles/web-fullstack-profile.md`，并标出 App Shell、页面 / feature 边界、前后端组件协作和最小 vertical slice；不触发时写明豁免理由。
 
 | MOD-ID | 模块 | 职责 | 输入 | 输出 | 边界 / 不负责 | 关联组件 | 关联设计 |
 |---|---|---|---|---|---|---|---|

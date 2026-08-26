@@ -1,7 +1,7 @@
 # Document Lifecycle Rules（文档生命周期生成规则）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 本文件定义从产品愿景到需求、总体设计、详细设计、实现计划、测试验证、代码实现的文档生命周期生成规则。AI 生成或修改任何项目事实文档时，必须先识别该文档的上游输入、约束来源、输出职责和下游影响，不得凭空生成。
 
@@ -49,7 +49,7 @@ docs/inputs 原始输入包
 
 关键阶段转换前可使用 `ai/prompts/review/19-docs-evaluation.md` 做文档评估，输出 `Go / Conditional Go / No Go`。评估报告默认只读输出；用户确认落盘后写入 `docs/research/YYYY-MM-DD-docs-evaluation-<scope>.md`，不得写入 `docs/` 根目录，也不得替代 00-09 正式修订。
 
-生成或修订 `docs/05-tech-spec.md` 前，若项目涉及真实运行依赖（如 `backend/`、`frontend/`、`docker/`、数据库、本机模型、外部 API、重型 SDK），应先使用 `ai/prompts/review/20-tech-env-evaluation.md` 做技术路线与环境支撑评估，或在 `ai/project-rules.md` §2.1 / `docs/05-tech-spec.md` 说明跳过理由、风险和补做时点。技术环境评估报告默认只读输出；用户确认落盘后写入 `docs/research/YYYY-MM-DD-tech-env-evaluation-<scope>.md`，不得替代 `docs/env/local-env.md` 或 `docs/05-tech-spec.md`。评估结论应回填或引用到 `05` 的 Risk-ID / readiness gate、`09` 验证项和 `08` Sprint 解锁条件。`collect-env` 只采集事实，不等于评估通过。
+生成或修订 `docs/05-tech-spec.md` 前，若项目涉及真实运行依赖（如 `project/backend/`、`project/frontend/`、`project/docker/`、数据库、本机模型、外部 API、重型 SDK），应先使用 `ai/prompts/review/20-tech-env-evaluation.md` 做技术路线与环境支撑评估，或在 `ai/project-rules.md` §2.1 / `docs/05-tech-spec.md` 说明跳过理由、风险和补做时点。技术环境评估报告默认只读输出；用户确认落盘后写入 `docs/research/YYYY-MM-DD-tech-env-evaluation-<scope>.md`，不得替代 `docs/env/local-env.md` 或 `docs/05-tech-spec.md`。评估结论应回填或引用到 `05` 的 Risk-ID / readiness gate、`09` 验证项和 `08` Sprint 解锁条件。`collect-env` 只采集事实，不等于评估通过。
 
 | 评估码 | 阶段转换 | 核心问题 |
 |---|---|---|
@@ -58,9 +58,11 @@ docs/inputs 原始输入包
 | E3 | 总体设计 → 详细设计 | 06/07/design 是否覆盖关键模块、数据、接口、前端交互、UI 原型策略和流程 |
 | E4 | 详细设计 → 实现计划 | Sprint 是否可执行、粒度是否合适、禁止事项是否明确 |
 | E5 | 实现计划 → 验证 | 09 是否覆盖 REQ 与 Sprint 验收，Mock / 降级边界是否明确 |
-| E6 | 实现结果 → 文档回写 | 代码事实是否需要反向同步到 docs |
+| E6 | 实现结果 → 文档回写 | 代码事实是否需要反向同步到 docs（落点约束见本节下方「E6 反向同步落点约束」） |
 
 评估结论含义：`Go` 表示可进入下一阶段；`Conditional Go` 表示满足指定条件或风险接受口径后可进入；`No Go` 表示存在阻塞缺口，不得进入下一阶段。
+
+**E6 反向同步落点约束**：代码事实反向同步时，实现证据（表名 / 接口 ID / migration 号 / 类名 / 实现算法 / Sprint 号 / 版本演进史）落 `docs/09-verification.md`、`docs/design/*`（实现偏差 / 设计回写区）、CHANGELOG 与实现索引；`docs/00-05`（需求规格 / 概要设计层）只保留「状态 + 追溯指针」，不得倒灌实现机制细节。若需求 / 概要文档需承载「REQ → 实现证据」单点索引，应另立独立文档（如 `docs/design/req-implementation-index.md`）并在原矩阵处挂指针，不内联在需求 / 概要矩阵行。审计口径见 `ai/prompts/review/19-docs-evaluation.md`「阶段归属审计」维度。
 
 ## 3. 多入口生成策略
 
@@ -165,7 +167,7 @@ AI 生成、精修、审计或评估项目事实文档时，必须区分三层�
 
 UI Brief Intake 用于在输入评审、需求探索原型、正式前端交互设计或前端实现前补齐 UI / UX 输入，不是正式设计或验收文档。若项目涉及 Web、移动端、小程序、桌面端、可点击 Demo 或复杂页面，但输入材料缺少参考产品、演示主线、页面结构、信息密度、首屏目标、设备范围、视觉禁区、状态反馈或权限可见性，应先补 UI brief，再进入需求探索原型、前端交互设计、UI 原型策略或编码。
 
-UI brief 推荐两类路径：用户原始输入补充放 `docs/inputs/ui-brief.md`；AI 与用户共同探索形成的研究记录放 `docs/research/YYYY-MM-DD-ui-brief-intake.md`。模板见 `template-docs/ui-brief-intake-template.md`。UI brief 中的 AI 推断必须标注为待确认，用户确认后才可回填到 `docs/design/frontend-interaction.md`、UI 原型策略、`docs/08-dev-plan.md` 和 `docs/09-verification.md`；未经确认不得直接写成已确认需求、接口、权限、Sprint 必过项或验收目标。
+UI brief 推荐两类路径：用户原始输入补充放 `docs/inputs/ui-brief.md`；AI 与用户共同探索形成的研究记录放 `docs/research/YYYY-MM-DD-ui-brief-intake.md`。模板见 `template-docs/templates/ui-brief-intake-template.md`。UI brief 中的 AI 推断必须标注为待确认，用户确认后才可回填到 `docs/design/frontend-interaction.md`、UI 原型策略、`docs/08-dev-plan.md` 和 `docs/09-verification.md`；未经确认不得直接写成已确认需求、接口、权限、Sprint 必过项或验收目标。
 
 ### 5.2.1 UI Exploration to Delivery Pipeline / UI 探索到交付路径
 
@@ -183,7 +185,7 @@ docs/inputs/*
   → docs/design/frontend-interaction.md / docs/design/*interaction*.md
   → UI 原型策略 / 实现前原型记录
   → docs/08-dev-plan.md / tasks/*
-  → frontend/* / tests
+  → project/frontend/* / tests
   → docs/09-verification.md
 ```
 
@@ -197,9 +199,9 @@ docs/inputs/*
 | 体验 Brief | `docs/design/frontend-experience-brief.md` | 已确认设计输入 | 沉淀已确认体验原则、信息架构方向、视觉 / 密度 / 文案方向和阶段边界 | 可回填 `frontend-interaction` | 不写未确认方案，不定义 API / DB |
 | 正式交互设计 | `docs/design/frontend-interaction.md` 或 `docs/design/*interaction*.md` | 设计事实 | 记录页面 / 路由、用户流、状态、权限可见性、接口依赖和验收路径 | 设计评审 Go / Conditional Go，可进入 UI 原型策略或实现计划 | 不新增未授权需求 / 接口 / 验收目标 |
 | 实现前 UI 原型 | 代码原型 / HTML / Storybook / Figma / 截图证据 | 实现前确认 | 验证正式设计的视觉、点击路径、组件密度和覆盖状态 | 用户确认 + `08/09` 就绪 | 不替代 `09`，不新增需求 |
-| 实现与验证 | `frontend/*`、`tests`、`08`、`09` | 实现 / 已验证 | 按任务实现并留存验证证据 | `09` 记录 TC / smoke / 截图 / 人工验收结论 | 不实现 research 未确认内容 |
+| 实现与验证 | `project/frontend/*`、`tests`、`08`、`09` | 实现 / 已验证 | 按任务实现并留存验证证据 | `09` 记录 TC / smoke / 截图 / 人工验收结论 | 不实现 research 未确认内容 |
 
-> 知识来源与选择规则见 `template-docs/ui-knowledge/README.md`（视觉 / 交互模式与来源索引，按 scope 读取）；项目级参考分析落盘模板见 `template-docs/frontend-ui-reference-analysis-template.md`。
+> 知识来源与选择规则见 `template-docs/ui-knowledge/README.md`（视觉 / 交互模式与来源索引，按 scope 读取）；项目级参考分析落盘模板见 `template-docs/templates/frontend-ui-reference-analysis-template.md`。
 
 晋级 Gate 至少包含：
 
@@ -222,7 +224,7 @@ docs/inputs/*
 前端交互设计是 `docs/design/*` 的页面 / 交互型子类型，不新增 `docs/00-09` 固定编号，推荐路径为 `docs/design/frontend-interaction.md`；多入口项目可拆成 `docs/design/*interaction*.md`。满足以下任一条件时，开发前应补充该文档，或在 `ai/project-rules.md` §3 / `docs/05-tech-spec.md` 说明豁免理由：
 
 - 交付形态包含独立 Web、移动端、小程序、桌面端或其他可点击 UI。
-- `ai/project-rules.md` §3 保留 `frontend/`，且项目交付物包含多页面交互。
+- `ai/project-rules.md` §3 保留 `project/frontend/`，且项目交付物包含多页面交互。
 - `docs/08-dev-plan.md` 的 Sprint 修改范围包含前端页面、组件、编辑器、搜索 / 问答 UI、管理页或桌面端集成。
 - 存在多页面、多角色、多入口、跨页面流程、复杂表单、筛选、列表、详情、审批、状态流或异常处理。
 - 验收依赖点击路径、页面状态或用户操作。
@@ -240,7 +242,7 @@ UI 原型策略是 UI 型项目进入前端实现前的可视化门禁，解决�
 - 存在多角色、多空间、多租户、权限可见性或数据隔离。
 - Mock / Demo / 降级能力需要在界面上明确用户可见口径，避免被误读为真实生产能力。
 
-UI 原型策略至少记录：是否需要开发前可视化原型、原型形式（Figma / Penpot / Balsamiq / Axure / Storybook / 代码原型 / 截图标注 / 其他）、原型权威位置、覆盖页面 / 主流程 / 状态 / 设备或浏览器范围、与 `docs/design/frontend-interaction.md` / `08` / `09` 的追溯、未覆盖项和豁免理由。生成、精修、审计或评估该策略时必须对照 `ai/doc-standards/ui-prototype-strategy.md`；需要独立记录时可使用 `template-docs/ui-prototype-strategy-template.md`。工程驱动且已有前端框架的项目可优先采用“代码原型 + Mock 数据 + 截图 / smoke 证据”；需要跨角色协作或沉淀设计系统的项目可优先 Figma / Penpot；早期只需确认布局与流程时可使用低保真草图或截图标注；组件库可组合 Storybook 与设计稿。
+UI 原型策略至少记录：是否需要开发前可视化原型、原型形式（Figma / Penpot / Balsamiq / Axure / Storybook / 代码原型 / 截图标注 / 其他）、原型权威位置、覆盖页面 / 主流程 / 状态 / 设备或浏览器范围、与 `docs/design/frontend-interaction.md` / `08` / `09` 的追溯、未覆盖项和豁免理由。生成、精修、审计或评估该策略时必须对照 `ai/doc-standards/ui-prototype-strategy.md`；需要独立记录时可使用 `template-docs/templates/ui-prototype-strategy-template.md`。工程驱动且已有前端框架的项目可优先采用“代码原型 + Mock 数据 + 截图 / smoke 证据”；需要跨角色协作或沉淀设计系统的项目可优先 Figma / Penpot；早期只需确认布局与流程时可使用低保真草图或截图标注；组件库可组合 Storybook 与设计稿。
 
 若用户未给专业 UI 风格、字号、密度、导航模式或设计系统，AI 应先基于成熟产品惯例给出推荐基线，并说明理由和风险，不应把专业判断从零抛给用户。常见默认基线包括：管理后台 / 表单系统可参考 Ant Design、Fluent、Atlassian 类后台；知识库 / 文档工作台可参考 Notion、Obsidian、Linear、飞书文档类生产力工具；数据密集表格可参考 data grid、BI、issue tracker；聊天 / 问答界面可参考 ChatGPT、Slack、Copilot 类问答；营销落地页才使用大字号、大留白和强品牌视觉。若采用非默认风格，必须说明原因。
 
@@ -433,7 +435,7 @@ UI 原型策略至少记录：是否需要开发前可视化原型、原型形�
 | `docs/07-api-spec.md` | API 层、前端调用、集成测试 |
 | `docs/design/*` | `08/09`、相关实现任务 |
 | `docs/08-dev-plan.md` / `tasks/*` | 当前实现范围和测试计划 |
-| code / tests | 若代码事实偏离文档，必须走文档反向同步；若代码超出已批准需求，优先标记越界风险，不得直接把越界事实写入需求文档 |
+| code / tests | 若代码事实偏离文档，必须走文档反向同步（落点按 §2「E6 反向同步落点约束」）；若代码超出已批准需求，优先标记越界风险，不得直接把越界事实写入需求文档 |
 
 横切事实 / 约束变更完成后，必须做一次聚焦的跨文档一致性检查，输出受影响文档清单、各项一致性核对结果和残留待确认项。
 
@@ -482,7 +484,7 @@ AI 生成或修改任何项目事实文档前，先输出简短声明：
 
 需求探索原型用于在正式 `00-03` 定稿、架构和技术路线选择前，用可视化方式帮助用户确认系统边界、页面结构、主流程、信息密度、文案方向和关键状态。它适合触发于“我想先看原型 / 先做页面原型确认需求 / 先别定技术栈，先把界面流程画出来 / Demo 前先确认交互”等场景。
 
-需求探索原型默认输出为探索报告或原型记录，推荐路径为 `docs/research/YYYY-MM-DD-ui-prototype-exploration.md`，结构可参考 `template-docs/ui-prototype-exploration-template.md`。它不是 `docs/00-09` 的替代品，也不是 `docs/design/frontend-interaction.md` 或 UI 原型策略的替代品；确认前不得写成已确认需求、架构、接口、数据表、技术栈、任务或验收通过证据。
+需求探索原型默认输出为探索报告或原型记录，推荐路径为 `docs/research/YYYY-MM-DD-ui-prototype-exploration.md`，结构可参考 `template-docs/templates/ui-prototype-exploration-template.md`。它不是 `docs/00-09` 的替代品，也不是 `docs/design/frontend-interaction.md` 或 UI 原型策略的替代品；确认前不得写成已确认需求、架构、接口、数据表、技术栈、任务或验收通过证据。
 
 约束：
 
@@ -546,8 +548,10 @@ AI 生成或修改后输出：
 | `docs/07-api-spec.md` | 接口交互 / 时序图 |
 | `docs/design/*` | 流程图、状态机、交互图 |
 
-**格式**：默认 `mermaid`（GitHub 原生渲染），可选 `plantuml`；项目可在 `ai/project-rules.md §2.2` 覆盖默认。
+**格式**：默认 `mermaid`（GitHub 原生渲染），可选 `plantuml`；项目可在 `ai/project-rules.md §2.2` 覆盖默认。**例外**：用例图使用 `plantuml`——mermaid 无原生用例图语法（无椭圆用例 / actor / `<<include>>` 语义），规范 UML 用例图只能用 plantuml `usecase` 表达；GitHub 不原生渲染 plantuml，需本机 / CI 预览，因此用例图仅作为 OO overlay 可选项而非默认要求。
 
 **性质**：「建议 + 默认」而非强制——图表服务于表达，不要求每类文档必须凑齐所有图；但涉及架构 / 数据 / 接口 / 关键流程的设计文档应有对应图表。生成或精修设计文档时（见 `template-docs/scenario-guides.md` A7），AI 应按本节出图，并提示用户确认格式偏好。
 
 图纸审核四维度（让图可审 / 可追溯 / 可验收，不改本节柔性）：① 可渲染（mermaid 默认或 `ai/project-rules.md` §2.2 指定格式）；② 有图 ID（`DIAG-<DOC>-<TYPE>-<NN>`，如 `DIAG-ARCH-01` / `DIAG-API-SEQ-01` / `DIAG-DB-ER-01`，可被评审 / 验收指名）；③ 可追溯（架构图→REQ / 模块，时序图→API-ID / 关键流程，ER 图→表 / REQ，状态图→子系统 / TC，挂 §6 追溯链）；④ 覆盖异常 / 降级 / 权限路径，非仅正常路径。各 doc-standards（04 / 06 / 07）按此落实关键图字段与检查项。
+
+**图表生成式镜像（可选机制）**：图表密集的 Full 剖面项目可在 `docs/diagrams/` + `docs/tables/` 建生成式镜像目录——脚本从文档正文（唯一权威源）抽取全部 fenced mermaid / plantuml 图块与核心矩阵表，每图 / 表一文件 + `INDEX.md`（按 §2 PLM 阶段分组 + 按文档反查），作为审核主入口。约束：镜像头部声明「生成式产物、不手改、以源文档为准」；启用前提是 CI 有 `--check` 同步校验（镜像与源不一致即红），未启用 CI 校验的项目不建议建镜像目录（过期镜像误导审核）；增量日志型表（Sprint 完成包 / 验收记录）只挂锚点链接不抽镜像。脚本样例见 `template-docs/examples/extract-diagrams.mjs`。

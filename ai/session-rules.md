@@ -1,9 +1,9 @@
 # Session Rules（AI 会话续接与断点恢复规则）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
-本文件定义 AI CLI / 多 AI 工具协作时的本地会话续接规则。它只管理“任务状态交接”，不替代 `docs/`、`tasks/`、`_proposals/` 或 Git 提交记录。
+本文件定义 AI CLI / 多 AI 工具协作时的本地会话续接规则。它只管理“任务状态交接”，不替代 `docs/`、`tasks/`、`_governance/_proposals/` 或 Git 提交记录。
 
 ## 1. 续接文件定位与裁决优先级
 
@@ -76,7 +76,7 @@ AI 每次在项目中开始分析、设计或编码前，应按以下顺序恢�
 
 当用户只说“读取续接点”“继续上次”“恢复上下文”“resume”或类似表达，且没有明确要求继续执行远端 issue / PR、同步、合并、关闭、清理或编码任务时，默认进入**快速续接模式**。目标是在约 2 分钟内给出可行动的恢复摘要，而不是做完整审计。
 
-快速续接模式只服务“恢复摘要”，不是分析、设计、编码或任务执行入口；因此默认不展开读取任务规则包。最小规则读取范围为：入口规则中的快速续接例外说明、`ai/session-rules.md` §1 / §3.1，以及必要时的 `ai/commands/resume.md`。一旦用户要求继续执行任务，或需要修改文件、联网复核远端、处理 issue / PR、同步、提交、清理分支、分析设计或编码，立即退出快速续接模式，按 `ai/index.md` 的对应 command / 任务路由读取规则；无法判断时读取完整规则回退包。
+快速续接模式只服务“恢复摘要”，不是分析、设计、编码或任务执行入口；因此默认不展开读取任务规则包。最小规则读取范围为：入口规则中的快速续接例外说明、`ai/session-rules.md` §1 / §3.1，以及 `ai/commands/resume.md` 的恢复摘要输出契约。后者是快速续接答复格式的唯一权威源，本节只定义读取范围与裁决，避免双写。一旦用户要求继续执行任务，或需要修改文件、联网复核远端、处理 issue / PR、同步、提交、清理分支、分析设计或编码，立即退出快速续接模式，按 `ai/index.md` 的对应 command / 任务路由读取规则；无法判断时读取完整规则回退包。
 
 Windows / PowerShell 环境读取中文规则或续接文件时，如输出出现乱码但命令成功，先判定为编码输出问题，不得把乱码当作文件损坏、续接缺失或规则事实。应使用显式 UTF-8 重读最小必要文件后再继续，例如：
 
@@ -93,12 +93,12 @@ Get-Content -Path ai/session-rules.md -Encoding UTF8 -Raw
 3. `git stash list`
 4. `git worktree list`（除主工作区外存在活跃 worktree 时，作为恢复摘要的上下文一并报告）
 5. 读取 `VERSION`（若存在）
-6. 读取 `.ai/session-handoff.md` 的元数据、当前状态、下次优先做和阻塞 / 待确认；若不存在，再读 `NEXT-STEPS.md`
+6. 读取 `.ai/session-handoff.md` 的元数据、`Current Action Card`（存在时）、当前状态和阻塞 / 待确认；没有行动卡的旧 handoff 再读取“下次优先做”。若 handoff 不存在，再读 `NEXT-STEPS.md`
 
 快速续接模式默认**不做**：
 
 - 不联网，不查询 GitHub issue / PR / Actions，不刷新远端镜像。
-- 不读取大段历史文档、完整 `CHANGELOG.md`、全部 `_proposals/` 或归档目录。
+- 不读取大段历史文档、完整 `CHANGELOG.md`、全部 `_governance/_proposals/` 或归档目录。
 - 不继续执行任务、不关闭 issue、不删除分支、不提交 / 推送。
 - 不把过期 handoff 的“下次优先做”直接当作当前事实。
 
@@ -109,7 +109,7 @@ Get-Content -Path ai/session-rules.md -Encoding UTF8 -Raw
 - 若 Git 工作区 dirty、存在 stash、当前分支与 handoff 分支不同，或用户贴出的中断日志与 handoff 冲突，先列出冲突和不确定项，等待用户确认。
 - 远端状态只可写成“未复核”；只有用户明确要求“继续处理远端 issue / PR”或“执行下一步”时，才切换到对应命令并按写入确认规则执行。
 
-快速续接输出至少包含：当前分支与工作区、最近提交 / 版本、handoff 新鲜度（fresh / stale / missing）、可继续事项、待确认项、未复核的远端事项。
+快速续接最终答复必须遵守 `ai/commands/resume.md` 的「恢复摘要输出契约」；其中的“唯一下一步”“阻塞 / 待确认”“独立 backlog”和“依据”不得省略。当前分支与工作区、最近提交 / VERSION、handoff 新鲜度（fresh / stale / missing）和未复核远端事项仍为最低事实字段。
 
 ### 3.2 同会话规则复用边界
 
@@ -136,6 +136,27 @@ Checkpoint Mode 是非快速续接任务的执行中防跑飞协议；触发条�
 5. **长输出摘要**：成功的长输出检查只保留命令、退出码 / 结论和关键摘要；失败、警告或不稳定结果保留最小可定位片段，不能用摘要掩盖失败细节。
 6. **远端短轮询**：GitHub issue / PR / Actions 只读查询可在用户授权的远端阶段内合并执行；CI pending 即汇报 pending，不长时间等待。
 7. **续接可恢复**：每个阶段性节点应输出可复制的续接摘要；若任务形成可继续状态，按 §4 / §5 维护 `.ai/session-handoff.md`，但不得让 handoff 替代正式文档、提案、PR 或验证记录。
+
+### 3.4 跨仓角色声明（派生仓会话中的模板维护者任务）
+
+模板 ↔ 派生是两个独立仓库、两种角色（维护者 / 使用者），但同一 owner 常在同一台机器、甚至同一个 CLI 会话里先后触碰两边。规则已约束「文件流向三方向别混」（上行回流开 issue / 模板治理走 PR / 下行走同步脚本，见 `CONTRIBUTING.md` §2）；本节补「会话角色绑定」——在派生仓会话中执行模板维护者任务时的入口级声明。
+
+**触发**：派生仓会话中，用户要求执行**模板维护者任务**（triage 收件箱 / 模板仓建分支改文件 / 模板仓 PR / 模板发版 / 维护者侧同步登记）时，AI 在动手前必须输出一段角色切换声明：
+
+```text
+[角色切换] 使用者 → 模板维护者
+目标仓库：<模板仓路径>；当前目录仍是派生仓 <路径>
+本轮将动：<模板仓分支 / 文件类别>
+建议：<若任务非即时，建议在模板仓目录新开会话执行>
+```
+
+**语义**：声明不是请求许可（用户点单已是授权），是让角色边界可审计——会话记录里能定位「从哪句话起在替模板仓干活」。跨仓操作仍按 §3.3 Checkpoint Mode 高风险单步确认执行；本声明是其入口级前置，不改变逐步确认粒度。若用户任务不要求即时执行（如「下次做 triage」），AI 应建议在模板仓目录新开会话，而不是在本会话挂起维护者任务。
+
+**维护者任务残留边界**：triage / 模板治理产出的维护者计划（分批、拟改文件、版本影响）留在模板仓 handoff 与提案，不写入派生仓 handoff 的任务清单；派生仓会话若后续继续派生开发，不得带着「模板待改清单」惯性误判派生仓文件。
+
+**同步覆盖件保护**：派生仓中的 `MAINTAINERS.md` / `CONTRIBUTING.md` / `ai/prompts/maintainers/*` 是同步覆盖件；派生仓会话中若拟修改这些文件，写入确认时必须附带「此为同步覆盖件，直改会被下次同步覆盖，应走回流提案」提示。
+
+反向（模板仓会话中执行派生开发任务）同理：声明目标派生仓，改文件以派生仓 Git 为锚点。操作发起目录建议表见 `CONTRIBUTING.md` §5.1。
 
 ## 4. 自动更新触发点
 
@@ -164,7 +185,7 @@ token hotspot 是可选的 AI 协作观察记录，用于记录上下文读取�
 | 类型 | 路径 | Git 语义 |
 |---|---|---|
 | 单条原始记录（默认） | `.ai/token-hotspots/YYYY-MM-DD-<task-slug>.md` | gitignored，**纯本地、不询问、不上传** |
-| 阶段汇总（提炼后的有价值结论） | `ai-records/token-hotspots/SUMMARY.md`、`ai-records/token-hotspots/summaries/` | **入库**，需用户确认并走 PR |
+| 阶段汇总（提炼后的有价值结论） | `_governance/ai-records/token-hotspots/SUMMARY.md`、`_governance/ai-records/token-hotspots/summaries/` | **入库**，需用户确认并走 PR |
 
 单条记录是过程性材料，默认只本地保留；只有被提炼进汇总、值得跨会话 / 跨项目参考的结论才入库。派生项目启用此机制时，需自行在 `.gitignore` 补 `.ai/token-hotspots/`（`.gitignore` 不纳入下行同步，各项目自行维护）。
 
@@ -172,16 +193,16 @@ token hotspot 是可选的 AI 协作观察记录，用于记录上下文读取�
 
 - 从快速续接进入分析 / 设计 / 写入任务后，又完整读取 `ai/index.md` 及其规则清单。
 - 执行模板维护、提案评估、文档审计、同步整理、编码实现、PR / CI 闭环等较长任务，并多次读取大文件、长日志或重复运行大输出命令。
-- `scripts/check-template.*`、CI 日志、GitHub PR / Actions 状态、`_proposals/` / `_archive/` / `ai/prompts/` 等成为主要上下文成本。
+- `scripts/check-template.*`、CI 日志、GitHub PR / Actions 状态、`_governance/_proposals/` / `_governance/_archive/` / `ai/prompts/` 等成为主要上下文成本。
 - 用户询问 token 消耗、上下文热点、是否触发 hotspot，或显式要求记录本轮热点。
 
 写入与处置协议：
 
 - **默认本地、不询问、不上传**：单条 hotspot 记录默认写入 gitignored 的 `.ai/token-hotspots/`，AI 直接写入即可，不需要每次询问“保留 / 提交 / 删除”，也不进入正式提交。
 - **“不提交”不等于“删除”**：用户说“不用上传 / 不提交远端”时，AI 必须保留本地记录，**不得自动删除**；删除本地记录必须由用户明确说出“删除”。
-- **三选一仅用于入库决策**：只有当用户考虑把某条记录**入库**（写进 `ai-records/token-hotspots/`）时，AI 才给出三选一——保留本地不入库 / 作为观察材料提交走 PR / 删除；用户说“提交 / 走 PR”才按模板维护流程切分支、提交、push、PR。
+- **三选一仅用于入库决策**：只有当用户考虑把某条记录**入库**（写进 `_governance/ai-records/token-hotspots/`）时，AI 才给出三选一——保留本地不入库 / 作为观察材料提交走 PR / 删除；用户说“提交 / 走 PR”才按模板维护流程切分支、提交、push、PR。
 - 记录不得包含 token、密钥、账号密码、客户敏感数据、完整对话正文或无法提交到仓库的隐私事实；只记录任务类型、文件路径、命令类别、热点判断、质量影响和优化建议。
-- 若 `.ai/token-hotspots/` 不存在，首次创建目录无需等待确认（本地观察材料，已 gitignore）；若需写入入库路径 `ai-records/token-hotspots/`，首次创建前仍需说明并等待用户确认。
+- 若 `.ai/token-hotspots/` 不存在，首次创建目录无需等待确认（本地观察材料，已 gitignore）；若需写入入库路径 `_governance/ai-records/token-hotspots/`，首次创建前仍需说明并等待用户确认。
 
 验证证据摘要约定：
 
@@ -192,11 +213,11 @@ token hotspot 是可选的 AI 协作观察记录，用于记录上下文读取�
 
 单条 hotspot 记录在本地累计后，应主动提示阶段性汇总，提炼出入库的 `SUMMARY.md`，避免重复热点分散、不回流。**汇总循环**：本地攒若干条单条 → 提炼成 SUMMARY 入库 → 本地单条可清理 / 归档。AI 收尾自检（§4 触发点）时顺带核对本地未汇总计数；累计 ≥3 份即按 rollup 流程提示，不靠事后想起。
 
-- 当本地 `.ai/token-hotspots/` 有 **3 份及以上未被 summary 覆盖**的记录时，AI 在相关任务收尾前应提示“已有多份 token hotspot 记录，建议生成 / 更新阶段性 summary”，并询问是否把提炼结论写入入库路径 `ai-records/token-hotspots/SUMMARY.md`（单条仍留本地）。
+- 当本地 `.ai/token-hotspots/` 有 **3 份及以上未被 summary 覆盖**的记录时，AI 在相关任务收尾前应提示“已有多份 token hotspot 记录，建议生成 / 更新阶段性 summary”，并询问是否把提炼结论写入入库路径 `_governance/ai-records/token-hotspots/SUMMARY.md`（单条仍留本地）。
 - 若已有 `SUMMARY.md`，且上次 summary 后本地又新增 **3 份及以上**记录，AI 应提示更新。
 - 若用户显式询问 token 消耗、hotspot 机制、“为什么没有 summary”或要求“分析 hotspots / 形成 summary”，AI 可直接按授权生成 / 更新。
 - summary（入库）的写入边界严于单条：默认识别并询问，不得静默创建 / 修改；首次创建或更新 `SUMMARY.md` 前需说明目标路径、内容类别和隐私过滤口径，并按 `ai/project-rules.md` §6 取得确认。
-- summary 不替代 handoff、正式文档、验证记录或模板提案；可复用的模板改进须另起 `_proposals/TEMPLATE-UPGRADE-*.md`，已转提案的记录不重复作为同一问题的 summary 输入（除非用户明确要求复盘）。
+- summary 不替代 handoff、正式文档、验证记录或模板提案；可复用的模板改进须另起 `_governance/_proposals/TEMPLATE-UPGRADE-*.md`，已转提案的记录不重复作为同一问题的 summary 输入（除非用户明确要求复盘）。
 - 已纳入 SUMMARY 的记录不得再次计入 3 份阈值；旧记录状态缺失时，AI 应先按 SUMMARY 覆盖边界判断，无法判断时列为“需人工确认”，不得直接重复纳入。
 
 summary 最小结构（写入 `SUMMARY.md` 时参考）：
@@ -213,7 +234,7 @@ summary 最小结构（写入 `SUMMARY.md` 时参考）：
 ## 2. 为什么触发 / 为什么此前未触发
 ## 3. 重复热点模式（规则读取 / 文档读取 / 代码探索 / 验证日志 / 环境诊断 等）
 ## 4. 已形成的改进建议（区分必须保留 / 应压缩 / 应沉淀 / 应拆会话）
-## 5. 模板回流判断（是否需要形成 _proposals/ 提案，去项目化边界）
+## 5. 模板回流判断（是否需要形成 _governance/_proposals/ 提案，去项目化边界）
 ```
 
 单条 hotspot 记录**必须填写**汇总状态字段（新记录必填；旧记录不强制改写，逐步补齐），方便识别 rollup 范围与避免重复分析：
@@ -223,18 +244,18 @@ summary 最小结构（写入 `SUMMARY.md` 时参考）：
 - 处置状态（可选）：本地未提交 / 已提交 PR #<n> / 已合并 <commit> / 已删除（用户确认）
 ```
 
-> 上述“必填”为写入时的字段完整性要求（AI 自觉），**不引入 `scripts/check-template.sh` 自检断言或 CI 门禁**，与 `template-docs/rd-data-chain.md` §4「无自检门禁、避免过度治理」一致。
+> 上述“必填”为写入时的字段完整性要求（AI 自觉），**不引入 `scripts/check-template.sh` 自检断言或 CI 门禁**，与模板仓 `template-docs/maintainer/rd-data-chain.md` §4「无自检门禁、避免过度治理」一致（该文件为模板仓文档，v1.66.0 起不下行）。
 
 ### 4.3 坑 / 问题观察日志（pitfall observation log）
 
-pitfall observation log 是可选的 AI 协作观察记录，与 §4.1 token-hotspot 平行：**token-hotspot 管 AI 开发的上下文 / 成本热点，pitfall 管 AI 引入或踩到的坑 / 问题 / 教训**（bug、流程执行坑、低效行为导致的返工或缺陷）。它是定期审视的原始材料，不是项目事实文档，不替代 `.ai/session-handoff.md`、`docs/08-dev-plan.md`、`docs/09-verification.md` 或 `_proposals/`。
+pitfall observation log 是可选的 AI 协作观察记录，与 §4.1 token-hotspot 平行：**token-hotspot 管 AI 开发的上下文 / 成本热点，pitfall 管 AI 引入或踩到的坑 / 问题 / 教训**（bug、流程执行坑、低效行为导致的返工或缺陷）。pitfall 记录既覆盖「当场踩的坑」，也覆盖「维护中发现的存量 AI 代码问题」——后者是检验与完善代码生成规范的主要输入。它是定期审视的原始材料，不是项目事实文档，不替代 `.ai/session-handoff.md`、`docs/08-dev-plan.md`、`docs/09-verification.md` 或 `_governance/_proposals/`。
 
 **路径分层（v1.61.1 起）**：
 
 | 类型 | 路径 | Git 语义 |
 |---|---|---|
 | 单条原始记录（默认） | `.ai/pitfalls/YYYY-MM-DD-<short-name>.md` | gitignored，**纯本地、不询问、不上传** |
-| 阶段汇总（提炼后的有价值结论） | `ai-records/pitfalls/SUMMARY.md`、`ai-records/pitfalls/summaries/` | **入库**，需用户确认并走 PR；**默认不建**，只有提炼出值得跨会话 / 跨项目参考的脱敏结论时才创建 |
+| 阶段汇总（提炼后的有价值结论） | `_governance/ai-records/pitfalls/SUMMARY.md`、`_governance/ai-records/pitfalls/summaries/` | **入库**，需用户确认并走 PR；**默认不建**，只有提炼出值得跨会话 / 跨项目参考的脱敏结论时才创建 |
 
 单条记录是过程性材料，默认只留本地；只有被提炼进汇总、值得跨会话 / 跨项目参考的结论才入库。派生项目启用此机制时，需自行在 `.gitignore` 补 `.ai/pitfalls/`（`.gitignore` 不纳入下行同步，各项目自行维护）。
 
@@ -247,21 +268,22 @@ pitfall observation log 是可选的 AI 协作观察记录，与 §4.1 token-hot
 - 根因分类：AI 引入 / 流程坑 / 环境 / 模板缺口
 - 规避或修复：（怎么绕开或修掉的）
 - 是否可通用：是 / 否（换一个项目是否还会踩）
-- 已转提案：`_proposals/...` 或 issue 链接；未转为「待审视」
+- 已转提案：`_governance/_proposals/...` 或 issue 链接；未转为「待审视」
 ```
 
 **触发与写入**：
 
 - 任务收尾自检（§4 触发点）顺带判断本次是否产生坑观察；有则写单条（1–3 行，不膨胀）。
-- **观察日志 ≠ 提案**：日志是原始材料，triage 后才转 `_proposals/TEMPLATE-UPGRADE-*.md`，避免提案收件箱噪音。
+- **存量代码维护触发**：维护、治理、重构或引入新检查器（类型检查 / lint / 契约对齐 / 测试）时，发现既有 AI 生成代码的缺陷、「看似可行实靠巧合运行」的障眼法实现、或类型 / 接口与实际契约的失配——即使问题非本次会话产生，也应记录单条（根因分类标「AI 引入」，现象注明发现场景），作为生成规范迭代的验证材料。
+- **观察日志 ≠ 提案**：日志是原始材料，triage 后才转 `_governance/_proposals/TEMPLATE-UPGRADE-*.md`，避免提案收件箱噪音。
 - 定期审视复用既有触发点：`ai/global-rules.md` §9（模板优化反馈）的任务收尾审视；**C1（`ai/prompts/maintainers/11-template-proposal-summary.md`）只负责提案 triage，不承担坑日志计数**（与 token-hotspot 计数同源——计数在收尾自检，不在 C1）。
 - 记录不得包含 token、密钥、账号密码、客户敏感数据、完整对话正文或无法提交到仓库的隐私事实；只记录现象、根因分类、规避方式、可通用性与流转去向。
 
 **累计汇总触发（rollup，类比 §4.2）**：
 
-- 当本地 `.ai/pitfalls/` 有 **3 份及以上未被 summary 覆盖**的记录时，AI 在相关任务收尾前应提示“已有多份 pitfall 记录，建议生成 / 更新阶段性 summary”，并询问是否把提炼结论写入入库路径 `ai-records/pitfalls/SUMMARY.md`（单条仍留本地）。
+- 当本地 `.ai/pitfalls/` 有 **3 份及以上未被 summary 覆盖**的记录时，AI 在相关任务收尾前应提示“已有多份 pitfall 记录，建议生成 / 更新阶段性 summary”，并询问是否把提炼结论写入入库路径 `_governance/ai-records/pitfalls/SUMMARY.md`（单条仍留本地）。
 - summary（入库）的写入边界严于单条：默认识别并询问，不得静默创建 / 修改；首次创建或更新 `SUMMARY.md` 前需说明目标路径、内容类别和隐私过滤口径，并按 `ai/project-rules.md` §6 取得确认。
-- 可通用的归纳去向 `_proposals/TEMPLATE-UPGRADE-*.md` 回流模板；项目专属的留项目 `docs/decisions/` 或项目本地日志。已转提案的记录不重复作为同一问题的 summary 输入。
+- 可通用的归纳去向 `_governance/_proposals/TEMPLATE-UPGRADE-*.md` 回流模板；项目专属的留项目 `docs/decisions/` 或项目本地日志。已转提案的记录不重复作为同一问题的 summary 输入。
 
 **生命周期与清理（类比 §4.1 / §4.2 + §6.1）**：
 
@@ -272,13 +294,13 @@ pitfall observation log 是可选的 AI 协作观察记录，与 §4.1 token-hot
 - 汇总状态：未汇总 / 已纳入 SUMMARY.md（<日期或范围>） / 已转提案 <path-or-url> / 本地保留不提交 / 已归档 <path>
 ```
 
-> 上述字段为写入时的完整性建议（AI 自觉），**不引入 `scripts/check-template.*` 自检断言或 CI 门禁**，与 `template-docs/rd-data-chain.md` §4「无自检门禁、避免过度治理」一致；模板自检不守 `.ai/pitfalls/` 内容，路径忽略由 `.gitignore` + 规则自觉保证。
+> 上述字段为写入时的完整性建议（AI 自觉），**不引入 `scripts/check-template.*` 自检断言或 CI 门禁**，与模板仓 `template-docs/maintainer/rd-data-chain.md` §4「无自检门禁、避免过度治理」一致（该文件为模板仓文档，v1.66.0 起不下行）；模板自检不守 `.ai/pitfalls/` 内容，路径忽略由 `.gitignore` + 规则自觉保证。
 
 ## 5. 写入确认边界
 
 - 若用户已明确要求执行多步骤任务、实现计划或继续维护任务，AI 可把续接文件更新视为该任务的本地状态记录，但仍应在首次写入前说明会维护本地续接文件。
 - 若 `ai/project-rules.md` 要求任何文件写入前都必须确认，且用户没有授权执行任务，则首次创建 / 修改续接文件前也应先确认。
-- 续接文件更新不得夹带正式模板规则、项目需求或设计结论；长期有效内容必须转写到 `docs/`、`tasks/`、`_proposals/`、README、SOP 或维护文档。Sprint 完成、验证通过、Phase 验收、缺陷回归或状态变化等长期事实必须回写 `docs/08-dev-plan.md` / `docs/09-verification.md`，或明确记录暂不落盘原因、风险和补做时点。
+- 续接文件更新不得夹带正式模板规则、项目需求或设计结论；长期有效内容必须转写到 `docs/`、`tasks/`、`_governance/_proposals/`、README、SOP 或维护文档。Sprint 完成、验证通过、Phase 验收、缺陷回归或状态变化等长期事实必须回写 `docs/08-dev-plan.md` / `docs/09-verification.md`，或明确记录暂不落盘原因、风险和补做时点。
 
 ## 6. 推荐结构
 
@@ -297,6 +319,20 @@ pitfall observation log 是可选的 AI 协作观察记录，与 §4.1 token-hot
 - HEAD:
 - VERSION:
 - Remote snapshot:
+
+## Current Action Card（当前行动卡）
+
+> 快速续接的默认决策入口。只记录一个推荐下一步；没有活跃任务时明确写“无”。本卡不授权执行动作，且必须接受 Git 裁决。其后的当前任务、进度、计划、下次优先做和 Latest checkpoint 用于历史说明与证据，不与本卡竞争默认决策权。
+
+- State: active / ready / blocked / closed
+- Role: maintainer / derived-user / both（该行动卡所属角色；跨仓参考时据此判断是否接续，见 §3.4）
+- Workstream:
+- Recommended next action:
+- Target repository / worktree:
+- Preconditions:
+- Stop point:
+- Blocked / confirmation:
+- Evidence:
 
 ## 活跃 worktree
 
@@ -328,7 +364,7 @@ pitfall observation log 是可选的 AI 协作观察记录，与 §4.1 token-hot
 ## 恢复命令
 ```
 
-样例见 `template-docs/session-handoff.example.md`。
+样例见 `template-docs/templates/session-handoff.example.md`。
 
 ### 6.1 Latest checkpoint rollup
 

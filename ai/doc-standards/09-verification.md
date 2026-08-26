@@ -1,7 +1,7 @@
 # 09 Verification Standard（验证计划规范镜像）
 
 > Sync notice: This file is maintained by `ai-project-template` and may be overwritten when a derived project syncs template methodology.
-> Do not edit it directly in derived projects; propose reusable changes in `_proposals/` and upstream them to the template repository.
+> Do not edit it directly in derived projects; propose reusable changes in `_governance/_proposals/` and upstream them to the template repository.
 
 本文件是 `docs/09-verification.md` 的细粒度标准，用于 AI 生成、修订、审计和评估验证计划。它不是项目事实文档，派生项目的实际验证计划、证据和验收记录仍写入 `docs/09-verification.md`。
 
@@ -18,7 +18,7 @@
 
 | 能力 | 最低字段 / 结构 |
 |---|---|
-| 文档元信息 | 当前 Phase、交付物形态、覆盖 REQ、验证状态、最后更新、上游依据 |
+| 文档元信息 | 当前 Phase、交付物形态、覆盖 REQ、验证状态、最后更新、上游依据；「当前 Phase / 验证状态」为一句话状态 + 权威源指针（默认指向 `ai/project-rules.md` §1），不整段重述阶段演进史 / Sprint / TC 收口摘要；演进叙事归本文验收记录与 CHANGELOG |
 | 验证策略 | 测试等级矩阵、证据形式、不适用原因 |
 | 系统框架 smoke | non-trivial 项目的 System Skeleton 验收：纵切可跑通、关键接口连通、错误 / 空 / 加载入口；Web 特化含 App Shell、vertical slice、API / browser smoke、权限 / 降级可见口径 |
 | REQ → TC 追溯 | REQ-ID、阶段、交付物形态、TC-ID、验证方式、通过标准、自动化 / 证据位置、状态 |
@@ -70,6 +70,7 @@
 | Mock / 降级验收 | `09` 条件通过 / 风险接受、`08` 后续补齐任务 |
 | Phase 验收 | `03` Phase 状态、`08` Phase 完成情况、`09` Phase 验收、`project-rules` 当前阶段 |
 | Phase 升级 | `project-rules`、`03/08/09`、README、handoff 状态一致性 |
+| 阶段 / Sprint / Wave 收口 | 状态标记推进须 grep 全部重述点（如「待合并 / 进行中 / 待执行」），不凭记忆只改两处；头部元信息按一句话 + 权威源指针（`ai/project-rules.md` §1）收敛 |
 
 ## 7. 审计检查
 
