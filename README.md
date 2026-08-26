@@ -38,8 +38,8 @@
 ## 模板关系
 
 - 通用方法论来自 `ai-project-template`（继承版本见 `TEMPLATE-BASE.md`）。
-- 项目自身版本记录在 `VERSION`（当前 `v0.1.0`）；知识批次入库记 MINOR，单条修正记 PATCH。
+- 项目自身版本记录在 `VERSION`（当前 `v0.1.1`）；知识批次入库记 MINOR，单条修正记 PATCH。
 - `knowledge/` 为项目自有目录，不参与模板同步；`template-docs/ui-knowledge/` 为母模板核心层镜像，其内容经同步维护，不在本仓直接改语义。
-- 如发现可通用的模板优化，先在 `_proposals/` 起草提案，再回流模板仓库。
+- 如发现可通用的模板优化，先在 `_governance/_proposals/` 起草提案，再回流模板仓库。
 
 > 仓库可见性说明：本仓当前为 public（2026-08-16 创建）；计划 2026 年 9 月后评估转回 private。
