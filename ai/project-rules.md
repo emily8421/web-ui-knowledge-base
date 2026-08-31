@@ -52,6 +52,8 @@
 
 纯文档仓：Markdown + Git。无前端 / 后端 / 数据库 / AI 模型运行时。脚本仅用模板自带 `scripts/`（check / sync 类），不新增运行时依赖。
 
+例外（v0.1.2 起）：`.claude/skills/*/scripts/` 允许存放本项目自有的**零依赖纯标准库** Python 辅助脚本（本机 Python 3.14 已装，不引入第三方依赖、不新增安装步骤）；该目录为项目自有，不参与模板同步，也不落入模板 `scripts/`。当前实例：`.claude/skills/collect-source/scripts/extract-tokens.py`（K1 收集的静态设计令牌抽取，仅 stdout）。
+
 ## 2.1 运行环境与资源约束
 
 > 字段规范见 `ai/doc-standards/project-rules.md` §4 §2.1（约束架构与技术方案选择；Demo / MVP 优先本机可运行，资源不足须在 `docs/05-tech-spec.md` 写降级策略或服务器预案；`docs/env/local-env.md` 只记录本机事实，不等于技术路线已被环境支撑）。
@@ -78,7 +80,7 @@
 
 默认从 `v0.1.0` 起步，并保持 `VERSION` 与 `CHANGELOG.md` 顶部项目版本一致；`VERSION` / `CHANGELOG.md` / `TEMPLATE-BASE.md` 关系与 `PATCH` / `MINOR` / `MAJOR` 规则见 `ai/doc-standards/project-rules.md` §4 §2.4。可按项目交付节奏覆盖默认规则，但必须在本节写明；是否使用 git tag / GitHub Release：（待确认；默认不强制）。
 
-本项目覆盖口径：知识内容批量导入 / 新来源批次入库记 MINOR；单条记录修正、链接核验更新记 PATCH；知识模型（四类记录 / 字段 / 生命周期）变更记 MAJOR。
+本项目覆盖口径：知识内容批量导入 / 新来源批次入库记 MINOR；单条记录修正、链接核验更新记 PATCH；知识模型（四类记录 / 字段 / 生命周期）变更记 MAJOR。补充口径（v0.1.2 起）：单个新来源（1 条 SRC + 对应 Case）入库记 PATCH；≥2 个新来源或成批 Case 导入记 MINOR；工具 / 技能新增（不改知识模型）记 PATCH。
 
 ## 2.5 运行时版本锁定
 
@@ -133,7 +135,7 @@
 - 错误处理 / 日志：不适用（纯文档仓）。
 
 ### 5.2 禁区（未经人工确认不得触碰）
-- 不得擅改的文件 / 模块：`template-sync.json`（同步清单）、`scripts/`（同步脚本）、`TEMPLATE-BASE.md`。
+- 不得擅改的文件 / 模块：`template-sync.json`（同步清单）、`scripts/`（同步脚本）、`TEMPLATE-BASE.md`。§5.2 的 `scripts/` 禁区指根目录模板同步脚本；`.claude/skills/**` 为项目自有目录（见 §2 例外），其内新增脚本经人工确认后允许，禁止任何第三方依赖。
 - 不得擅自引入的依赖：任何新依赖（本仓零运行时依赖）。
 - 不得自行实现的功能：镜像第三方截图 / 品牌资产（永久禁区，见 §1）；把本仓知识记录写成项目需求或验收事实。
 - 愿景 / 01 中的功能点不等于已批准实现；阶段归属以 `docs/03-prd.md` §3 路线图为准，编码以 §1 当前阶段为准。

@@ -16,7 +16,7 @@
 
 ## K1 收集一个设计参考
 
-- **说明**：看到好设计想收集——按 `knowledge/SOP-collect.md` 五步把来源与观察收进知识库，保证可追溯、许可干净、分级明确。
+- **说明**：看到好设计想收集——按 `knowledge/SOP-collect.md` 五步把来源与观察收进知识库，保证可追溯、许可干净、分级明确。本场景已由 `.claude/skills/collect-source/SKILL.md` 半自动化（S0–S5 阶段门 + 草稿评审 + 零依赖抽取脚本；Claude Code 环境外仍可按本表手工执行）。
 - **触发**：「我想收集 XX」「ima 的设计很好，收一下」「这个网站不错，进知识库」
 - **cwd·前置**：在本项目（web-ui-knowledge-base）
 
@@ -32,7 +32,7 @@
 
 - **完成判据**：`sources.md` 有登记行（含链接核验状态）· Case 文件有观察 + 排除记录 · 用户已评审（或明确留 candidate 待评）· commit 已 push 且 CI 绿
 - **下一步**：日常继续收集（K1 循环）/ 上游有更新走 K2 / 模式成熟走 K3
-- **cmd 指针**：`knowledge/SOP-collect.md`（权威 SOP）；本场景是其「单来源收集」的执行剧本
+- **cmd 指针**：`knowledge/SOP-collect.md`（权威 SOP）；本场景是其「单来源收集」的执行剧本；半自动执行入口：`.claude/skills/collect-source/SKILL.md`（含 extract-tokens.py 用法与 Plan A/B/C 采集降级）
 
 ### K1 实例参考
 

@@ -44,6 +44,7 @@
 | Sprint-ID | 目标 | 覆盖 REQ / NFR | 输入设计 / 契约 | 修改范围 | 验证包 / TC | 状态 | 任务单 |
 |---|---|---|---|---|---|---|---|
 | Sprint-1 |  | REQ-001 / F-001 | 04/05/06/07 章节 | 1-3 个模块 | TC-001 + 验收记录 | 待开始 / 进行中 / 已完成 / 条件完成 / 阻塞 | 不拆 / `tasks/task-001-xxx.md` |
+| Sprint-KB1 | K1 收集半自动化（collect-source 技能：阶段门流水线 + 零依赖抽取脚本） | Phase1 允许范围（知识收集运营，见 `ai/project-rules.md` §1） | `knowledge/SOP-collect.md`、`knowledge/scenarios.md` K1 | `.claude/skills/collect-source/**`（新增）、`ai/project-rules.md`、`knowledge/scenarios.md`、`CHANGELOG.md`/`VERSION` | 脚本冒烟 4 例（ima / linear / 坏域名 / 坏参数）+ `check-markdown-clean.ps1` + 真实目标首跑 + CI 绿 | 已完成 | 不拆 |
 
 non-trivial 项目（多模块 / 有对外接口 / 有运行依赖）首个业务功能 Sprint 前应安排或显式豁免 Sprint 0 / System Skeleton：模块边界、关键接口连通、至少一条纵切、错误 / 空 / 加载入口（不含完整业务逻辑）；复杂 Web / 全栈项目叠加 `template-docs/web-fullstack-profile.md` 的 App Shell、目录边界、文件膨胀阈值等 Web 特化。不得顺手实现完整业务。豁免须在 `ai/project-rules.md` §3 写明。
 
@@ -131,6 +132,7 @@ non-trivial 项目（多模块 / 有对外接口 / 有运行依赖）首个业�
 | 日期 | Sprint / Task | 进度 | 验证结果 | 关联提交 / PR | 下一步 | 是否已回填 09 |
 |---|---|---|---|---|---|---|
 | YYYY-MM-DD |  | 待开始 / 进行中 / 已完成 / 条件完成 / 阻塞 | 通过 / 未通过 / 未执行 |  |  | 是 / 否 / 不适用 |
+| 2026-08-31 | Sprint-KB1 | 已完成 | 脚本冒烟 4 例通过（ima.qq.com 抽到真令牌 / linear.app 部分覆盖透明提示 / 坏域名 exit 2 / 坏参数 exit 3）；`check-markdown-clean.ps1 knowledge .claude` 通过；CI 绿（提交后回填） | 待提交（v0.1.2） | 用 ant.design 首跑实测（S0 去重 → 补充观察 / 链接核验刷新 → Plan B 预期） | 不适用（纯文档仓，09 无对应 TC） |
 
 ## 7. 待人工确认项
 

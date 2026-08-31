@@ -1,0 +1,261 @@
+---
+name: collect-source
+description: >-
+  K1「收集一个设计参考」的半自动流水线（阶段门 + 人工评审）。当用户说「录入这个网站」
+  「收集一个设计参考」「这个网站/应用不错，收进知识库」「登记新来源 SRC」「产品案例观察」
+  「新来源入库」「把 XX 的设计收下来」，或给出 URL / 应用名 + 截图并要求按收集 SOP 入库时使用。
+  产出 sources.md 登记行 + CASE-*.md + 可选候选模式提名；全程 candidate，绝不自动升 reviewed。
+---
+
+# 收集录入技能（K1 半自动流水线）
+
+> 项目自有文件：位于 `.claude/skills/`，不在 `template-sync.json` 同步清单内，模板同步不覆盖。
+> 权威 SOP 仍是 `knowledge/SOP-collect.md`；本技能与其场景剧本 `knowledge/scenarios.md` K1 同源，
+> 是其「执行层」。与 SOP 冲突时以 SOP 为准；Claude Code 环境外仍可按 K1 步骤表手工执行。
+
+## 1. 用户说法
+
+- 「录入这个网站」「收集一个设计参考」「这个网站不错，收进知识库」
+- 「XX 的界面很好看，帮我拆一下收进来」「登记新来源」「产品案例观察」「新来源入库」
+- 显式调用：`/collect-source <URL 或应用名>`
+
+## 2. 适用场景
+
+- **用**：单来源收集——公开网站 URL（Plan A/B）或应用名 + 聊天内截图（Plan C）。
+- **不用**：
+  - 上游语料仓更新（走 K2：pull → diff → 选择性更新镜像）
+  - 知识晋升提名（走 K3：`_proposals/` 提案回流母模板）
+  - 纯链接核验 / 单条修正（PATCH 小流程，直接改 `sources.md` 对应列，不跑全流水线）
+  - 已 reviewed 记录的修改（降级 / 废弃走 `deprecated` 状态留痕，单独确认）
+
+## 3. 必读文件
+
+执行前必须读：
+
+1. `knowledge/SOP-collect.md` —— 五步权威 SOP（等级 / 许可 / 禁止项）
+2. `knowledge/sources.md` —— 表头字段 + 全表扫描去重（同域 / 同发布方）
+3. `knowledge/scenarios.md` K1 —— 场景剧本与完成判据
+4. `ai/rules-core.md` §2 —— 写入前确认等硬规则
+5. 本文件附录 A–E
+
+## 4. 执行流程（S0–S5 阶段门）
+
+```text
+S0 输入判定 → [G1 范围确认] → S1 许可核验 → [G2 许可结论确认] → S2 抽取(Plan A/B/C)
+→ S3 定级校验 → [G3 草稿评审] → S4 落盘准备 → [G4 提交确认] → S5 写入+校验+提交+收尾
+```
+
+### S0 输入判定（自动，只读）
+
+1. **输入定性**：URL → Plan A 起步；应用名 / 原生应用 / 登录墙 → Plan C（用户在聊天内贴截图，
+   **截图只在本对话内分析，永不落盘**——永久红线）。
+2. **去重扫描**：读 `sources.md` 全表。同域或同发布方已登记 → 切「补充观察」子流程：
+   不加新 SRC 行，在既有 SRC 下新增 Case，可顺带刷新「链接核验 / 最后核验」列。
+3. **类型定性**（对照 SOP §0）：规范(A) / 设计系统(B) / 研究(B) / 产品案例(C) / 代码仓(C) /
+   视觉合集(D) → 定前缀 `SRC-A11Y/DS/HAI/VIS/RES/PROD/CODE-*` 与下一个可用编号。
+
+### G1 范围确认（人工门，必须问）
+
+> 「本次收集范围确认：类型 `<类型>`（前缀 `SRC-XXX-00N`，证据上限 `<X>`）·
+> 保存策略预判 `<只链接+自有摘要 / 可镜像文本语料>` · 采集方式
+> `<Plan A 静态 CSS / Plan B F12 / Plan C 截图视觉估算>`。确认按此执行？
+> 需调整类型、观察维度（配色 / 字阶 / 间距 / 组件 / 交互流程）或范围请直接说。」
+
+用户未答复前不进入 S1。
+
+### S1 许可核验（自动）
+
+- `curl -sIL --max-time 20 <URL>` 记录可达性与最终状态码；
+- 抓首页取 `<title>`（可复用 extract-tokens.py 的报告头）；
+- 扫页脚 / About / License / Terms 链接；开源仓另取 raw LICENSE 判定许可类型；
+- 结论三选一：宽松（MIT / Apache / CC-BY 等）→ 可镜像**文本语料**；
+  未声明 / 限制性 → 只链接 + 自有摘要；判断不了 →「许可待确认」，只存链接。
+
+### G2 许可结论确认（人工门，必须问）
+
+> 「许可核验结论：`<宽松，可镜像文本语料 | 未声明/限制，只链接+自有摘要 | 待确认，只存链接>`，
+> 依据 `<页面声明 / LICENSE 文件 / 闭源事实>`。确认此结论？
+> （截图 / 字体 / 图标 / 品牌资产无论结论如何都不入库——永久红线。）」
+
+### S2 抽取（自动 + 人工，按 Plan 分支）
+
+- **Plan A（静态 CSS 可用）**：
+  `PYTHONUTF8=1 python .claude/skills/collect-source/scripts/extract-tokens.py <URL>`
+  → 读报告（令牌 / 调色板 / 字体栈 / 字号 / 圆角 / 间距刻度 / 动效时长），
+  把数据**翻译成观察语言**（表面分级、强调色纪律、刻度节奏），不是照抄数字表。
+- **Plan B（脚本判定 JS 渲染，或 Plan A 抓到的令牌明显不足）**：
+  把附录 E 的 F12 指引发给用户，等用户粘贴 `:root` 变量或关键 computed 值后继续。
+- **Plan C（截图视觉估算）**：逐图描述布局与配方，数值一律缀「（估算）」，
+  并在 Case「待复核」段列出需人工核验的关键值。
+
+产出**聊天内草稿三件套**（零 Write 调用）：
+
+1. `sources.md` 新行（附录 A 模板；补充观察子流程则改既有行的核验列）
+2. CASE 文件全文（附录 B 骨架）
+3. 可选：候选模式提名（附录 C，只写进 Case「转出」段）
+
+### S3 定级校验（自动规则，硬约束）
+
+| 记录 | 上限 | 规则 |
+|---|---|---|
+| 单一产品观察 Case | **D** | 恒为 D，无论观感多成熟 |
+| 产品案例来源行 | C | 证据上限列 |
+| 单案例提炼的候选模式 | D | 立 C 级模式需引用 ≥2 个既有 CASE |
+| D 级表述 | — | 只作发散；不得写成成熟交互经验或可用性证据 |
+
+用户要求越级 → 拒绝并引 `SOP-collect.md` §4（「一个产品这么做」≠「多案例一致」），
+可把分歧记入 Case「排除记录」。
+
+### G3 草稿评审（人工门，必须问）
+
+> 「草稿三件套如上（sources.md 行 / CASE 全文 / 候选模式提名）。请过目：
+> 1) 事实与参数有无错误、排除记录有无遗漏？
+> 2) 等级（本条 D，只作发散）是否认可？
+> 3) 状态默认保持 candidate 待统一评审；如需现在升 reviewed 请逐条明确说明——我不会自动升级。」
+
+`reviewed（日期）` **只能**凭用户在 G3 或事后单独指令逐条写入（后者用独立 commit：
+`knowledge: 升级 CASE-xxx 为 reviewed`）。
+
+### S4 落盘准备（自动）
+
+按 `ai/project-rules.md` §6 列出：预计文件清单（含每文件变更摘要）· 风险 · 验证方式 ·
+建议 commit message · 版本决定（工具 / 单来源入库 = PATCH；≥2 来源或成批 = MINOR，
+见 project-rules §2.4）。
+
+### G4 提交确认（人工门，必须问）
+
+> 「确认落盘并提交？将写入：<文件清单>。commit：<信息>。push 另行确认。」
+
+### S5 写入 + 校验 + 提交 + 收尾（自动）
+
+1. Write 全部文件（UTF-8 无 BOM；正文用 Write 工具，不用 bash echo 重定向）
+2. `powershell -ExecutionPolicy Bypass -File scripts/check-markdown-clean.ps1 knowledge .claude` —— 必须通过
+3. `git add <显式路径>`（**绝不 `-A`**；`docs/env/local-env.md` 与 `docs/inputs/input-review-report.md`
+   是有意未跟踪文件，保持不动）
+4. commit；push 单独确认后执行，看 GitHub Project Check 绿
+5. 更新 `.ai/session-handoff.md`（本地文件，不提交）
+6. 对照 K1 完成判据汇报：登记行含核验状态 · Case 含观察 + 排除 · 用户已评审（或明确留 candidate）· CI 绿
+
+**草稿模式**：任一时刻用户说「先只出草稿」→ 在 G3 后直接收尾（写 handoff 不写库）。
+
+## 5. 写入风险
+
+- S0–S3 **默认零 Write**（全部产出在对话内）；G4 批准前不写任何文件。
+- 写入范围仅限：`knowledge/sources.md`、`knowledge/cases/*.md`、（宽松许可时）
+  `knowledge/corpora/<名称>/` + `SOURCE.md`、`VERSION` / `CHANGELOG.md`（版本号随入库批次）、
+  `.ai/session-handoff.md`（本地）。
+- 乱码防线：脚本调用带 `PYTHONUTF8=1`；写文件一律 Write 工具；`check-markdown-clean.ps1` 兜底
+  （BOM / 行尾空白 / 末行换行）。出现乱码时按 `ai/rules-core.md` §4 处理，不基于乱码推断事实。
+- 诚信防线：记录保持 candidate；等级不越 S3 封顶表；观察与推测分离（Plan C 估算值必标注）。
+
+## 6. 续接要求
+
+- 中断于 G1–G3：更新 `.ai/session-handoff.md`（本地）记录：目标来源、当前阶段门、
+  草稿三件套位置（对话内）、待确认项。
+- 中断于 S5（已写未提交）：记录已写入文件清单与未完成的 commit / push 状态。
+- 完整跑完：handoff 记录 commit 哈希与 K1 完成判据核对结果。
+
+---
+
+## 附录 A：sources.md 行模板
+
+闭源产品（产品案例）：
+
+```markdown
+| `SRC-PROD-00N` | 产品案例 \ <维度> | <产品名>，<发布方> | <URL> | C | 只保存链接 + 自有摘要（闭源产品，无素材许可；不存截图） | YYYY-MM-DD（链接可访问，标题「<页面标题>」） | candidate | 已核验：可访问 |
+```
+
+开源仓（可镜像文本语料，措辞对齐 `SRC-VIS-001`）：
+
+```markdown
+| `SRC-XXX-00N` | <类型> \ <维度> | <名称>，<发布方> | <URL> | <上限> | **本仓扩展**：仓级 <MIT/Apache/CC-BY>，文本语料可镜像进 `corpora/`；第三方站点素材仍只存链接 | YYYY-MM-DD（许可复核） | candidate（扩展） | 已核验：可访问 |
+```
+
+未定许可：保存策略列写「待确认，先只存链接」；生命周期列照常 candidate。
+
+## 附录 B：CASE 文件骨架（单产品版式，对齐 CASE-ima-knowledge-base.md）
+
+文件名：`knowledge/cases/CASE-<产品>-<主题>.md`（kebab-case；成批观察才用日期前缀命名）。
+
+```markdown
+# Case 观察：<产品> <主题>
+
+- **来源**：`SRC-XXX-00N`（<URL>，链接核验 YYYY-MM-DD 可访问）
+- **证据等级**：**D**（单一产品观察，只作设计启发，不得表述为成熟交互经验或可用性证据）
+- **状态**：candidate（YYYY-MM-DD 登记，待评审）
+- **观察输入**：<Plan A：extract-tokens.py 静态抽取，访问日期 YYYY-MM-DD /
+  Plan B：用户 F12 复制（YYYY-MM-DD 提供）/ Plan C：聊天内截图视觉估算，数值待人工核验>
+- **观察维度**：<1–4 个，如 配色与表面分级 / 字阶 / 间距节奏 / 交互流程>
+
+## 1. 观察到的配方
+
+### 1.1 <配方名：结构观察 + 关键参数>
+<用自己的话写「它做了什么」；参数记录（hex / px / ms）点状嵌入；Plan C 数值一律缀「（估算）」>
+
+…
+
+## 2. 排除记录（观察到了但不建议直接借鉴）
+
+| 配方 | 排除理由 |
+|---|---|
+| <对象> | <为什么不借鉴 / 适用边界外> |
+
+## 3. 待复核
+
+<Plan B/C 输入时必填：哪些值需人工在真实产品中再核验；Plan A 输入且确信时可写「无」并说明>
+
+## 4. 关联与转出
+
+- <与既有 CASE 的异同 / 无重叠说明>
+- 候选模式提名（需 ≥2 案例支撑才可立 C 级模式）：<一句话提名 + 「待第 2 观察来源」>（或写「暂无」）
+- 消费方式：各项目参考分析引用本 Case（`CASE-<产品>-<主题>` + `SRC-XXX-00N`）；采纳 / 排除决定写在项目自己的 RA，不回写本仓
+```
+
+## 附录 C：候选模式提名块说明
+
+单案例的「这可能是条模式」**只写进 Case 第 4 段**，不新建 `PAT-*`、不改 `patterns-*.md` /
+`principles.md`。理由：立 C 级需 ≥2 案例一致（SOP §4）；模式文件只收跨案例成立的结构。
+例外：用户明确要求且接受 candidate / D 级时，可在 `patterns-*.md` 追加 candidate 条目
+（必填：要解决的问题 / 适用 / 不适用 / 来源 ID / 等级 / 状态），commit 单列。
+
+## 附录 D：红线（重申，任何 Plan 一致）
+
+1. **截图 / 设计稿 / 字体 / 图标 / 品牌资产永不入库**——无论许可状态，一律只存链接 + 自有摘要；
+   聊天内贴的截图只用于当场分析。
+2. 单一产品观察 Case 恒为 D 级；D 级只作发散。
+3. 不自动升 reviewed；升级仅凭用户逐条明示。
+4. 不把知识记录写成任何项目的需求、接口或验收事实。
+5. 不为省事跳过许可核验；判断不了就「许可待确认」只存链接。
+6. 不在 Case 里贴大段第三方原文；自有提炼为主，引用点到为止。
+7. 抓取礼仪：只取浏览器本就会请求的静态资源（HTML + ≤5 份 CSS），诚实 UA，无 cookie / 认证 / 绕墙。
+
+## 附录 E：extract-tokens.py 用法与 Plan 判定
+
+```bash
+# 标准调用（git-bash；PYTHONUTF8=1 必带，防 Windows 乱码）
+PYTHONUTF8=1 python .claude/skills/collect-source/scripts/extract-tokens.py <URL> \
+    [--max-css 5] [--max-css-bytes 2097152] [--timeout 15] [--format md|json] [--ua <str>]
+```
+
+- 输出：中文 Markdown 报告 + 尾部 ```json``` 机器块（S2 优先读 json 块拿精确值）。
+- 退出码：`0` 正常（含 Plan B 提示）；`2` 抓取失败（按提示 curl 兜底）；`3` 参数错误。
+- 行为：只抓 HTML + 前 N 份 CSS（默认 5）；单轮 60s 预算；不写盘。
+
+**Plan 判定**：
+
+| 场景 | 判定依据 | 动作 |
+|---|---|---|
+| Plan A 成立 | 报告第 9 节「静态 CSS 可用」 | 直接解读令牌与分布 |
+| 转 Plan B | 报告判定「疑似 JS 渲染」（无样式表且无内联令牌 / CSS 零令牌且颜色 <5 / CSS 体量远小于 script） | 发 F12 指引给用户 |
+| 主动升 Plan B | Plan A 数据明显不足（如令牌 <5 条且页面明显富样式） | 同上 |
+| Plan C | 无 URL（原生应用）或登录墙内页面 | 请用户在聊天内贴截图，数值标「（估算）」 |
+
+**大站提示**：CSS 链接很多时（如 linear.app 54 份）默认只取前 5 份，报告会注明跳过数量；
+如需更全覆盖可加 `--max-css 10`，但先看内联 style 块是否已含主要令牌。
+
+**Plan B 的 F12 指引（发给用户的原文）**：
+
+> 请在 Chrome / Edge 打开目标页 → F12 → Elements 选中 `<html>` → Styles 面板找 `:root` 区块
+> （或 Computed 搜索「--」），复制里面的自定义属性（`--color-*` / `--font-*` / `--radius-*` 等）
+> 粘贴给我。也可在 Console 执行（跨域样式表自动跳过）：
+> `copy([...document.styleSheets].flatMap(s => { try { return [...(s.cssRules || [])]; } catch (e) { return []; } }).filter(r => r.selectorText && r.selectorText.includes(':root')).map(r => r.style.cssText).join('\n'))`
