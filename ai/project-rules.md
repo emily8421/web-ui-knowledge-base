@@ -52,7 +52,7 @@
 
 纯文档仓：Markdown + Git。无前端 / 后端 / 数据库 / AI 模型运行时。脚本仅用模板自带 `scripts/`（check / sync 类），不新增运行时依赖。
 
-例外（v0.1.2 起）：`.claude/skills/*/scripts/` 允许存放本项目自有的**零依赖纯标准库** Python 辅助脚本（本机 Python 3.14 已装，不引入第三方依赖、不新增安装步骤）；该目录为项目自有，不参与模板同步，也不落入模板 `scripts/`。当前实例：`.claude/skills/collect-source/scripts/extract-tokens.py`（K1 收集的静态设计令牌抽取，仅 stdout）。
+例外（v0.1.2 起）：`.claude/skills/*/scripts/` 允许存放本项目自有的**零依赖纯标准库** Python 辅助脚本（本机 Python 3.14 已装，不引入第三方依赖、不新增安装步骤）；该目录为项目自有，不参与模板同步，也不落入模板 `scripts/`。当前实例：`.claude/skills/collect-source/scripts/extract-tokens.py`（K1 收集的静态设计令牌抽取，仅 stdout）。另（v0.1.4 起）：`.ai/preview/`（已 gitignore）存放 collect-source 渲染回放生成的本地验证用临时 HTML 标本页——属一次性验证产物，不入库、不属于交付物，与「本仓不实现 Web 应用」边界不冲突。
 
 ## 2.1 运行环境与资源约束
 

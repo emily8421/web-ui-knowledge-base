@@ -32,6 +32,9 @@ NEXT-STEPS.md
 .ai/session-handoff-archive/
 .ai/e2e-reports/
 
+# 本地验证用临时标本页（collect-source 渲染回放，不入库）
+.ai/preview/
+
 # 构建产物
 dist/
 build/
