@@ -2,6 +2,11 @@
 
 本文件记录派生项目自身版本历史；继承的模板版本见 `TEMPLATE-BASE.md`。
 
+## v0.1.3（2026-08-31）
+
+- collect-source 技能首跑实测（ant.design）：新增 `CASE-antd-v5-tokens`（v5 令牌体系与站点视觉配方观察，candidate / D 级）；`SRC-DS-003` 完成链接核验与许可核验（仓级 MIT），生命周期去掉「待登记核验」。
+- 首跑验证了补充观察子流程（去重 → 既有 SRC 下加 Case + 刷新核验列）与 Plan A 静态抽取（dumi SSR 场景无需降级 Plan B）。
+
 ## v0.1.2（2026-08-31）
 
 - 新增 K1 收集半自动技能 `.claude/skills/collect-source/`：`SKILL.md`（S0–S5 阶段门流水线，G1–G4 人工确认门，默认草稿模式零写入）+ `scripts/extract-tokens.py`（零依赖纯标准库静态设计令牌抽取，Plan A/B/C 采集降级；冒烟验证 ima.qq.com / linear.app / 坏域名 / 坏参数四例通过）。

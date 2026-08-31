@@ -13,7 +13,7 @@
 | `SRC-DS-002` | 设计系统 \ 组件表单 | USWDS，GSA | https://designsystem.digital.gov/ | B | 只保存摘要 + 链接 | 2026-08-14 | candidate（继承） | 已核验：可访问 |
 | `SRC-HAI-001` | 人机协作指南 \ 信任 | HAX Toolkit，Microsoft | https://www.microsoft.com/haxtoolkit/ | B | 只保存链接（官方页暂不可用） | 2026-08-14 | candidate（继承） | 暂时不可用 |
 | `SRC-VIS-001` | 视觉案例集合 \ 视觉布局 | awesome-design-md，VoltAgent | https://github.com/VoltAgent/awesome-design-md | D | **本仓扩展**：仓级 MIT，文本语料（DESIGN.md）可镜像进 `corpora/`；第三方站点素材仍只存链接 | 2026-08-16（许可复核） | candidate（扩展） | 已核验：可访问 |
-| `SRC-DS-003` | 设计系统 \ 视觉布局 | Ant Design，蚂蚁集团 | https://ant.design/ | B | 只保存摘要 + 链接 | 待核验 | candidate（扩展，待登记核验） | 未核验 |
+| `SRC-DS-003` | 设计系统 \ 视觉布局 | Ant Design，蚂蚁集团 | https://ant.design/ | B | 只保存摘要 + 链接（仓级 MIT，2026-08-31 核验） | 2026-08-31（链接可访问，标题「Ant Design - The world's second most popular React UI framework」） | candidate（扩展） | 已核验：可访问 |
 | `SRC-DS-004` | 设计系统 \ 组件表单 | Material Design 3，Google | https://m3.material.io/ | B | 只保存摘要 + 链接 | 待核验 | candidate（扩展，待登记核验） | 未核验 |
 | `SRC-PROD-001` | 产品案例 \ 知识库工作台 | ima（AI 知识管家），腾讯 | https://ima.qq.com | C | 只保存链接 + 自有摘要（闭源产品，无素材许可；不存截图） | 2026-08-16（链接可访问，标题「ima - 腾讯AI知识管家」） | candidate | 已核验：可访问 |
 
