@@ -2,6 +2,11 @@
 
 本文件记录派生项目自身版本历史；继承的模板版本见 `TEMPLATE-BASE.md`。
 
+## v0.2.1（2026-09-09）
+
+- zhiyan 双端重设计定稿候选 D「直角细线专业台」触发参照补源：新增 `CASE-linear-workbench`（表面台阶 + 单强调纪律，深色面；「中性底盘 + 单强调色」第 4 案）、`CASE-vercel-dashboard`（近白画布黑白二重奏，浅色直角向；语义色 soft/deep 三件套、技术标签等宽字体观察）。均 candidate / D 级（营销面观察），待评审。
+- 均自既有语料 `SRC-VIS-001` 抽取，无新来源登记。
+
 ## v0.2.0（2026-09-09）
 
 - 首批「客服双端」参考批次入库（zhiyan 界面重设计消费线的补源动作）：登记 `SRC-DS-005`（Ant Design Mobile，B 级上限）、`SRC-PROD-002`（美洽，C 级上限）；新增观察 `CASE-meiqia-cs-workbench`（产品结构 / 人机协同分层）、`CASE-intercom-cs-workbench`（克制用色与表面分级，附「中性底盘 + 单强调色」C 级候选模式提名）、`CASE-slack-messaging`（IM 品牌营销面，触控与阴影分层对照）。均 candidate / D 级（营销面与单案例观察），待评审。
