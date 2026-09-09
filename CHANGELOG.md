@@ -2,6 +2,11 @@
 
 本文件记录派生项目自身版本历史；继承的模板版本见 `TEMPLATE-BASE.md`。
 
+## v0.2.0（2026-09-09）
+
+- 首批「客服双端」参考批次入库（zhiyan 界面重设计消费线的补源动作）：登记 `SRC-DS-005`（Ant Design Mobile，B 级上限）、`SRC-PROD-002`（美洽，C 级上限）；新增观察 `CASE-meiqia-cs-workbench`（产品结构 / 人机协同分层）、`CASE-intercom-cs-workbench`（克制用色与表面分级，附「中性底盘 + 单强调色」C 级候选模式提名）、`CASE-slack-messaging`（IM 品牌营销面，触控与阴影分层对照）。均 candidate / D 级（营销面与单案例观察），待评审。
+- 链接核验：mobile.ant.design、meiqia.com（2026-09-09 均可访问，核验记录见 sources.md）。
+
 ## v0.1.6（2026-08-31）
 
 - K1 补充观察（ima 视觉令牌向）：新增 `CASE-ima-webui-tokens`（Plan A 静态抽取 ima.qq.com 产品 Web 端本体——TDesign 底盘 + ima 自有薄主题层的双层令牌架构、灰阶接管品牌梯度 + 低频绿强调、半透明叠加与多机制双主题、14px 主战场字阶、圆角 8px 主档、4/8 间距节奏；candidate / D 级，含 3 条待复核）。
