@@ -2,6 +2,10 @@
 
 本文件记录派生项目自身版本历史；继承的模板版本见 `TEMPLATE-BASE.md`。
 
+## v0.2.2（2026-09-19）
+
+- 补录两份此前未入库的项目事实文档：`docs/env/local-env.md`（2026-08-26 由 `scripts/collect-env.ps1` 采集的本机环境留痕，人工确认项待补）与 `docs/inputs/input-review-report.md`（Phase1 知识库基础事实输入材料评审报告，候选态待人工确认）。仅补录既有产出，无知识内容变更。
+
 ## v0.2.1（2026-09-09）
 
 - zhiyan 双端重设计定稿候选 D「直角细线专业台」触发参照补源：新增 `CASE-linear-workbench`（表面台阶 + 单强调纪律，深色面；「中性底盘 + 单强调色」第 4 案）、`CASE-vercel-dashboard`（近白画布黑白二重奏，浅色直角向；语义色 soft/deep 三件套、技术标签等宽字体观察）。均 candidate / D 级（营销面观察），待评审。
