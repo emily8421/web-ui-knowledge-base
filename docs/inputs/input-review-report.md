@@ -40,4 +40,3 @@
 2. 补齐或明确豁免 C-004 的环境人工项。
 3. 依次生成 Lean `docs/vision/product-vision.md`、`docs/00-scenario.md`、`docs/01-user-requirements.md`、`docs/02-srs.md`、`docs/03-prd.md`。
 4. 在 03 确认 Phase 范围后，再生成纯文档仓裁剪后的 `04-05`、`08-09`。
-
