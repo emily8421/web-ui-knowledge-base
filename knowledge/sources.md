@@ -7,14 +7,14 @@
 
 | SRC-ID | 类型 \ 维度 | 标题与发布方 | 来源 URL | 证据上限 | 许可与保存策略 | 最后核验 | 生命周期 | 链接核验 |
 |---|---|---|---|---|---|---|---|---|
-| `SRC-A11Y-001` | 规范 \ 可访问性 | WAI-ARIA APG，W3C | https://www.w3.org/WAI/ARIA/apg/ | A | 可保存摘要 + 链接 | 2026-08-14 | candidate（继承母模板） | 已核验：可访问 |
-| `SRC-A11Y-002` | 规范 \ 可访问性 | WCAG 2.2，W3C | https://www.w3.org/TR/WCAG22/ | A | 可保存摘要 + 链接 | 2026-08-14 | candidate（继承） | 已核验：可访问 |
-| `SRC-DS-001` | 设计系统 \ 交互流程 | GOV.UK Design System，GDS | https://design-system.service.gov.uk/ | B | 可保存摘要 + 链接（OGL v3.0） | 2026-08-14 | candidate（继承） | 已核验：可访问 |
-| `SRC-DS-002` | 设计系统 \ 组件表单 | USWDS，GSA | https://designsystem.digital.gov/ | B | 只保存摘要 + 链接 | 2026-08-14 | candidate（继承） | 已核验：可访问 |
-| `SRC-HAI-001` | 人机协作指南 \ 信任 | HAX Toolkit，Microsoft | https://www.microsoft.com/haxtoolkit/ | B | 只保存链接（官方页暂不可用） | 2026-08-14 | candidate（继承） | 暂时不可用 |
-| `SRC-VIS-001` | 视觉案例集合 \ 视觉布局 | awesome-design-md，VoltAgent | https://github.com/VoltAgent/awesome-design-md | D | **本仓扩展**：仓级 MIT，文本语料（DESIGN.md）可镜像进 `corpora/`；第三方站点素材仍只存链接 | 2026-08-16（许可复核） | candidate（扩展） | 已核验：可访问 |
+| `SRC-A11Y-001` | 规范 \ 可访问性 | WAI-ARIA APG，W3C | https://www.w3.org/WAI/ARIA/apg/ | A | 可保存摘要 + 链接 | 2026-09-19（链接可访问，标题确认） | candidate（继承母模板） | 已核验：可访问 |
+| `SRC-A11Y-002` | 规范 \ 可访问性 | WCAG 2.2，W3C | https://www.w3.org/TR/WCAG22/ | A | 可保存摘要 + 链接 | 2026-09-19（链接可访问，标题确认） | candidate（继承） | 已核验：可访问 |
+| `SRC-DS-001` | 设计系统 \ 交互流程 | GOV.UK Design System，GDS | https://design-system.service.gov.uk/ | B | 可保存摘要 + 链接（OGL v3.0） | 2026-09-19（链接可访问，标题确认） | candidate（继承） | 已核验：可访问 |
+| `SRC-DS-002` | 设计系统 \ 组件表单 | USWDS，GSA | https://designsystem.digital.gov/ | B | 只保存摘要 + 链接 | 2026-09-19（链接可访问，标题确认） | candidate（继承） | 已核验：可访问 |
+| `SRC-HAI-001` | 人机协作指南 \ 信任 | HAX Toolkit，Microsoft | https://www.microsoft.com/en-us/haxtoolkit/ | B | 只保存链接 | 2026-09-19（换址：原址缺语言前缀 404 连续两判；/en-us/ 新址实测可达，标题「Microsoft HAX Toolkit」） | candidate（继承） | 已核验：可访问 |
+| `SRC-VIS-001` | 视觉案例集合 \ 视觉布局 | awesome-design-md，VoltAgent | https://github.com/VoltAgent/awesome-design-md | D | **本仓扩展**：仓级 MIT，文本语料（DESIGN.md）可镜像进 `corpora/`；第三方站点素材仍只存链接 | 2026-09-19（链接核验；许可复核 2026-08-16） | candidate（扩展） | 已核验：可访问 |
 | `SRC-DS-003` | 设计系统 \ 视觉布局 | Ant Design，蚂蚁集团 | https://ant.design/ | B | 只保存摘要 + 链接（仓级 MIT，2026-08-31 核验） | 2026-08-31（链接可访问，标题「Ant Design - The world's second most popular React UI framework」） | candidate（扩展） | 已核验：可访问 |
-| `SRC-DS-004` | 设计系统 \ 组件表单 | Material Design 3，Google | https://m3.material.io/ | B | 只保存摘要 + 链接 | 待核验 | candidate（扩展，待登记核验） | 未核验 |
+| `SRC-DS-004` | 设计系统 \ 组件表单 | Material Design 3，Google | https://m3.material.io/ | B | 只保存摘要 + 链接 | 2026-09-19（首次核验：链接可访问，标题「Material Design」；SPA 正文需 JS 渲染） | candidate（扩展） | 已核验：可访问 |
 | `SRC-PROD-001` | 产品案例 \ 知识库工作台 | ima（AI 知识管家），腾讯 | https://ima.qq.com | C | 只保存链接 + 自有摘要（闭源产品，无素材许可；不存截图） | 2026-08-31（链接可访问，标题「ima - 腾讯AI知识管家」；确认为产品 Web 端本体首屏） | candidate | 已核验：可访问 |
 | `SRC-DS-005` | 设计系统 \ 组件表单 | Ant Design Mobile，蚂蚁集团 | https://mobile.ant.design | B | 只保存摘要 + 链接（移动端组件文档；不镜像素材） | 2026-09-09（链接可访问，官方站点「Essential UI blocks for building mobile web apps」） | candidate（扩展） | 已核验：可访问 |
 | `SRC-PROD-002` | 产品案例 \ 客服工作台 | 美洽在线客服，成都美洽网络科技 | https://meiqia.com | C | 只保存链接 + 自有摘要（闭源产品，无素材许可；不存截图） | 2026-09-09（链接可访问，官网主体与 ICP 备案确认；营销页观察输入） | candidate | 已核验：可访问 |

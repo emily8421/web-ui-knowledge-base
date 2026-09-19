@@ -2,6 +2,11 @@
 
 本文件记录派生项目自身版本历史；继承的模板版本见 `TEMPLATE-BASE.md`。
 
+## v0.2.5（2026-09-19）
+
+- K5 链接核验（kb-ops 流程，7 来源逐一 WebFetch 实测）：`SRC-A11Y-001/002`、`SRC-DS-001/002`、`SRC-VIS-001` 核验列刷新至 2026-09-19（GOV.UK 在活跃更新、awesome-design-md MIT 未变）；`SRC-DS-004`（Material Design 3）完成拖欠的首次核验（可访问，SPA 正文需 JS 渲染，标题层确认）。
+- `SRC-HAI-001`（HAX Toolkit）死因定位：原址缺语言前缀，404 连续两判；换址 `https://www.microsoft.com/en-us/haxtoolkit/`（实测可达，标题「Microsoft HAX Toolkit」），链接核验恢复「已核验：可访问」。全表 11 来源现已无未核验 / 不可用项。
+
 ## v0.2.4（2026-09-19）
 
 - 首批人工评审（K4 清单驱动，kb-ops 流程）：`CASE-intercom-cs-workbench`、`CASE-slack-messaging`、`CASE-ima-webui-tokens` 三条转 `reviewed（2026-09-19）`。
