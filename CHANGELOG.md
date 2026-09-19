@@ -2,6 +2,11 @@
 
 本文件记录派生项目自身版本历史；继承的模板版本见 `TEMPLATE-BASE.md`。
 
+## v0.2.3（2026-09-19）
+
+- 新增知识库管理技能 `.claude/skills/kb-ops/SKILL.md`（零依赖、无脚本，纯流程固化）：「列候选」（全库 candidate / 待复核 / 提名盘点，只读）、「评审与晋升」（candidate → reviewed 单条评审入口 + K3 回流提名路由）、「核验链接」（sources.md 批量可达性核验与核验列刷新，失效项列清单待人工）。所有写动作先列变更清单经确认后执行；本技能永不自动升 reviewed、不引入依赖。
+- `knowledge/scenarios.md` 登记新增场景：K4 候选评审清单、K5 链接核验刷新（编号顺延）；K3 cmd 指针补 kb-ops 入口。
+
 ## v0.2.2（2026-09-19）
 
 - 补录两份此前未入库的项目事实文档：`docs/env/local-env.md`（2026-08-26 由 `scripts/collect-env.ps1` 采集的本机环境留痕，人工确认项待补）与 `docs/inputs/input-review-report.md`（Phase1 知识库基础事实输入材料评审报告，候选态待人工确认）。仅补录既有产出，无知识内容变更。
