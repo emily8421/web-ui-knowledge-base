@@ -2,7 +2,7 @@
 
 - **来源**：`SRC-VIS-001`（awesome-design-md 语料镜像 `corpora/awesome-design-md/design-md/slack/DESIGN.md`；注意该语料是对 Slack 官网的演绎转述，改名「Slacc」以避开品牌，与官网现版可能存在偏差）
 - **证据等级**：**D**（第三方演绎的营销官网摘要，转述层数多于直述摘要；只作发散）
-- **状态**：candidate（2026-09-09 抽取，待评审）
+- **状态**：reviewed（2026-09-19）
 - **观察输入**：语料 DESIGN.md 全文（482 行，含令牌表；来源页为首页 / features / pricing / contact 营销面）
 - **观察维度**：配色纪律 / 按钮体系 / 控件圆角分级 / 阴影分层
 - **局限**：Slack 产品界面（app 本体）未入语料，仅 mockup；本条不构成对 Slack 产品界面配方的判断

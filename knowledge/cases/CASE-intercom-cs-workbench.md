@@ -2,7 +2,7 @@
 
 - **来源**：`SRC-VIS-001`（awesome-design-md 语料镜像 `corpora/awesome-design-md/design-md/intercom/DESIGN.md`；上游为 intercom.com 营销官网的公开设计摘要）
 - **证据等级**：**D**（第三方对营销官网的转述摘要，非产品界面本体；只作视觉发散）
-- **状态**：candidate（2026-09-09 抽取，待评审）
+- **状态**：reviewed（2026-09-19）
 - **观察输入**：语料 DESIGN.md 全文（546 行，含令牌表；上游来源页为 intercom.com 首页 / pricing / helpdesk / customers / helpdesk-inbox 营销面）
 - **观察维度**：配色纪律 / 表面分级 / 字阶 / 圆角与触控尺寸
 - **局限**：**产品界面（收件箱 / Messenger）本体未入语料**——语料记录的是营销官网，产品 UI 仅以截图 mockup 出现。本条不构成对 Intercom 产品界面配方的判断。
@@ -42,4 +42,4 @@
 
 - 同批：`CASE-meiqia-cs-workbench`（产品结构向）、`CASE-slack-messaging`（触控与阴影口径对照）
 - 异源：`CASE-antd-v5-tokens`（设计系统本体令牌）、`CASE-ima-webui-tokens`（产品消费组件库后的改写）
-- 候选模式提名（待评审）：**「中性底盘 + 单强调色」**——本条（炭黑 + Fin 橙单保留色）、`CASE-slack-messaging`（单主色 + 链接蓝唯一彩色）、`CASE-ima-webui-tokens`（灰阶底盘 + 低频品牌绿）三案一致，达到「多案例一致的可观察模式」口径，可提名 C 级候选模式，集中到 patterns-visual.md 评审时处理
+- 候选模式提名（已处理）：**「中性底盘 + 单强调色」**——本条（炭黑 + Fin 橙单保留色）、`CASE-slack-messaging`（单主色 + 链接蓝唯一彩色）、`CASE-ima-webui-tokens`（灰阶底盘 + 低频品牌绿）三案一致，已于 2026-09-19 评审时立为 `PAT-VIS-102`（C 级，reviewed），勿重复提名

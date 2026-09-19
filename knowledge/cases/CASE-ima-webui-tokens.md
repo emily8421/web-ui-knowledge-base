@@ -2,7 +2,7 @@
 
 - **来源**：`SRC-PROD-001`（https://ima.qq.com，链接核验 2026-08-31 可访问，标题「ima - 腾讯AI知识管家」）
 - **证据等级**：**D**（单一闭源产品观察，只作设计启发，不得表述为成熟交互经验或可用性证据）
-- **状态**：candidate（2026-08-31 登记，待评审）
+- **状态**：reviewed（2026-09-19）
 - **观察输入**：Plan A extract-tokens.py 静态抽取（访问日期 2026-08-31；HTML 49756B + 2 份 CSS：ui-vendor 490856B、app 422414B，均经 static.ima.qq.com /ima/assets/chat/assets/ 路径，即 Web 端聊天界面资产；另用 curl 核实 app CSS 内两套 brand 定义字节序）
 - **观察维度**：配色与表面分级 / 字阶 / 圆角与间距节奏 / 组件尺寸刻度
 - **同源关联**：与 `CASE-ima-knowledge-base`（2026-08-16，交互 / IA 向，二手需求材料输入）互补——彼条记行为结构，本条记视觉配方，同挂 SRC-PROD-001。
