@@ -2,7 +2,7 @@
 
 - **来源**：`SRC-VIS-001`（awesome-design-md 语料镜像 `corpora/awesome-design-md/design-md/linear.app/DESIGN.md`，全文 548 行；上游为 linear.app 营销官网的公开设计摘要）
 - **证据等级**：**D**（第三方对营销官网的转述摘要，且为深色营销面；只作设计启发，不构成对 Linear 产品界面配方的判断）
-- **状态**：candidate（2026-09-09 抽取，待评审）
+- **状态**：reviewed（2026-09-19）
 - **观察输入**：语料 DESIGN.md 全文（front-matter 令牌表 + 概述 + 组件定义 + Do/Don't + Known Gaps）
 - **观察维度**：表面分级 / 配色纪律 / 控件规格 / 圆角与触控
 - **触发背景**：zhiyan 双端重设计定稿候选 D「直角细线专业台」后的参照补源（消费→沉淀回流）
@@ -42,5 +42,5 @@ canvas 之上设四级表面（surface-1 `#0f1011` → surface-4 `#191a1b`），
 ## 4. 关联与转出
 
 - 同批：`CASE-vercel-dashboard`（浅色同纪律互证，候选 D 直接参照）
-- 「中性底盘 + 单强调色」候选模式：本条为第 4 个独立案例（ima / Intercom / Slack / Linear），四案一致，评审时可直接升 C 级条目
+- 「中性底盘 + 单强调色」候选模式（已处理）：本条为第 4 个独立案例（ima / Intercom / Slack / Linear），已于 2026-09-19 随二批评审并入 `PAT-VIS-102`（C 级，reviewed），勿重复提名
 - 消费方式：项目参考分析引用本条（`CASE-linear-workbench` + `SRC-VIS-001`）；采纳 / 排除写在项目自己的参考分析，不回写本仓

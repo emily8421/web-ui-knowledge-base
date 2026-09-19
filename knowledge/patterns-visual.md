@@ -9,7 +9,7 @@
 | 记录类型 | Pattern（视觉），本仓扩展层 |
 | ID 段位 | `PAT-VIS-101+`（001–099 保留给母模板核心层下行对齐） |
 | 数量 | 2 |
-| 状态 | 101 candidate（待项目实证）；102 reviewed（2026-09-19） |
+| 状态 | 101 candidate（待项目实证）；102 reviewed（2026-09-19，证据五案） |
 
 ## 1. 记录清单
 
@@ -37,10 +37,10 @@
 - **不适用条件**：多彩本来就是品牌语言的设计；需要靠颜色区分大量类别的数据可视化密集界面（图表色板另议）。
 - **行为契约**：不适用（纯视觉）。
 - **视觉信号**：高频色 top 列表几乎全为中性（ima：top40 高频色几乎全中性，品牌绿仅 ×5）；强调色有明文使用禁区（Intercom：Fin 橙禁装饰、禁与炭黑 CTA 同屏）；正文唯一彩色为链接蓝（Slack）。
-- **证据边界**：三案一致——`CASE-intercom-cs-workbench`（营销官网转述：炭黑 + Fin 橙）、`CASE-slack-messaging`（第三方演绎营销面：茄紫 + 链接蓝）、`CASE-ima-webui-tokens`（产品本体静态抽取：灰阶 + 品牌绿）。**证据构成为 2 案营销面（其中 1 案演绎转述）+ 1 案产品本体**，故本模式定位为「品牌用色纪律」层规律；高密度工作台界面的完整配方验证待产品本体来源补充（`CASE-ima-knowledge-base` 复核后为候选第 2 产品本体证据）。
-- **来源**：`SRC-VIS-001`、`SRC-PROD-001`；`CASE-intercom-cs-workbench` / `CASE-slack-messaging` / `CASE-ima-webui-tokens`
+- **证据边界**：五案一致——`CASE-intercom-cs-workbench`（营销官网转述：炭黑 + Fin 橙）、`CASE-slack-messaging`（第三方演绎营销面：茄紫 + 链接蓝）、`CASE-ima-webui-tokens`（产品本体静态抽取：灰阶 + 品牌绿）、`CASE-linear-workbench`（深色营销面转述：近黑底 + 薰衣草蓝四处限定）、`CASE-vercel-dashboard`（浅色演绎营销面：近白底 + 链接蓝唯一彩色）。**证据构成为 4 案营销面（其中 2 案演绎转述）+ 1 案产品本体，浅色 / 深色双向覆盖**，模式定位为「品牌用色纪律」层规律；高密度工作台界面的完整配方验证待产品本体来源补充（`CASE-ima-knowledge-base` 复核后为候选第 2 产品本体证据）。
+- **来源**：`SRC-VIS-001`、`SRC-PROD-001`；`CASE-intercom-cs-workbench` / `CASE-slack-messaging` / `CASE-ima-webui-tokens` / `CASE-linear-workbench` / `CASE-vercel-dashboard`
 - **证据等级**：C（多案例一致的可观察模式）
-- **状态**：reviewed（2026-09-19，首批人工评审确认三案一致成立）
+- **状态**：reviewed（2026-09-19，首批评审确认三案成立；同日二批评审加固为五案）
 
 ---
 

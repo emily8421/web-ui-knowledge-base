@@ -2,6 +2,12 @@
 
 本文件记录派生项目自身版本历史；继承的模板版本见 `TEMPLATE-BASE.md`。
 
+## v0.2.6（2026-09-19）
+
+- 第二批人工评审（K4 清单驱动）：`CASE-ima-knowledge-base`、`CASE-antd-v5-tokens`、`CASE-meiqia-cs-workbench`、`CASE-linear-workbench`、`CASE-vercel-dashboard` 五条转 `reviewed（2026-09-19）`。**全库 8 条 Case 至此全部评审完毕**（待复核项如实标注继续挂起，不阻塞评审结论）。
+- `PAT-VIS-102「中性底盘 + 单强调色」`证据边界由三案加固为五案（新增 linear 深色面、vercel 浅色演绎面；构成仍为 1 案产品本体 + 4 案营销/演绎面，浅/深双向覆盖，结论不变）；linear / vercel 条目提名行同步标注「已并入 PAT-VIS-102」防重复提名。
+- 挂起项维持：ima-knowledge-base 6 项待复核（二手材料）、antd「主色必配同色相软底」提名待第 3 来源、ima「常驻问答面板」提名待 LUMEN 试点第 2 来源。
+
 ## v0.2.5（2026-09-19）
 
 - K5 链接核验（kb-ops 流程，7 来源逐一 WebFetch 实测）：`SRC-A11Y-001/002`、`SRC-DS-001/002`、`SRC-VIS-001` 核验列刷新至 2026-09-19（GOV.UK 在活跃更新、awesome-design-md MIT 未变）；`SRC-DS-004`（Material Design 3）完成拖欠的首次核验（可访问，SPA 正文需 JS 渲染，标题层确认）。
