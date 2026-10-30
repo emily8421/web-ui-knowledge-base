@@ -9,6 +9,31 @@
 
 模板版本采用三段式 `vMAJOR.MINOR.PATCH`，以根目录 `VERSION` 为单一审计入口。版本是发布边界，不是提案数量边界；提案收件箱增长不触发版本递增，只有合并到同步范围内并改变模板行为或下游同步判断的 PR 才判断 `PATCH / MINOR / MAJOR`。`ai/global-rules.md` 顶部仅记录全局规则自身版本。
 
+## v1.75.6（2026-10-30）
+
+C1 治理提案 PATCH（提案 `_governance/_proposals/TEMPLATE-UPGRADE-governance-decoupling.md`；2026-10-29 维护者拍板 DC-001~DC-004 全按 AI 建议，提案本体已随 #488 入库）：治理机制解耦管理 **Phase 1（契约层）**——补机制生命周期与域间契约，回应「机制只进不出」的体系膨胀结构性根因（工具侧 TOOL-* 有生命周期而机制侧 MECH-* 没有）。
+
+- `template-docs/capability-packages.md`：§4 机制登记表扩三列——`状态`（candidate/experimental/active/deprecated/retired，与工具侧同款语义）+ `退役条件` + `最近审计`，14 机制首轮登记 active（2026-10-29）；§5.1 新增「域间交接契约」——五域对照（协调 / 文档体系 / 编码实现与验证 / 知识沉淀 / 模板演进 ↔ §3 七分区）+ 交接单七字段（权威输入 / 请求动作 / 允许范围 / 禁止事项 / 完成条件 / 回传证据 / 人工确认；字段吸收自 governance-handbook 提案 §5.5 草案）+ 交接三规则（先本域后跨域、跨域先列影响清单、失败按责任域回退）；§9 维护要求补三条——新机制准入四问（归哪个域 / 触发点挂哪 / 谁验收 / 何时可退役，四问不全不进表）、半年度机制审计节奏（6 / 12 月窗口 + 重大变更临时触发，十条审计维度内联：所有权 / 触发 / 事实源 / 循环依赖 / 状态升级 / 验证缺口 / 孤儿 / 过期 / 范围泄漏 / 失败扩散）、退役规则（deprecated 声明替代与迁移窗口 → 消费者迁移后 retired，退役需迁移消费者 + 更新登记表 + CHANGELOG）。
+- `ai/global-rules.md`（全局规则自身版本 v1.16 → v1.17）：各章节首行下补 `> 域：X` 标注（§1-§3 实现 / §4 验证 / §5-§10 横切·协调·文档·演进），文件头部补图例一句（DC-002 搭车项）；标题文字不变，防断言与章节级标注漂移。
+- 边界：纯文档与人读登记，不新增 check-template 断言（rd-data-chain §4 / GOV-C-007「首批人工」口径维持）、不改同步清单、不建 Agent、不并发、不拆规则文件——载体层三处混合（session-rules 协调+知识 / implementation 实现+验证 / document-lifecycle 文档+评审码）按提案 §3.3 触发条件挂账（Phase 3 实证后另行立项）；派生项目零迁移、零门禁（`capability-packages.md` 已在 files_all）。后续：Phase 2 首轮机制审计（2026-12 窗口，advisory）；本提案多阶段在途，不随 Phase 1 归档。
+
+## v1.75.5（2026-10-29）
+
+C1 单提案 PATCH（LumiOne-Framework 派生项目回流 issue #484；2026-10-29 triage 拍板「仅方向 A、方向 B 留观察」）：同步 PR 收尾件与 squash 合并后边界校验的粒度冲突——SOP 自身要求的收尾提交（提案归档移动、同步运行记录、种子文件联动清理）与同步提交进入同一 PR、squash 合并后，project-check.yml 的合并后边界校验（`check-derived-sync.sh HEAD`）会把收尾件报为清单外变更，每次此类同步在 main 必然红 CI（#478 v1.75.4 统一规范 subject 后该场景常态化）。
+
+- `ai/prompts/maintainers/12-sync-template.md`：收尾门禁前新增「同步 PR 边界」段——同步 PR 只包含同步提交；步骤 16-17 提案归档移动、步骤 21 同步运行记录、种子文件联动清理等收尾提交拆到合并后的后续小 PR / 提交执行，合并后 HEAD 即纯同步提交，边界校验天然通过；仍失败时按 `git-guide.md` §5 checklist squash 校验时点口径裁决。
+- `git-guide.md` §5.5：新增同口径 bullet（与既有 squash 校验时点指引相邻，构成「源头消除 + 失败裁决」互补两层）。
+- 边界：纯文档指引，不改 `check-derived-sync.*` 豁免逻辑（方向 B 不做——对清单外 rename 对 / sync-records 豁免会削弱种子文件保护边界，方向 A 源头消除后留观察）、不改 subject 正则与 project-check.yml 触发机制、无自检断言新增；存量派生项目无迁移义务，对未来同步生效。镜像 `issue-484.md` 随本 PR 入库，随归档 PR 移入 `_archive/`。同 PR 归档已处理提案 `TEMPLATE-UPGRADE-changelog-plain-version-assert.md`（CHANGELOG-PLAIN↔VERSION 双文件断言已于 #459 实施落地、自检 2112→2114 实证，处理记录在提案内；纯归档 chore）。
+
+## v1.75.4（2026-10-27）
+
+C1 三提案聚合 PATCH（web-ui-knowledge-base issue #478 / LumiOne-Framework issue #479 / gmbl_project issue #481 派生项目回流；2026-10-27 triage 拍板「聚合单 PR、#478 收窄采纳、#479 定级 PATCH」）：三份均为文档条目增补，互不重叠、无脚本改动、无自检断言新增。
+
+- **#478 校验时点指引（收窄采纳）**：`git-guide.md` §5 checklist 与 `ai/prompts/maintainers/12-sync-template.md` 步骤 11 各补一句——同步 PR 以 squash 合并的派生仓，权威边界校验时点在推送前（对纯同步提交跑 `check-derived-sync` 并留痕于同步运行记录），合并后 HEAD 校验失败对照推送前留痕判定合并粒度伪影、不据此回改边界。**提案主张的「放宽 ` (#N)` 尾缀匹配」不再实施：该容忍已由 v1.54.3（2026-07-19）先期落地（`.sh` / `.ps1` 双语正则 + `new-project.sh` 生成的 project-check.yml 同款），提案实据来自旧版脚本观察；现行正则仍拒绝的说明后缀 / 分支前缀变体按提案自身默认也不放宽。**
+- **#479 公文腔词语约束（定级 PATCH，非提案自荐 MINOR）**：`ai/global-rules.md` §10 第 6 款增补——不使用「口径、抓手、拉通、颗粒度、打法」等机构内部惯用公文腔 / 汇报腔词语，改用平实、具体、可核对的表述；行业通用术语例外与引用原文保持原样承既有条款。全局规则自身版本递增 v1.15 → v1.16。按 CONTRIBUTING §4 兼容性默认规则判 patch（不新增能力层级 / 下游采用面 / 同步结构，先例 #474 → v1.75.3 同级）。
+- **#481 Sprint 完成包版本回写挂钩**：`ai/implementation-lifecycle-rules.md` §7.1 回写职责表「Sprint 完成」行补 `CHANGELOG.md`（存在 `CHANGELOG-PLAIN.md` 时同步）与 `VERSION`——版本回写与完成包同批提交（0.x 阶段 Sprint 收口 bump MINOR、纯修复 bump PATCH）；`ai/doc-standards/project-rules.md` §2.4 补执行语义一句；`ai/doc-standards/08-dev-plan.md` §4 完成包要素后补三处互指指针。消除「§2.4 字段约定无执行检查点触达」的脱钩（gmbl 实证：单日 4 Sprint / 14 提交后 VERSION 滞留 v0.1.0 靠人工发现）。
+- 边界：三提案均不引入 check-template 新断言、不改同步清单、不改默认流程；#478 对 merge commit / 普通直接提交 / 推送前纯同步提交场景零行为变化（纯文档指引）；#479 存量文档按 §10 第 7 款渐进适用，不批量改写。镜像 issue-478/479/481.md 随本 PR 入库，随归档 PR 移入 `_archive/`。校正记录：#481 原文「执行链路上没有任何检查点触达」略过强（check-derived-sync 存在 VERSION↔CHANGELOG 顶部一致的非阻断告警，查不一致不查滞后，结论仍成立），目标版本字段 stale（原写 v1.75.0 已发）。
+
 ## v1.75.3（2026-09-19）
 
 C1 单提案 PATCH（LUMEN_demo_T2.1 派生项目回流 issue #474；2026-09-19 triage 拍板「单独发布、advisory 单条、附录不并入」）：web-fullstack-profile §10 配套「组件库 vs 自绘」默认决策判据——§10（v1.74.0）只管「选型结论须声明」，本版补声明之前的「怎么选」默认判据，消除 AI 主导开发下承载方式选择不可控的空白（派生实证完整证据链：手写行为层缺陷家族 → 6 组件 headless 迁移外观零变化 + 冒烟断言全过 → 3 类豁免边界样本）。

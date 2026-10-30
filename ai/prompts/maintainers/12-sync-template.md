@@ -94,6 +94,7 @@
    - 运行：git show --name-only --stat <sync-commit>。若 `HEAD` 是 PR merge commit，不要把 merge commit 当作同步提交校验。
    - 如已同步到包含 `scripts/check-derived-sync.ps1` 的版本，运行：powershell -ExecutionPolicy Bypass -File scripts/check-derived-sync.ps1 <sync-commit>（若 `HEAD` 本身就是同步提交，可省略参数）。
    - 确认实际同步提交没有误覆盖 README.md、ai/project-rules.md、docs/00-09 或业务代码。
+   - 若同步 PR 以 squash 合并（原同步提交已随分支删除，main HEAD 是混合 squash 提交）：合并后 HEAD 校验失败可能是预期伪影，以推送前对纯同步提交的 `check-derived-sync` 结果及同步运行记录留痕为权威对照判定，不据此回改同步边界；标准做法是推送前完成边界校验并留痕（见 `git-guide.md` §5 checklist）。
 12. 执行「同步跨度采用清单」（可选，advisory；跳过不阻塞后续任何环节）：
    - 确定跨度：读 `TEMPLATE-BASE.md` 旧继承模板版本（排除）→ 目标版本（包含）；实查与用户预期不符时停止说明，不以预期覆盖实查。
    - 读跨度段：优先读同步提交带来的 `upstream/CHANGELOG.md`；缺失时读母模板仓 `CHANGELOG.md` 对应版本段。
@@ -138,6 +139,8 @@
 23. 推送当前分支：git push -u origin chore/sync-template-vX.Y.Z。
 24. 创建 PR：gh pr create --fill。
 25. 最后汇总：同步到的模板版本、同步提交、采用的同步路径、同步边界检查结果、workflow 迁移建议、同步后整理状态、文档体系审计状态、提案回流收口结论、项目验证建议、同步运行记录路径、是否需要人工迁移 project-rules、是否需要运行 collect-env、提案归档情况、是否生成回流提案和 PR 链接。
+
+同步 PR 边界：同步 PR 只包含同步提交；步骤 16-17 的提案归档移动、步骤 21 的同步运行记录、种子文件联动清理等收尾提交，拆到同步 PR 合并后的后续小 PR / 提交执行——避免 squash 合并后 HEAD 混入清单外变更，触发合并后 `check-derived-sync` 校验失败；若仍出现失败，按 `git-guide.md` §5 checklist 的 squash 校验时点口径对照推送前留痕裁决。
 
 收尾门禁：最终回答前必须输出 A13 完成判据矩阵，字段为 `A13 步骤 / 证据 / 状态 / 若非完成，原因 / 下一步`，覆盖标准闭环计划、dry-run 预览、commit + 边界验证、post-sync-cleanup、docs-system-audit、提案回流收口和同步报告留痕。状态必须区分 `完成`、`等价替代`、`失败`、`完整执行`、`轻量执行`、`未执行`、`部分完成`。如果 `post-sync-cleanup` 或 `docs-system-audit` 只是只读抽查 / 摘要，必须标为 `轻量执行`，不得写成 `完整执行`。
 

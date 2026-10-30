@@ -5,10 +5,10 @@
 - Lineage type: ordinary derived project
 - Template repository: github.com/emily8421/ai-project-template
 - Base template version: v1.62.0
-- Current synced template version: v1.75.3
-- Synced at: 2026-09-19
+- Current synced template version: v1.75.6
+- Synced at: 2026-10-30
 - Project version file: VERSION
-- Project version at sync time: v0.2.2
+- Project version at sync time: v0.2.6
 
 ## Version Semantics
 
@@ -16,7 +16,7 @@
 - `CHANGELOG.md` and `CHANGELOG-PLAIN.md` are owned by this derived project and record project evolution; template sync does not overwrite them.
 - `TEMPLATE-BASE.md` records the inherited ai-project-template version used for methodology sync audit.
 - `upstream/CHANGELOG.md` and `upstream/CHANGELOG-PLAIN.md` are generated read-only references for upstream ai-project-template release notes.
-- Template sync commits keep the message format `sync template v1.75.3 from ai-project-template`.
+- Template sync commits keep the message format `sync template v1.75.6 from ai-project-template`.
 
 ## Managed Files
 
