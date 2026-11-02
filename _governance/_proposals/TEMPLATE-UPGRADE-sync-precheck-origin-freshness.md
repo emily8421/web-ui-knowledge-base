@@ -1,4 +1,5 @@
 > 来源：web-ui-knowledge-base（emily8421/web-ui-knowledge-base）派生项目回流
+> 模板仓 issue：https://github.com/emily8421/ai-project-template/issues/503（2026-11-02 开，待维护者 triage）
 
 # TEMPLATE-UPGRADE：同步预检 A 阶段补派生仓自身 origin 新鲜度核验
 
@@ -31,3 +32,9 @@
 ## 3. 版本影响
 
 PATCH（预检清单 +1 项只读检查 + 两处文档各一句；不改同步清单、不新增断言、无脚本改动；先例 #479 / #478 同级）。
+
+## 4. 影响面与验证方式
+
+- 影响面：仅 `ai/prompts/maintainers/12-sync-template.md` 预检契约段与 `ai/commands/sync-methodology.md` 同源镜像段（两处同段双写，以 Prompt 为准）；`git-guide.md` §5.5 一句。不影响同步脚本、`check-derived-sync`、快速续接模式。
+- 验证方式：执行 `/run sync-methodology` 时预检 A 阶段输出含 origin ahead/behind 实查一项（0/0 → pass；behind>0 → 停下列待确认）；不引入 `check-template` 自检断言，符合提案「非目标」边界。
+- 实证记录：2026-10-30 与 2026-11-02 两轮 v1.75.6 / v1.76.0 同步均在预检中自行执行该检查（均 0/0），缺口持续存在且补查成本为一行命令。
