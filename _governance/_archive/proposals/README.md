@@ -11,5 +11,6 @@
 
 | 提案 | 模板 issue | 处理结果 | 归档时间 | 对应模板版本 |
 |---|---|---|---|---|
+| `TEMPLATE-UPGRADE-sync-precheck-origin-freshness.md` | [emily8421/ai-project-template#503](https://github.com/emily8421/ai-project-template/issues/503) | 已采纳（完整落地）：模板 v1.76.1 CHANGELOG 明确落地「同步预检 A 阶段补派生仓自身 origin 新鲜度核验（#503）」；issue CLOSED（COMPLETED）；本轮 v1.77.3 同步预检已按新口径实证执行（fetch + rev-list 0/0） | 2026-11-09 | v1.76.1（含于本次 v1.77.3 同步） |
 | `TEMPLATE-UPGRADE-squash-merge-sync-boundary-check.md` | [emily8421/ai-project-template#478](https://github.com/emily8421/ai-project-template/issues/478) | 部分采纳（收窄采纳）：校验时点指引落地（方向 2）；提交信息正则放宽不实施——该容忍已由模板 v1.54.3 先期落地 | 2026-10-30 | v1.75.4（含于本次 v1.75.6 同步） |
 | `TEMPLATE-UPGRADE-裁剪执行落地.md` | —（早于本 README 建立，出处详见文件本体） | 已处理 | 2026-08-26 前后 | — |
