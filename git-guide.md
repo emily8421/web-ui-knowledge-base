@@ -96,12 +96,13 @@ gh pr create --fill              # 如项目要求走 PR；模板仓强制
 git push
 ```
 
-PR 合并后，同步本地 `main` 并清理已合并分支：
+PR 合并（含 squash）后，收尾第一步固定：先同步本地 `main` 并核对已拉到合并结果，再做分支清理。分支敏感操作（`git branch -d` / `-D`、`git push --delete`）单独执行，不嵌入长链：
 
 ```powershell
-git switch main
+git switch main                # 第一步固定动作：先离开任务分支，后续收尾命令才不会落在旧分支上
 git pull
-git branch -d <已合并分支名>
+git log --oneline -1           # 核对 HEAD 为带 (#<PR号>) 尾缀的 squash 提交，确认合并结果已拉到
+git branch -d <已合并分支名>    # 单独执行；分支被 worktree 占用时会拒绝，先移除占用
 ```
 
 常用提交类型：
@@ -162,6 +163,8 @@ cd /path/ai-project-template && git worktree remove ../ai-tpl-wt2
 | 已有新版 `scripts/sync-template.ps1` 与 `template-sync.json` | v1.6.8+ 后续同步，走 §5.3 |
 
 无论哪种路径，`scripts/check-template.sh` / `scripts/check-template.ps1` 都是**模板仓库完整性自检**，不应作为派生项目同步成功判断。派生项目同步后只检查同步边界与最近提交。
+
+> 注（读取面边界）：下行同步任务按 `ai/index.md` 路由表「派生项目下行同步」最小必读集执行；读取面收窄不新增核对缺口——同步跨度引入的规则变更由 SOP 既有步骤（dry-run 边界核验、`check-derived-sync`、同步后对被同步改写的规则文件做 diff 定向重读）覆盖；模板仓维护者侧任务（规则改造 / 自检脚本 / 发布）不受影响，仍走完整规则回退包。
 
 > Windows 说明：
 > 若 `scripts/sync-template.ps1` 或 `scripts/check-derived-sync.ps1` 报 Git Bash / MSYS 启动错误，脚本会先明确标注并进入 PowerShell fallback；fallback 可完成同步 dry-run / commit 与派生边界检查，并按 UTF-8 bytes 解码 Git 输出，避免 Windows PowerShell 5.1 代码页导致中文 Markdown、JSON 或文件名乱码。若 fallback 也失败，再优先视为本机 Git / 权限 / 网络问题，不要先把它理解成模板缺了新手步骤。
@@ -262,6 +265,8 @@ powershell -NoProfile -File scripts/check-template.ps1       # 仅模板仓库�
 ### 5.5 注意事项
 
 - 执行前工作区应干净；若 `git status` 显示未提交改动，先提交 / 暂存 / 放弃这些改动，不要混入同步提交。
+- 工作区干净 ≠ 本地最新：同步预检 A 阶段含派生仓自身 origin 新鲜度核验（`git fetch origin` 后实读 `git rev-list --left-right --count main...origin/main`）；behind > 0 先拉齐 main 再同步，ahead > 0 先确认本地未推送提交如何收口（契约见 `ai/prompts/maintainers/12-sync-template.md` 预检两阶段契约）。
+- **结构取证预检（目录迁移 / 布局对齐 / 容器审计类任务）**：动本仓目录前，先显式锚定母仓结构证据——`git ls-tree <母仓 remote>/main --name-only`（或本地模板仓路径 `git -C <模板仓> ls-tree`），并 grep 母仓 `CHANGELOG.md` 的结构条目交叉印证；**禁止以 `FETCH_HEAD`、上次 pull 残留对象或本仓 `origin/main` 作为母仓结构证据**（`FETCH_HEAD` 会被任何 fetch / pull 覆写，本仓 `origin/main` 不是母仓）。
 - 同步前先 bootstrap 模板远端最新版 `scripts/sync-template.sh`；不要无条件信任派生项目本地旧脚本。
 - 新版 `sync-template.sh` 会在 fetch 后对比远端自身版本；若本地脚本不是最新版，会停止并提示先更新脚本。
 - `--dry-run` 只预览差异，不修改工作区、不 stage。

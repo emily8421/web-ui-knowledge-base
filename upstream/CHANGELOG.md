@@ -9,6 +9,67 @@
 
 模板版本采用三段式 `vMAJOR.MINOR.PATCH`，以根目录 `VERSION` 为单一审计入口。版本是发布边界，不是提案数量边界；提案收件箱增长不触发版本递增，只有合并到同步范围内并改变模板行为或下游同步判断的 PR 才判断 `PATCH / MINOR / MAJOR`。`ai/global-rules.md` 顶部仅记录全局规则自身版本。
 
+## v1.77.3（2026-11-09）
+
+PATCH 聚合轮（双输入：模板仓 issue #526「下行同步预检的 `git fetch` 写入边界措辞」（zhiyan 派生回流 2026-11-07）+ 模板自产提案 `TEMPLATE-UPGRADE-codex-checkpoint-portability.md`「Windows/Codex 续接、只读核对与补丁调用的失败域分流」（2026-11-09 合并 C1 triage 通过，吸收 zhiyan 研究分析 P2-b 与故障分流分支 3））：
+
+- **同步预检措辞修正（#526）**：`12-sync-template.md` 两处 + `sync-methodology.md` 镜像两处——含 `git fetch origin` 的 A 阶段不再统称「只读预检」（整体只读限定为不改工作区文件），fetch 括注改为「不改工作区文件，但联网并写入 .git」，消除受限环境执行者误判纯只读探测的歧义；真只读场景（check-github-context 预检等 6 处）措辞不变。
+- **续接状态分级（提案拟改 1 + zhiyan P2-b）**：`ai/session-rules.md` §3.1 裁决规则新增一条——handoff 新鲜度按 `Branch/HEAD/VERSION`、工作区、stash/worktree、远端快照逐项输出「一致 / 过时 / 未复核」，未跟踪路径 / 未登记 worktree 只记「归属待确认」；跨仓续接区分「本地已提交 / 已推送 / PR 已合并 / 仅本地跟踪快照」四态。`ai/commands/resume.md` 恢复摘要输出契约第 1/2 条跟随小改。
+- **远端只读查询范式（提案拟改 2）**：`remote-ci-sop-profile.md` §3.D 第 4 条扩写——查询成功才报告远端字段，解析失败标「未核实」，`GitHub main` / Release / tag 逐项报告，不把本地 `VERSION`、本地合并提交或历史快照写成远端事实。
+- **CLI 症状速查表（提案拟改 3 + zhiyan 分支 3/P2-a）**：`ai-cli-setup.md` §6 新增「常见症状速查」表（症状 → 可核验证据 → 安全处置 ×4：编码乱码 / 权限边界 / 命令构造 / 写入空跑），命令构造与补丁格式错误归类「命令域」，不按沙箱 / 权限故障处理；不硬编码特定 CLI 内部命令。
+
+补丁失败归因裁决（合并 triage）：差分证据支持「该环境 `.bat` 包装器多行传参失真」的窄结论；字节级失真机制按 zhiyan 口径视为未定位，不写进模板。zhiyan 收缩提案两处论证失准（「原 P1 已覆盖」以偏概全 / P2-b「现有已规定」口径过宽）经母仓重评估修正记录，不回改派生仓文件。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（措辞 / 示例级文档改动，无脚本 / 同步清单 / 断言变更）。同步关闭 issue #526。
+
+## v1.77.2（2026-11-09）
+
+PATCH 单提案（模板自产提案 `TEMPLATE-UPGRADE-post-merge-tail-discipline.md`「合并后收尾第一步纪律（switch main + squash HEAD 核对）」，源起 pitfall 第十一批 rollup #530 回流候选——2026-11-08 registry 补登轮实证：squash 合并确认后未先切 main 就跑收尾链，pull 在任务分支空跑（"Already up to date" 输出误导）+ 分支删除被 checkout 占用拒绝，失败即停逐项纠正，无远端影响；C1 triage 属实 + 补强，其中 squash HEAD 核对采纳「写进命令块内注释行」而非散文声明——「关键前置未进执行清单」家族的教训反向应用）：
+
+- **`git-guide.md` §3.1 合并后清理顺序纪律**：引导句改为「收尾第一步固定：先同步本地 `main` 并核对已拉到合并结果，再做分支清理」；命令块补核对行 `git log --oneline -1`（HEAD 为带 ` (#<PR号>)` 尾缀的 squash 提交，尾缀约定同 v1.54.3 脚本层正则，不引入新约定）与行内注释（switch main 第一步固定动作）；分支敏感操作（`branch -d` / `-D`、`push --delete`）单独执行提示 + worktree 占用拒绝场景一句。
+- **范围裁剪（triage 判定）**：`template-docs/scenario-guides.md` 场景 C4 第 4 行不改——该行语序已隐含先后且 cmd 指针指向 git-guide §3-4，§3.1 修好后指针即覆盖，避免双写漂移。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（流程文档表述补强，无脚本 / 同步清单 / 断言改动）。
+
+## v1.77.1（2026-11-03）
+
+PATCH 单提案（模板自产提案 `TEMPLATE-UPGRADE-cross-cli-sandbox-friendliness.md`「跨 CLI 友好性——派生仓下行同步的非沙箱前置声明 + MAINTAINERS.md 路由标注」，源起 2026-11-03 zhiyan 派生仓 Codex 会话下行同步撞 `MAINTAINERS.md` 缺失 + sandbox 拦 `.git` 写入；C1 triage 属实 + 补强 2 处：①路由本身正确——「派生项目下行同步」桶本就不含 `MAINTAINERS.md`，摩擦系非 Claude CLI 误落「规则改造」桶，标注为防误读 robustness 而非修路由错误；②非沙箱前置声明的最高杠杆落点是 `12-sync-template.md`——该文件全文无沙箱字样，而其 `git fetch` / `git checkout FETCH_HEAD` 恰是撞 `Permission denied` 的那一步）：
+
+- **MAINTAINERS.md 路由标注（防误读）**：`ai/index.md` 路由表「规则改造 / 自检脚本 / 模板发布」桶 `MAINTAINERS.md` 后标注「仅模板仓存在，v1.70.0 起不下行」——任何按字面读规则的 CLI（如 Codex）在派生仓误落该桶时，不再误读为必须存在的文件。
+- **同步前置非沙箱声明**：`12-sync-template.md`「使用前准备」补一句——同步需联网 `git fetch` 上游 + 写 `.git`（`git checkout FETCH_HEAD` / 同步提交），须在非沙箱或 `workspace-write` + `network_access` 环境执行，沙箱受限先申请非沙箱，不得撞 `Permission denied` 再分流。
+- **沙箱分流规则前置化（`rules-core.md` §4）**：把「先自问是否沙箱」从「全量自检 / 全量验证」扩到「需写 `.git` / 联网的操作（下行同步 / `git fetch·push·merge` / `gh` 联网）」。
+- **顺带订正**：`session-rules.md` §3.3 沙箱分流口径交叉引用 `rules-core §2` → `§4`（分流全文实际在 §4）。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean + `git diff --check`；PATCH 豁免 L3 e2e（纯 advisory 文档级，无脚本 / 同步清单 / 断言改动）。
+
+## v1.77.0（2026-11-03）
+
+MINOR 单提案（LUMEN_demo_T2.1 派生项目回流 issue #334「Stack Adapter（R5）—— FastAPI / Python + React / TypeScript」；2026-11-03 重评立项——修正 08-12 初判与 11-03 前判「关闭」：先期核实实证 LUMEN / digital-cs / zhiyan 三主力派生仓 project-rules + tech-spec 均声明 FastAPI，需求面成立；R1/R2 兄弟提案 issue #332 已落地关闭，上层就绪。MINOR 判据：同步清单新增目录与文件，新增下游采用面，CONTRIBUTING §4）：
+
+- **新增 `template-docs/stack-adapters/`（3 文件，登记 `template-sync.json` `files_all` + `sync-template.sh` 兜底数组）**：README（层级去重边界表 + 选择矩阵——未覆盖栈如 PostgreSQL / Vue 注明暂无 Adapter、需要时回流新增；不引入硬 CI 门禁口径）+ `fastapi-python.md`（7 条：service 层禁 import fastapi / code→HTTP 映射全局唯一 / router 列表循环注册 / `typing.Protocol` + `@runtime_checkable` 多实现契约 / 依赖注入类型注解 / Pydantic Settings 配置集中与关键 secret 启动期 fail-closed / import 卫生）+ `react-typescript.md`（3 条：禁 any 泛型贯穿 / `ReturnType<typeof useXxx>` 跨层 props 复用 / 后端 OpenAPI 为类型单一事实源 + codegen 同步）。每条带「要求 / 违例信号 / 检查口径」。
+- **校正 2 处**（triage 实证，提案方知悉）：①悬空引用——原提案「governance §8.3 要求放进 Adapter」在母仓治理文档对应不上（handbook §8.3 为「不采用事件自动触发链」），实施稿去除该引用，层级关系改为直接指认 L0 / §6.2 / web-fullstack-profile；②口径不一致——原提案正文提「PostgreSQL 示例放进 Adapter」但拟改仅 2 份 Adapter 文件，实施稿在 README 选择矩阵注明未覆盖栈处理路径。
+
+验证：全量自检（`check-template.sh --summary`）+ L3 e2e R1-R3（`e2e-sync-check.sh`，R4-R6 触达面豁免——新增 3 纯文本 Adapter 文件不触碰场景路由 / 文档生成 / PowerShell fallback）+ md-clean + `git diff --check`；e2e 报告 `docs/archive/e2e/2026-11-03-v1.77.0.md` 随 PR 入库。
+
+## v1.76.2（2026-11-03）
+
+PATCH 聚合（同维护窗口三类维护侧小改，用户拍板聚合；两件派生回流提案 + 一件模板自产提案）：
+
+- **同步类任务路由一致性收口（issue #514 部分吸收）**：其主体诉求（同步场景不整读完整回退包）已随 v1.76.1 路由行拆分落地且更彻底（同步桶不读 document-lifecycle）；本版收口其指出的真实残余——`ai/rules-core.md` §3 与路由表的语义张力（原「模板维护……必须读取完整规则回退包」未区分「改机制」与「执行例行同步」，执行侧无所适从）：现改为「规则改造 / 同步清单 / 自检脚本变更及模板发布须整读；派生项目例行下行同步按路由表最小必读集，标注外回退全读兜底」。`ai/commands/sync-methodology.md` 必读文件链同口径补标注。校正 1 处：提案方 Release impact 预估 MINOR 基于未见 v1.76.1 的视角，残余收口实际 PATCH 足够。
+- **结构迁移类任务「母仓结构取证」固定预检步（issue #515）**：`git-guide.md` §5.5 新增一条——动本仓目录前显式锚定母仓结构证据（`git ls-tree <母仓 remote>/main --name-only` 或本地模板仓 `git -C <模板仓> ls-tree` + 母仓 CHANGELOG 结构条目交叉印证），禁止以 `FETCH_HEAD`（会被任意 fetch / pull 覆写）、pull 残留对象或本仓 `origin/main` 作为母仓结构证据；`ai/prompts/maintainers/15-post-sync-cleanup.md` 审计清单加同口径取证项引用（与 v1.75.2 容器迁移审计项相邻落位、措辞不重叠）。
+- **registry 对账工具工作区分支守卫（提案 `TEMPLATE-UPGRADE-registry-drift-worktree-branch-guard.md` 同批实施）**：`check-registry-drift.ps1` 比对前加分支检测（`git rev-parse --abbrev-ref HEAD`，只读）——分支非 main 时改用 `git show main:TEMPLATE-BASE.md` 基线比对，假阳性 DRIFT 转 `MATCH（附工作区分支注记与切回提示）` 不计漂移；真 DRIFT 仍 EXIT=1。消业务分支检出假阳性（2026-11-03 meeting-minutes 实证），行为验证：原假阳性仓转 MATCH 注记、全真 MATCH EXIT=0、9 仓行为不变。工具为模板仓专用（不下行），定位不变（advisory 只报不修）。
+
+验证：全量自检（基线 2122 对照）+ md-clean + `git diff --check` + drift 工具行为验证三例；PATCH 豁免 L3 e2e。
+
+## v1.76.1（2026-11-02）
+
+PATCH 聚合（两件派生回流提案同批落地：web-ui-knowledge-base issue #503 + LUMEN_demo_T2.1 issue #505；triage 均属实，#505 校正 1 处——check-template 断言行号 `:1340/:1341` 实为 1339-1341，结论不变；实施调整 1 处——#505 路由行保留 `MAINTAINERS.md` 于「规则改造」桶，维护者手册为模板仓任务权威且该桶仅模板仓执行，修复「派生仓清单含不存在文件」主诉不受影响）：
+
+- **同步预检 A 阶段补派生仓自身 origin 新鲜度核验（#503）**：`12-sync-template.md` 预检两阶段契约 A 阶段新增一项——`git fetch origin`（只读）后 `git rev-list --left-right --count main...origin/main` 实读 ahead/behind：0/0 pass；behind > 0 停下列待确认（先拉齐 main 再同步，避免同步分支基于落后 HEAD）；ahead > 0 记录并提示需人工确认本地未推送提交收口方式。「干净 ≠ 最新」缺口闭环（对上游模板实读远端 `VERSION` 的既有原则补齐对派生仓自身的一半）。同口径落点：`sync-methodology.md` 契约段与模板仓发起模式 A 阶段枚举（双写镜像）、`git-guide.md` §5.5 新增一条。
+- **任务路由表「模板维护 / 规则改造 / 同步机制」行按场景拆分必读集（#505）**：`ai/index.md` 该行拆为两桶——「规则改造 / 自检脚本 / 模板发布」维持完整规则回退包 + `MAINTAINERS.md` + `CONTRIBUTING.md` + `template-sync.json`；「派生项目下行同步」收窄为 `12-sync-template.md`（全文）+ `git-guide.md §5` + `session-rules §3.3/§3.4` + `rules-core.md`（硬规则门禁）+ 留痕模板；同步提交后按 `session-rules §3.2` 对被同步改写的规则文件做 diff 定向重读（替代同步前整读回退包）。`git-guide.md` §5.1 补读取面边界注（收窄不新增核对缺口；维护者侧不受影响）。同步 SOP 全部硬门禁（预检契约 / 失败即停 / dry-run 边界 / `check-derived-sync` / A13 矩阵）零改动。
+
+验证：`bash scripts/check-template.sh` 全量自检（基线 2119 对照）；md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（MAINTAINERS §3 口径）。
+
 ## v1.76.0（2026-11-01）
 
 MINOR 单提案（gmbl_project 派生项目回流 issue #485「TEMPLATE-UPGRADE-v1.76.0：评审机制总纲（触发矩阵）+ 图表体系评审清单」；2026-10-29 triage 属实 + 校正 3 处已被 gmbl 侧采纳并刷新正文，正文与实施内容一致）：评审机制此前「资产齐、收拢弱」——E1~E6 评估码、四个评审命令、doc-standards 审计基线均存在，但无「阶段 × 时点 × 命令 × 结论落点」总表，派生实证 E2~E5 阶段评估断档三周无人执行；OO 可选产物「选用即失管」，图表审核维度散落无统一 checklist。MINOR 判据：同步清单新增规则文件（新增下游采用面，CONTRIBUTING §4）。
