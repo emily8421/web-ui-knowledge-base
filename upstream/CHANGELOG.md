@@ -9,6 +9,114 @@
 
 模板版本采用三段式 `vMAJOR.MINOR.PATCH`，以根目录 `VERSION` 为单一审计入口。版本是发布边界，不是提案数量边界；提案收件箱增长不触发版本递增，只有合并到同步范围内并改变模板行为或下游同步判断的 PR 才判断 `PATCH / MINOR / MAJOR`。`ai/global-rules.md` 顶部仅记录全局规则自身版本。
 
+## v1.79.5（2026-11-17）
+
+PATCH 单提案（模板自产提案 `TEMPLATE-UPGRADE-launcher-menu.md`「控制台启动器菜单——对话即界面的并列点选入口」，2026-11-17 同日起草 → C1 triage 核实属实（先期状态核实：现行版本无等价点选执行器，SOP / commands README 为文档地图形态）→ 维护者拍板「按建议执行」立项；W-001~W-004 按 AI 建议决议 + triage 校正 2 / 补强 2 随批吸收）：
+
+- **新增 `scripts/menu-launcher.ps1` / `menu-launcher.sh` + 单一清单源 `scripts/launcher-menu.json`（`TOOL-LAUNCH-001`，随模板下行）**：Phase 1 共 11 项——脚本类 5（registry 对账 / check-template 自检 / new-project 向导 / collect-env / check-markdown-clean，同步边界判定：前三者为模板仓专用 → scope=maintainer）+ 会话类 6（C1 triage / resume / rollup / 派生同步轮 / post-sync-cleanup / submit-proposal；生成点单词后可显示 / 复制剪贴板 / 拉起 claude / codex；会话类按 §5.1 发起目录语义分仓——同步轮与清理在派生仓发起）。仓型自适应：按 `MAINTAINERS.md` 存在与否过滤 scope（maintainer / derived / all，#522 判据）；**红线「点选 ≠ 授权」**：会话类仅生成点单词，远端状态变更仍须会话内逐项确认（11-14 授权粒度教训承接）。实现约束：bash 侧无 JSON 解析器，清单按行解析（每条目单行 `{}`、字段顺序固定，约束写入清单 description）；`.ps1` 纯 ASCII 源码 + 中文文案全部在 UTF-8 清单（规避 PS 5.1 无 BOM 编码坑，菜单显示名与 ASCII key 分离）；运行前置缺失（bash / powershell 不在 PATH）降级为显示命令不报错。
+- **`scripts/check-template.sh` 补 advisory（非阻断）**：launcher-menu 清单 target / source 指向存在性校验（单一清单源防漂移；rd-data-chain §4 避免过度治理口径，不设硬门禁）。
+- **登记与同步清单**：`scripts/README.md` TOOL 表登记 `TOOL-LAUNCH-001`（§2.1 下行组 + §2.3 运行契约）+ §1 分组计数刷新（下行组 8 类 / 10 文件 → 9 类 / 13 文件，登记与改动同批——v1.79.4 固定步）；`template-sync.json` `files_all` +3。
+- 提案文件同 PR 入库 `_governance/_proposals/`（实施 PR 先入库、归档 PR 随后，#570/#571 先例）。
+
+验证：全量自检（`check-template.sh --summary`，advisory +1 计数预期）+ md-clean 触达面 + `git diff --check` + 双启动器 `--list` 冒烟（母仓视角 8 项 / 模拟派生仓视角 7 项，scope 过滤正确）+ JSON 可解析 + bash 语法检查；PATCH 豁免 L3 e2e（新增可选工具，无骨架 / 规则文件触达）；dogfood 两周观察（成功判据见提案 §5）。
+
+## v1.79.4（2026-11-16）
+
+PATCH 单提案（模板自产提案 `TEMPLATE-UPGRADE-mechanism-registration-landing-step.md`「机制 / 工具登记接入发版清单固定步」，源起首轮机制审计 R1 收官后维护者「半年度节奏是否会积压」复议——根因分析结论：R1 唯一实锤 F1（#485 v1.76.0 落地后漏登 MECH 表）源于落地时点缺登记工序而非体检间隔，体检频率治不了漏登；拍板方案 B：半年度节奏不动（DC-004 维持），登记工序前移到发版时点）：
+
+- **`MAINTAINERS.md` §3 发布 checklist 插入新条目 8（原 8-12 顺延 9-13）+ `CONTRIBUTING.md` §3 改模板流程插入新步骤 5（原 5-10 顺延 6-11）**：两处同措辞（v1.79.1 归档固定步范式）——改动引入新治理机制 / 新脚本工具时，当场登记 `capability-packages.md` §4（MECH 表，准入四问）或 `scripts/README.md` §2（TOOL 表）并刷新受影响行「最近审计」列；登记与改动同批提交，不留「已上线未登记」中间态。发版清单是每次发版必过的执行节点，模板迭代越快该工序触发越勤，自动适配快速优化期；半年度审计由「抓漏登」降级为「对账抽查」。
+- 提案文件同 PR 入库 `_governance/_proposals/`（§3.1 对话新增建议先落提案先例）。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（维护者清单文案增量，无断言 / 同步清单 / 脚本变更）。
+
+## v1.79.3（2026-11-16）
+
+PATCH 单提案（首轮机制审计 R1 落地补登，F1 + F6；审计记录 `_governance/ai-records/mechanism-audits/2026-11-16-mechanism-audit-r1.md` 同日入库——2026-12 半年度窗口提前执行，用户 2026-11-16 拍板）：
+
+- **`template-docs/capability-packages.md` §4 补 `MECH-CORE-004`「评审触发矩阵」登记行**（F1，协调域）：decoupling 提案 Phase 1 承诺「#485 落地后其触发矩阵登记进 MECH 表」，#485 已随 v1.76.0 落地（`ai/review-guide.md` 12 时点强制 / 建议矩阵 + 图表体系评审清单）但登记缺失，首轮审计检出后补登；登记表 14 类 → 15 类，§9 审计节奏句同步刷新（首轮 R1 已执行、下一窗口 2026-06）。
+- **§4 既有 14 行「最近审计」列刷新为 2026-11-16（R1 审计）**（F6）：原值停留在登记日 2026-10-29。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（人读登记表补行与簿记列刷新，无断言 / 同步清单 / 脚本变更）。
+
+## v1.79.2（2026-11-16）
+
+PATCH 单提案（agent-system-template 派生项目回流 issue #565「同步收尾补『版本复制指针核对』advisory 步」，2026-11-16 C1 triage 核实属实——`复制指针` 全 `ai/` 零命中（缺口未被现行版本覆盖）、两落点锚点实存（12-sync-template 步骤 14 / 15-post-sync-cleanup §5）、来源仓 patch 文件实查存在；同族实证链：#481 发版侧 VERSION 滞留 + 来源仓 2026-11-02 / 2026-11-16 连续两轮 `ai/project-rules.md` §0 复制指针滞留；拍板即日实施）：
+
+- **`ai/prompts/maintainers/12-sync-template.md` 步骤 14 尾部 + `ai/prompts/maintainers/15-post-sync-cleanup.md` §5**：两处同措辞补「核对非同步清单文件的版本复制指针」advisory 步——核对派生仓内手抄版本号（如 `ai/project-rules.md` §0 的领域模板版本 / 继承母模板版本、根 README 状态行等）与权威源（根 `VERSION` / `TEMPLATE-BASE.md`）一致，发现滞留即随收尾提交回写或建议改写为纯指针（「以 <权威源> 为准，不复制版本号」）从源头消除漂移面；两处同措辞防双写漂移（v1.79.1 归档固定步先例）。advisory 语义零门禁：不新增同步结构、不挂自检断言、不改脚本与同步清单。
+- **归档收尾**：issue #549 镜像随本批补归档（该提案已随 v1.79.0 PR #557 落地吸收、issue 已关闭，镜像归档欠账清偿；归档索引表登记同批完成）+ issue #565 镜像入库 `_remote-issues/`（落地吸收后随收尾轮归档）。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（SOP / 审计清单文案增量，无脚本 / 同步清单 / 断言变更）。
+
+## v1.79.1（2026-11-16）
+
+PATCH 单提案（模板自产提案 `TEMPLATE-UPGRADE-archive-index-fixed-step.md`「归档操作序列补同步更新归档索引表固定步」，源起 pitfall SUMMARY §18 第十四批——archive-index-backfill-drift 同族第三次实证（2026-09-10 #456 / 2026-11-10 #542 / 2026-11-12 #547 归档均漏登索引表，前两次靠事后补登记）；2026-11-16 用户随 rollup #559 拍板立案即日实施，与 untracked add 附注 v1.78.2、镜像清尾 v1.78.1 同款「三犯立案」先例）：
+
+- **`CONTRIBUTING.md` §3 步骤 6 + `ai/prompts/maintainers/11-template-proposal-summary.md` 分析要求 8**：归档移动与索引表登记**同批完成**——`git mv` 后同步更新 `_governance/_archive/proposals/README.md` 归档索引表（批次行 + 落地版本 / PR / squash 锚点），不留「只 rename 未登记」中间态；两处同措辞防双写漂移——把「暂存范围安全」式的纪律提升为操作序列固定步（「关键前置未进执行清单」家族第六面的机制化兑现）。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（治理流程文档固定步，无脚本 / 同步清单 / 断言变更）。
+
+## v1.79.0（2026-11-15）
+
+MINOR 单提案（LUMEN-DEMO 派生项目回流 issue #549「核心实体生命周期完备性检查（C/R/U/D 四问 + 三选一留痕）」，2026-11-14 C1 triage 核实属实——全部审核入口确无生成侧完备性维度、document-lifecycle §6.0.1 断点表确无生成侧断点类型、LUMEN 仓试验记录实查存在（8 实体 32 问：1 真实缺口 + 逼出 2 个从未讨论的操作，零误报）；用户确认 issue 提交为有意（正文头部「暂不回流」状态行过时，不影响技术内容）；拍板单独轮实施）：
+
+- **`ai/document-lifecycle-rules.md` §6.0.1 新增「生成侧完备性（实体生命周期四问）」**（机制单一权威源）：需求链健康度表 + 生成侧断点行；补四问定义——识别第一级领域实体（00 场景名词 / 02 REQ 主语 / 06 概念模型并集，一般 ≤8 个）逐实体回答 C（从哪来）/ R（怎么被看见）/ U（怎么被修改）/ D（到哪去），每个空档三选一留痕（补需求挂 REQ-ID / 显式不做进禁止清单 + 理由 + 复审触发条件 / 不适用说明原因）。力度为提示性维度（非机器门禁，无自检断言无 CI 门禁）；存量校验（自上而下追断链）与生成侧校验（自实体正向问）互补，治「该出生而从未出生的需求」盲区——真实案例：核心实体创建操作八个月无人讨论，多轮评审零检出，终由终端用户当缺陷报出。
+- **`ai/prompts/review/19-docs-evaluation.md`**：评估维度表 +「实体生命周期完备性」行（引用 §6.0.1 权威源）；E1 / E2 重点检查段 +1 条。
+- **`ai/prompts/review/10-docs-checklist.md`**：A 块（00-02 输入门槛）+ 实体生命周期四问核对项。
+- **`ai/doc-standards/01-user-requirements.md` / `02-srs.md`**：§4 审计检查各 +1 行（生成侧覆盖 / 四问留痕，均引用 §6.0.1）。
+
+验证：全量自检 + L3 e2e（MINOR 发版门，自动化 R1-R3 + R4-R6 触达面评估——R4 / R6 未触达豁免，R5 半触达豁免：改动全为审计维度行不触 00-09 骨架生成结构），报告 `_governance/ai-records/e2e-reports/2026-11-15-v1.79.0.md`。存量项目不回溯（新项目初始化 + 既有项目下次 E1 / E2 评估 / 编码前清单核对时生效）。
+
+## v1.78.5（2026-11-14）
+
+PATCH 单提案（zhiyan-digital-cs-platform 派生项目回流 issue #543「割接 / 迁移类任务的下游引用 sweep + gitignored 本地态清单收尾检查项」，2026-11-14 C1 triage 核实属实——env-setup 确无本地态迁移项 / document-lifecycle §9 变更传播矩阵确无基础设施割接类行，拍板即日实施；落点经维护者裁量：收尾自检落 session-rules §4、本地态清单落 env-setup 新节）：
+
+- **`ai/session-rules.md` §4 新增收尾自检项（割接 / 迁移类任务附加自检）**：割接、迁移、端口调整、路径重组类任务收尾时，对旧标识（端口、路径、域名、命令关键字）做一次全仓 grep，逐命中区分「活事实（随动修改）vs 历史记录（保留）」，防失效引用静默残留；换机 / 备份恢复类任务对照 env-setup 本地态清单核对。
+- **`template-docs/env-setup.md` 新增 §12「换机 / 迁移恢复时的本地态清单」**：gitignored 本地目录不随 clone / 依赖重装恢复——`.ai/`（续接与观察记录）、`.tmp/`、项目自声明本地态逐项列入迁移清单或显式声明接受丢失；迁移前逐项打勾 + 新机路径一致性核对。补位动机实证：gitignored 观察目录漏迁导致续接文件历史摘要引用成悬空指针。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（规则附注级，不引入自检断言 / CI 门禁，与「避免过度治理」口径一致——grep 是否执行属语义判断）。
+
+## v1.78.4（2026-11-14）
+
+PATCH 单提案（LumiOne-Framework 派生项目回流 issue #548「双提交同步分支的 PR 标题显式指定」，2026-11-14 C1 triage 逐条核实全部属实——SOP 步骤 24 现状 / 校验机制 / 同仓两轮 PR 对照（#12 `--fill` 伪影 / #13 显式标题通过）均与远端实查吻合，拍板即日实施）：
+
+- **`ai/prompts/maintainers/12-sync-template.md` 步骤 24**：同步分支含 bootstrap 等前置提交（多提交）时，`gh pr create` 显式指定标题 `sync template vX.Y.Z from ai-project-template`，使 squash 合并后 HEAD 信息保持同步提交格式；单提交分支保留 `--fill`。修复机制：伪影标题使 `project-check.yml` 因 HEAD 信息不匹配同步模式而跳过合并后 `check-derived-sync` 边界校验（校验覆盖静默降级）。
+- **`git-guide.md` §5.3 + §5.5 同口径补注**：多提交同步分支的 PR 标题显式指定口径（§5.3 命令旁一行 + §5.5 注意事项一条，含同仓两轮对照实证说明）。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（SOP 命令措辞级，不改同步清单 / 断言 / 校验行为本身）。关联登记：本轮 triage 顺带发现 LumiOne / digital-cs 两仓 v1.78.0 同步未回写 registry，已随 PR #553 补登清账（对账 9 仓 MATCH）。
+
+## v1.78.3（2026-11-14）
+
+PATCH 单提案（模板自产提案 `TEMPLATE-UPGRADE-route-annotation-coverage.md`「任务路由表场景级标注覆盖扩展」，源起 token-hotspot SUMMARY「路由包重读」观察家族累计 12+ 次实证、§14 升级「待 C1 评估立案」、§15 判证据链完整；2026-11-14 C1 triage 通过并修订后拍板实施；#441 章节级标注机制的覆盖面扩展，PATCH 与 #491 同先例）：
+
+- **`ai/index.md` 路由表 +2 处场景标注**（triage 修订后口径，原拟改第 1 处 PR/CI merge-only 经核实已被 v1.75.8 #491 覆盖、删除）：①「模板维护 / 规则改造 / 同步机制」行补行内分口径「**C1 triage（提案收件箱评估，不含实施）**」——prompt 11 + 收件箱 README「提案正文章节」「远端 issue 本地镜像」节 + CONTRIBUTING §1-§5，拍板后进入实施仍回规则改造口径读完整回退包；②「PR / CI / Git 收尾」行触发列与规则列补「registry 登记 / handoff 刷新等纯治理记录写入」场景——可只读 `ai/session-rules.md` §1 / §3 / §4 与 `ai/project-rules.md` §6。
+- **`ai/prompts/maintainers/11-template-proposal-summary.md` 读取口径同批对齐**（triage 补强，防与路由表标注双写漂移）：「使用前准备」与「读取前先确认」清单中 `CHANGELOG.md` 全文必读改为按需（核实版本占用 / 先期修复对照时查 `VERSION` 与相关近期条目）；「ai/index.md 列出的全部规则文件」改为指向 C1 triage 场景最小必读集。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check` + 人工核对标注与场景实际必读集一致；PATCH 豁免 L3 e2e（纯导航标注，无脚本 / 同步清单 / 断言变更）。
+
+## v1.78.2（2026-11-14）
+
+PATCH 单提案（模板自产提案 `TEMPLATE-UPGRADE-untracked-safe-add-note.md`「git-guide §3.1 补 untracked 安全 add 附注」，源起 pitfall SUMMARY 第十三批——`git add -A` 暂存范围失控第三次实证达第四批既定立案口径（2026-08-12 `.ai/tmp` / 2026-08-21 归档评估稿 7 份 / 2026-11-10 CJK 原稿，三次均靠事后 `diff --stat` 对照拦下、零错误提交；2026-11-14 C1 triage 逐条核实全部属实，拍板即日实施）：
+
+- **`git-guide.md` §3.1「代码修改完成后的标准流程」补 untracked 安全 add 附注**：工作区存在刻意未跟踪的草稿 / 原稿 / 本地记录时，禁用 `git add -A`、`git add .`，改显式路径暂存；多文件提交前用 `git diff --stat`（暂存后 `git diff --cached --stat`）对照本次触碰文件清单，多出文件先 reset 核对再继续——把「暂存范围安全」从行为纪律自觉提升为操作文档固定提醒（「关键前置未进执行清单」家族第五面的机制化兑现）。不双写：`SOP.md` 为入口索引不改，`git-beginner-handbook.md` 头部已声明以 `git-guide.md` 为权威。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（纯附注文案，无脚本 / 同步清单 / 断言变更）。
+
+## v1.78.1（2026-11-12）
+
+PATCH 单提案（模板自产提案 `TEMPLATE-UPGRADE-c1-mirror-eof-tail-clean.md`「C1 issue 镜像落盘清尾写进 prompt 11 操作序列」，源起 pitfall SUMMARY 第十二批回流候选——mirror-eof-whitespace-gate 家族两次实证：2026-10-31 #490/#491 实施轮首证、2026-11-09 #526 镜像落盘当场复发；维护者拍板即日实施）：
+
+- **`ai/prompts/maintainers/11-template-proposal-summary.md` 镜像门禁检查清单 +1 条**：镜像落盘后立即清尾（剥 EOF 多余空行与行尾空白）再进入检查 / 分析与提交——把「清尾」从行为纪律自觉提升为操作序列固定步，不改变既有镜像硬门禁语义（「坑记了、修法不模板化进操作步骤就还会犯」，第十二批模式结论的机制化兑现）。
+
+验证：全量自检（`check-template.sh --summary`）+ md-clean 窄检 + `git diff --check`；PATCH 豁免 L3 e2e（1 行 Prompt 小修，无脚本 / 同步清单 / 断言变更）。
+
+## v1.78.0（2026-11-10）
+
+MINOR 发布（提案 `TEMPLATE-UPGRADE-git-beginner-handbook.md`——模板维护者草案经 C1 triage 后实施；`files_all` 新增下行文档，同步清单扩展）：
+
+- **新增 `template-docs/git-beginner-handbook.md`**：Git 零基础概念手册（30 节：Git / GitHub / GitLab 概念、「工作区→暂存区→本地仓库→远程仓库」四区模型、status / add / commit / push / pull / clone / fetch / branch / switch / merge / stash / diff / log / restore / revert / reset 逐命令讲解 + 命令速查表与学习顺序建议）。整理项：顶部补 Sync notice 与「定位与优先级」说明（操作争议以根目录 `git-guide.md` 权威 SOP 为准，安装环境见 `template-docs/env-setup.md`）；标题层级统一（31 个 `##` 主节）；GitLab 示例去项目化；一处散文误入代码块修正。
+- **`template-docs/beginner-guide.md` §7 导航 +1 条**：「Git 零基础入门（概念与常用命令）」指向新手册。
+- **同步清单双入口登记**：`template-sync.json` `files_all` 与 `scripts/sync-template.sh` 兜底清单各 +1（普通与领域路线均下行）。
+
 ## v1.77.3（2026-11-09）
 
 PATCH 聚合轮（双输入：模板仓 issue #526「下行同步预检的 `git fetch` 写入边界措辞」（zhiyan 派生回流 2026-11-07）+ 模板自产提案 `TEMPLATE-UPGRADE-codex-checkpoint-portability.md`「Windows/Codex 续接、只读核对与补丁调用的失败域分流」（2026-11-09 合并 C1 triage 通过，吸收 zhiyan 研究分析 P2-b 与故障分流分支 3））：
