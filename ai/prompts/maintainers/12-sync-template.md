@@ -106,7 +106,7 @@
    - 普通 PR 不应运行 `scripts/check-template.sh` 或 `scripts/check-template.ps1`。
    - 若存在 `.github/workflows/template-check.yml`，说明它通常是模板仓自检入口，提示迁移为 `.github/workflows/project-check.yml`。
    - 派生项目版 workflow 应保留 `git diff --check`，并仅在提交信息匹配 `sync template vX.Y.Z from ai-project-template` 时运行 `scripts/check-derived-sync.sh HEAD`。
-14. 如本次同步引入新的项目专属骨架项，不要直接覆盖 ai/project-rules.md；列出需要人工迁移的字段，例如 `§2.1 运行环境与资源约束`。领域模板仓的 `ai/domain-rules.md` 种子不在同步清单、不会被覆盖；如本次同步刷新了 `ai/doc-standards/domain-rules.md` 规范基线，对照它维护领域种子（§0-§4）。
+14. 如本次同步引入新的项目专属骨架项，不要直接覆盖 ai/project-rules.md；列出需要人工迁移的字段，例如 `§2.1 运行环境与资源约束`。领域模板仓的 `ai/domain-rules.md` 种子不在同步清单、不会被覆盖；如本次同步刷新了 `ai/doc-standards/domain-rules.md` 规范基线，对照它维护领域种子（§0-§4）。同步收尾另核对派生仓内非同步清单文件的版本复制指针（如 `ai/project-rules.md` §0 的领域模板版本 / 继承母模板版本、根 README 状态行等）与权威源（根 `VERSION` / `TEMPLATE-BASE.md`）一致；发现滞留即随收尾提交回写，或建议改写为纯指针（「以 <权威源> 为准，不复制版本号」）从源头消除漂移面。
 15. 如项目已同步到含 `scripts/collect-env.ps1` 的模板版本，但尚无 `docs/env/local-env.md`，提示运行：powershell -NoProfile -File scripts/collect-env.ps1，并补齐人工确认项。
 16. 做提案回流收口检查：
    - 扫描本项目 `_governance/_proposals/TEMPLATE-UPGRADE-*.md`、`.ai/session-handoff.md`、最近 `_governance/sync-records/template-sync/` 运行记录（旧路径 `docs/archive/template-sync/` 兼容读取），找出本项目曾提交到模板仓的 issue 链接、待处理提案和已生成回流提案。
@@ -138,7 +138,7 @@
    - 对可通用于多个项目的问题，生成去项目化 `_governance/_proposals/TEMPLATE-UPGRADE-*.md`；不得包含客户、账号、路径敏感信息或项目专属业务细节。
    - 若没有可回流问题，记录“本次无模板回流提案”。
 23. 推送当前分支：git push -u origin chore/sync-template-vX.Y.Z。
-24. 创建 PR：gh pr create --fill。
+24. 创建 PR：同步分支含 bootstrap 等前置提交（双提交 / 多提交）时，显式指定标题，使 squash 合并后 HEAD 信息保持 `sync template vX.Y.Z from ai-project-template` 格式——`--fill` 在多提交分支上取分支名 / 首提交作标题，伪影标题会使 `project-check.yml` 的合并后边界校验被跳过：`gh pr create --title "sync template vX.Y.Z from ai-project-template" --body "<同步摘要>"`；单提交分支可保留 `gh pr create --fill`。
 25. 最后汇总：同步到的模板版本、同步提交、采用的同步路径、同步边界检查结果、workflow 迁移建议、同步后整理状态、文档体系审计状态、提案回流收口结论、项目验证建议、同步运行记录路径、是否需要人工迁移 project-rules、是否需要运行 collect-env、提案归档情况、是否生成回流提案和 PR 链接。
 
 同步 PR 边界：同步 PR 只包含同步提交；步骤 16-17 的提案归档移动、步骤 21 的同步运行记录、种子文件联动清理等收尾提交，拆到同步 PR 合并后的后续小 PR / 提交执行——避免 squash 合并后 HEAD 混入清单外变更，触发合并后 `check-derived-sync` 校验失败；若仍出现失败，按 `git-guide.md` §5 checklist 的 squash 校验时点口径对照推送前留痕裁决。
